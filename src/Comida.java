@@ -1,4 +1,4 @@
 
-public class Comida {
+public abstract class Comida extends Producto{
 
 }
