@@ -110,7 +110,7 @@ public class Reserva {
    }
 	   
 	   public  String  fecha() {
-		   Date date = new Date();
+		   Date date = null; // FIXME
 		   SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
 		   String stringDate = DateFor.format(date);
 		   return stringDate;

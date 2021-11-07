@@ -1,8 +1,7 @@
 
-public abstract class Comida extends Producto{
+public abstract class Comida extends Producto {
 	protected EnumComida TipoComida;
 
-	
 	public Comida(String nombre, EnumComida tipoComida) {
 		super(nombre);
 		TipoComida = tipoComida;
@@ -20,7 +19,5 @@ public abstract class Comida extends Producto{
 	public String toString() {
 		return "Comida [TipoComida=" + TipoComida + "]";
 	}
-	
-	
-	
+
 }
