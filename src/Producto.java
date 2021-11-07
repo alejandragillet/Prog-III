@@ -1,5 +1,6 @@
 public abstract class Producto {
 	protected String nombre;
+	protected double precio;
 	
 	public Producto(String nombre) {
 		super();
@@ -20,6 +21,12 @@ public abstract class Producto {
 	}
 
 	public abstract double getPrecio();
+	
+	
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
 
 	@Override
 	public String toString() {

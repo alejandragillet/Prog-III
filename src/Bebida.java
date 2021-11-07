@@ -1,42 +1,31 @@
 
-public class Bebida extends Producto{
-	private double cl;
-	private double precioPorCl;
+public abstract class Bebida extends Producto{
+
+	protected EnumBebida TipoBebida;
+
 	
-	public Bebida(String nombre, double cl, double precioPorCl) {
+	
+	public Bebida(String nombre, EnumBebida tipoBebida) {
 		super(nombre);
-		this.cl = cl;
-		this.precioPorCl = precioPorCl;
-	}
-	
-	public Bebida() {
-		super();
+		TipoBebida = tipoBebida;
 	}
 
-	public double getCl() {
-		return cl;
+	public EnumBebida getTipoBebida() {
+		return TipoBebida;
 	}
 
-	public void setCl(double cl) {
-		this.cl = cl;
-	}
-
-	public double getPrecioPorCl() {
-		return precioPorCl;
-	}
-
-	public void setPrecioPorCl(double precioPorCl) {
-		this.precioPorCl = precioPorCl;
-	}
-
-	@Override
-	public double getPrecio() {
-		return cl * precioPorCl;
+	public void setTipoBebida(EnumBebida tipoBebida) {
+		TipoBebida = tipoBebida;
 	}
 
 	@Override
 	public String toString() {
-		return getNombre() + " (" + cl + " cl)";
+		return "Bebida [TipoBebida=" + TipoBebida + "]";
 	}
+	
+	
+	
+	
+
 
 }
