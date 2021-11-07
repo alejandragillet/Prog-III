@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Discoteca {
-    protected String dirección;
+    protected String direccion;
     protected int aforo;
     protected int numeroTrabajadores;
     protected String nombre;
@@ -10,17 +10,17 @@ public class Discoteca {
     
 	public Discoteca(String dirección, int aforo, int numeroTrabajadores, String nombre) {
 		super();
-		this.dirección = dirección;
+		this.direccion = dirección;
 		this.aforo = aforo;
 		this.numeroTrabajadores = numeroTrabajadores;
 		this.nombre = nombre;
 	}
 	
 	public String getDirección() {
-		return dirección;
+		return direccion;
 	}
 	public void setDirección(String dirección) {
-		this.dirección = dirección;
+		this.direccion = dirección;
 	}
 	public int getAforo() {
 		return aforo;
@@ -43,7 +43,7 @@ public class Discoteca {
 
 	@Override
 	public String toString() {
-		return "Discoteca [dirección=" + dirección + ", aforo=" + aforo + ", numeroTrabajadores=" + numeroTrabajadores
+		return "Discoteca [dirección=" + direccion + ", aforo=" + aforo + ", numeroTrabajadores=" + numeroTrabajadores
 				+ ", nombre=" + nombre + "]";
 	} 
     

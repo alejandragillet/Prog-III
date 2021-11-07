@@ -11,7 +11,6 @@ public class Reserva {
     protected EnumZona zona;
     
     public Reserva() {
-    	this.fecha = fecha();
     	this.importe = importe;
     	this.mapaProducto = mapaProducto;
     	this.numeroPersonas = numeroPersonas;
@@ -109,12 +108,12 @@ public class Reserva {
 	   }
    }
 	   
-	   public  String  fecha() {
-		   Date date = new Date();
-		   SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
-		   String stringDate = DateFor.format(date);
-		   return stringDate;
-	   }
+//	   public  String  fecha() {
+//		   Date date = new Date();
+//		   SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
+//		   String stringDate = DateFor.format(date);
+//		   return stringDate;
+//	   }
 
     
     	
