@@ -42,11 +42,11 @@ public VentanaCliente(String titulo) {
 		pCentral.setLayout(new GridLayout(10, 17));
 		
 		
-		pSuperior.setBackground(Color.GRAY);
-		pCentral.setBackground(Color.GRAY);
-		pInferior.setBackground(Color.GRAY);
+		pSuperior.setBackground(Color.WHITE);
+		pCentral.setBackground(Color.WHITE);
+		pInferior.setBackground(Color.WHITE);
 		lTitulo.setFont(new Font("Arial", Font.ITALIC, 26));
-		lTitulo.setBackground(Color.BLACK);
+		lTitulo.setBackground(Color.GRAY);
 		lTitulo.setOpaque(true);
 		
 		
