@@ -18,7 +18,37 @@ public class Gestiondiscoteca {
     }
     
     
-    public void guardarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
+    public ArrayList<Producto> getlProductos() {
+		return lProductos;
+	}
+
+
+	public void setlProductos(ArrayList<Producto> lProductos) {
+		this.lProductos = lProductos;
+	}
+
+
+	public ArrayList<Cliente> getlCLientes() {
+		return lCLientes;
+	}
+
+
+	public void setlCLientes(ArrayList<Cliente> lCLientes) {
+		this.lCLientes = lCLientes;
+	}
+
+
+	public ArrayList<Trabajador> getlTrabajadores() {
+		return lTrabajadores;
+	}
+
+
+	public void setlTrabajadores(ArrayList<Trabajador> lTrabajadores) {
+		this.lTrabajadores = lTrabajadores;
+	}
+
+
+	public void guardarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		File sFichero = new File(nombreFic);
     		sFichero.delete();
@@ -31,7 +61,7 @@ public class Gestiondiscoteca {
     		
     	}
     }
-    public void cargarFicheroBinarioUsuario(ArrayList<Cliente> lClientes, String nombreFic) {
+    public void cargarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
     		ArrayList<Cliente> lCargada= (ArrayList<Cliente>) ois.readObject();

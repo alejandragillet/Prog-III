@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import logica.Gestiondiscoteca;
+
 
 
 public class VentanaUsuario extends JFrame {
@@ -42,8 +44,9 @@ public class VentanaUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Gestiondiscoteca gs = new Gestiondiscoteca();
 				// TODO Auto-generated method stub
-				VentanaCliente vent= new VentanaCliente("Regis");
+				VentanaCliente vent= new VentanaCliente("Regis", gs);
 				vent.setLocation( 620, 300 );
 				vent.setVisible( true );
 				
