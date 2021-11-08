@@ -25,7 +25,7 @@ public VentanaRegistro(String titulo){
 		JPanel pCentral = new JPanel();
 		JPanel pInferior = new JPanel();
 		
-		JLabel lTitulo = new JLabel ("Regístrate");
+		JLabel lTitulo = new JLabel ("Regístrate aqui!");
 		JButton bAceptar = new JButton ("Aceptar");
 		JButton bLogIn = new JButton ("Log In");
 		JLabel lNick = new JLabel ("Nombre");
