@@ -88,7 +88,7 @@ public VentanaRegistro(String titulo, Gestiondiscoteca gs){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "cliente.dat");
-				System.out.println("Cagados;;" + gs.getlCLientes());
+				//System.out.println("Cagados;;" + gs.getlCLientes());
 				for (Cliente cliente : gs.getlCLientes()) {
 					if(tfNick.getText().equals(cliente.getNombre()) && tfApellido.getText().equals(cliente.getApellido())) { //Nombre y Apellido de usuario ha sido usado
 						JOptionPane.showMessageDialog(VentanaRegistro.this, "Ese nombre y apellido de cliente ya existen. Por favor vuelva a intentarlo");

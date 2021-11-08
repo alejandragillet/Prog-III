@@ -97,7 +97,7 @@ public VentanaCliente(String titulo, Gestiondiscoteca gs) {
 			System.out.println(gs.getlCLientes());
 			for( Cliente cliente : gs.getlCLientes()) {
 				if(tfNick.getText().equals(cliente.getNombre()) && tfPass.getText().equals(cliente.getContrasenia())) {
-					VentanaReserva ventanaReservas=new VentanaReserva();
+					VentanaReserva ventanaReservas=new VentanaReserva(titulo, getOpacity(), null, gs);
 					ventanaReservas.setVisible(true);
 					dispose();
 					return;
