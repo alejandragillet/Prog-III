@@ -27,6 +27,10 @@ public class Servidor {
             while (!finComunicacion) { // ciclo de lectura desde el cliente hasta que acabe la comunicación
                 String textoRecibido = inputDesdeCliente.readLine(); // Ojo: bloqueante (este hilo se queda esperando)
 
+                if (textoRecibido == null) {
+                    finComunicacion = true;
+                }
+
                 System.out.println("Recibido de cliente: [" + textoRecibido + "]");
                 
                 outputACliente.println("RESPUESTA AL CLIENTE");
