@@ -108,12 +108,6 @@ public class Reserva {
 	   }
    }
 	   
-//	   public  String  fecha() {
-//		   Date date = new Date();
-//		   SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
-//		   String stringDate = DateFor.format(date);
-//		   return stringDate;
-//	   }
 
     
     	
