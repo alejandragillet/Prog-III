@@ -1,3 +1,4 @@
+package logica;
 
 public abstract class Comida extends Producto {
 	protected EnumComida TipoComida;

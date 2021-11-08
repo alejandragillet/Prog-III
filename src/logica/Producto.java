@@ -1,3 +1,4 @@
+package logica;
 public abstract class Producto {
 	protected String nombre;
 	protected double precio;

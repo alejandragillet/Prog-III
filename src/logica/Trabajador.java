@@ -1,3 +1,4 @@
+package logica;
 public class Trabajador {
     protected String nombre;
     protected String contrasenia;

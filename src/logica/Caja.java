@@ -1,3 +1,4 @@
+package logica;
 
 public class Caja {
 	public Trabajador trabajador;
