@@ -11,7 +11,9 @@ import java.net.Socket;
 public class Comunicador {
     private static final String HOST = "localhost";
     private static final int PORT = 4000;
+    Socket socket;
     PrintWriter outputAServer;
+    BufferedReader inputDesdeServer;
     boolean finComunicacion = false;
 
     public Comunicador() {
@@ -20,17 +22,12 @@ public class Comunicador {
 
     public void lanzaCliente() {
         try (Socket socket = new Socket(HOST, PORT)) {
-            BufferedReader inputDesdeServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.socket = socket;
+            inputDesdeServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputAServer = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("Despues de outputAServer");
-            do { // Ciclo de lectura desde el servidor hasta que acabe la comunicación
-                String feedback = inputDesdeServer.readLine(); // Devuelve mensaje de servidor o null cuando se cierra
-                                                               // la comunicación (BLOQUEANTE - Se queda esperando)
-                if (feedback != null) {
-                    System.out.println(feedback);
-                } else { // Comunicación cortada por el servidor o por error en comunicación
-                    finComunicacion = true;
-                }
+            do {
+                if (socket.isClosed()) finComunicacion = true;
             } while (!finComunicacion);
         } catch (IOException e) {
             System.err.println("Error en cliente: " + e.getMessage() + "\n");
@@ -38,18 +35,23 @@ public class Comunicador {
         System.out.println("Fin del proceso del cliente");
     }
 
-    public void emitirMensaje(String mensaje) {
+    public String emitirMensaje(String mensaje) throws IOException {
         System.out.println("Emitiendo mensaje: " + mensaje);
         outputAServer.println(mensaje);
+        String respuesta = inputDesdeServer.readLine();
+        return respuesta;
         // TODO return "de la respuesta del servidor"
     }
 
     public void esperarConexion() {
         while (true) {
-            System.out.println(outputAServer != null);
-            if (outputAServer != null) {
+            System.out.println(this.socket != null && this.socket.isConnected());
+
+            if (this.socket != null && this.socket.isConnected()) {
                 return;
             }
+
+           // System.out.println(outputAServer != null);
         } 
     }
 
@@ -73,7 +75,13 @@ public class Comunicador {
         }).start();
 
         cc.esperarConexion();
-        cc.emitirMensaje("holaaaaa");
         
+        try {
+            // para poder llamar a emitirMensaje, el outputAServer debe de esta definido (es decir, conexión establecida)
+            String respueta = cc.emitirMensaje("holaaaaa");
+            System.out.println("Respuesta: " + respueta);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 }

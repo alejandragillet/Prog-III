@@ -13,6 +13,7 @@ import logica.Reserva;
 
 
 
+
 public class VentanaUsuario extends JFrame {
 	private JButton crearCliente;
 	private JButton crearTrabajador;
@@ -46,8 +47,9 @@ public class VentanaUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Gestiondiscoteca gs = new Gestiondiscoteca();
 				// TODO Auto-generated method stub
-				VentanaCliente vent= new VentanaCliente("Regis");
+				VentanaCliente vent= new VentanaCliente("Regis", gs);
 				vent.setLocation( 620, 300 );
 				vent.setVisible( true );
 				

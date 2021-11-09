@@ -6,15 +6,22 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import logica.Cliente;
+import logica.Gestiondiscoteca;
+import logica.Persona;
+import logica.Producto;
+
 public class VentanaRegistro extends JFrame {
-public VentanaRegistro(String titulo){
+public VentanaRegistro(String titulo, Gestiondiscoteca gs){
 		
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -25,7 +32,7 @@ public VentanaRegistro(String titulo){
 		JPanel pCentral = new JPanel();
 		JPanel pInferior = new JPanel();
 		
-		JLabel lTitulo = new JLabel ("Regístrate");
+		JLabel lTitulo = new JLabel ("Regístrate aqui!");
 		JButton bAceptar = new JButton ("Aceptar");
 		JButton bLogIn = new JButton ("Log In");
 		JLabel lNick = new JLabel ("Nombre");
@@ -69,14 +76,36 @@ public VentanaRegistro(String titulo){
 		bLogIn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaCliente v1= new VentanaCliente("DeustoDisco");
+				VentanaCliente v1= new VentanaCliente("DeustoDisco", gs);
 				v1.setVisible(true);
 				dispose();	
 			}
 		});
 		
 	
-		
+		bAceptar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "cliente.dat");
+				//System.out.println("Cagados;;" + gs.getlCLientes());
+				for (Cliente cliente : gs.getlCLientes()) {
+					if(tfNick.getText().equals(cliente.getNombre()) && tfApellido.getText().equals(cliente.getApellido())) { //Nombre y Apellido de usuario ha sido usado
+						JOptionPane.showMessageDialog(VentanaRegistro.this, "Ese nombre y apellido de cliente ya existen. Por favor vuelva a intentarlo");
+						tfNick.setText("");
+						tfApellido.setText("");
+						tfDNI.setText("");
+						tfPass.setText("");
+						return;
+					}
+				}
+				Cliente cl =new Cliente(tfNick.getText(),tfPass.getText(), tfApellido.getText(),tfDNI.getText()); //Crear nuevo cliente
+				gs.getlCLientes().add(cl);
+				System.out.println("Lista clientes: " + gs.getlCLientes());
+				gs.guardarFicheroBinarioCliente(gs.getlCLientes(), "cliente.dat");//Guardamos usuario fichero
+				JOptionPane.showMessageDialog(VentanaRegistro.this, "Se ha registrado correctamente. Ahora registrate");
+			}
+		});
 		
 	}
 

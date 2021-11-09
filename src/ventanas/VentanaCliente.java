@@ -10,11 +10,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import logica.Cliente;
+import logica.Gestiondiscoteca;
+
 public class VentanaCliente extends JFrame {
-public VentanaCliente(String titulo) {
+public VentanaCliente(String titulo, Gestiondiscoteca gs) {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600,400);
@@ -30,7 +34,7 @@ public VentanaCliente(String titulo) {
 		JButton bAceptar = new JButton ("Aceptar");
 		JButton bCancelar = new JButton ("Cancelar");
 		JLabel lNick = new JLabel ("Nombre");
-		JLabel lPasword = new JLabel ("Contraseña");
+		JLabel lPasword = new JLabel ("Contraseï¿½a");
 		JLabel lRegistro = new JLabel ("Todavia no tienes cuenta");
 		JLabel lMensaje = new JLabel ("ERROR. No se ha encontrado ningun usuario");
 		JButton bRegistrarse = new JButton ("Registrarse");
@@ -78,7 +82,7 @@ public VentanaCliente(String titulo) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaRegistro vr =new VentanaRegistro("Registro");
+				VentanaRegistro vr =new VentanaRegistro("Registro", gs);
 				vr.setVisible(true);
 				dispose();
 			}
@@ -89,10 +93,20 @@ public VentanaCliente(String titulo) {
 		bAceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+			gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "clientes.dat");
+			System.out.println(gs.getlCLientes());
+			for( Cliente cliente : gs.getlCLientes()) {
+				if(tfNick.getText().equals(cliente.getNombre()) && tfPass.getText().equals(cliente.getContrasenia())) {;
+					dispose();
+					return;
+				}
+			}
+			JOptionPane.showMessageDialog(VentanaCliente.this, "No coincide con ningun cliente, Por favor vuelva a intentarlo");
+			tfNick.setText("");
+			tfPass.setText("");
 			}
 		});
+		
 		
 		
 		
