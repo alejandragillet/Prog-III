@@ -60,7 +60,7 @@ public class Gestiondiscoteca {
 		this.lTrabajadores = lTrabajadores;
 	}
 
-
+	//guardar fichero en un futuro se cambiara por la base de datos
 	public void guardarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		File sFichero = new File(nombreFic);
@@ -74,6 +74,8 @@ public class Gestiondiscoteca {
     		
     	}
     }
+	
+	//cargar fichero binario en un futuro se cambiara por la base de datos
     public void cargarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
@@ -85,6 +87,20 @@ public class Gestiondiscoteca {
     	}catch(IOException | ClassNotFoundException e) {
     		System.out.println("Error de lectura de fichero" + nombreFic);
     	}
-
+    	
     }
+    //se crear el log.txt y se añaden los clientes
+    public void  LogginMirarFechaDíaHora() throws IOException {
+    	
+    	Log myLog= new Log("./log.txt");
+    	myLog.anadeLinea(lClientes);
+    	myLog.close();
+    	//se recorre para mostrarlo
+    	String [] lines = myLog.getLines();
+    	for(int i=0; i < lines.length; i++) {
+    		System.out.println(lines[i]);
+    	}
+    }
+    	
+    
 }
