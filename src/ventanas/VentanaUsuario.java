@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import logica.Gestiondiscoteca;
+import logica.Reserva;
+
 
 
 public class VentanaUsuario extends JFrame {
@@ -37,6 +40,7 @@ public class VentanaUsuario extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 		
+		setVisible(true);
 		
 		crearCliente.addActionListener(new ActionListener() {
 			
@@ -46,6 +50,7 @@ public class VentanaUsuario extends JFrame {
 				VentanaCliente vent= new VentanaCliente("Regis");
 				vent.setLocation( 620, 300 );
 				vent.setVisible( true );
+				
 				
 			}
 		});
@@ -65,7 +70,7 @@ public class VentanaUsuario extends JFrame {
 			VentanaUsuario ventana = new VentanaUsuario();
 			ventana.setLocation( 620, 300 );
 			ventana.setVisible( true );
-		
+			
 
 	}
 }

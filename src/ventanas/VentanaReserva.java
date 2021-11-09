@@ -36,7 +36,7 @@ public class VentanaReserva extends JFrame{
 	private JLabel importeTotalInfo;
 	
 	
-	public VentanaReserva(String nombre, double precio, Reserva reserva, Gestiondiscoteca Gs1) {
+	public VentanaReserva(String nombre,  Reserva reserva, Gestiondiscoteca Gs1) {
 		this.setMaximumSize(new Dimension(700,500));
 		
 		//Lista
@@ -168,8 +168,6 @@ public class VentanaReserva extends JFrame{
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 
-		
-	
 	}
 	
 	/** Actualiza la información
@@ -222,4 +220,6 @@ public class VentanaReserva extends JFrame{
 		nombreInfo.setText(" ");
 		precioInfo.setText(" ");
 	}
+	
+
 }
