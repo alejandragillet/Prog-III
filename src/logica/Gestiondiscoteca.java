@@ -78,7 +78,7 @@ public class Gestiondiscoteca {
 	    	
 	    }
 
-
+	//guardar fichero en un futuro se cambiara por la base de datos
 	public void guardarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		File sFichero = new File(nombreFic);
@@ -93,7 +93,7 @@ public class Gestiondiscoteca {
     	}
     }
 	
-	
+
     public void cargarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
@@ -105,9 +105,8 @@ public class Gestiondiscoteca {
     	}catch(IOException | ClassNotFoundException e) {
     		System.out.println("Error de lectura de fichero" + nombreFic);
     	}
-
+    	
     }
-    
-	
+
     
 }
