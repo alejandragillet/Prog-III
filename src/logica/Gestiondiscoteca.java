@@ -14,6 +14,10 @@ public class Gestiondiscoteca {
     protected ArrayList<Cliente> lClientes;
     protected ArrayList<Trabajador> lTrabajadores;
     
+    public Gestiondiscoteca() {
+    	//this.lProductos;
+    }
+    
     
     public void main(String[] args) {
     	Gestiondiscoteca Gs1 = new Gestiondiscoteca();
@@ -21,15 +25,6 @@ public class Gestiondiscoteca {
     	
     }
     
-
-    public void init(Gestiondiscoteca Gs1) {
-    	lProductos = new ArrayList<Producto>();
-    	lClientes = new ArrayList<Cliente>();
-    	lTrabajadores = new ArrayList<Trabajador>();
-    	
-    }
-
-
     
     public ArrayList<Producto> getlProductos() {
 		return lProductos;
@@ -59,6 +54,29 @@ public class Gestiondiscoteca {
 	public void setlTrabajadores(ArrayList<Trabajador> lTrabajadores) {
 		this.lTrabajadores = lTrabajadores;
 	}
+	
+	 public void init(Gestiondiscoteca Gs1) {
+	    	lProductos = new ArrayList<Producto>();
+	    	lClientes = new ArrayList<Cliente>();
+	    	lTrabajadores = new ArrayList<Trabajador>();
+//	    	
+//	    	Bebida Bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
+//	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPIT0, "tequila", " ", 3 );
+//	    	Bebida Bebida3 = new Bebida("Alexander" , EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida",9);
+//	    	Bebida Bebida4 = new Bebida ("RonCola", EnumBebida.COPA, "ron", "coca-cola", 7);
+//	    	Bebida Bebida5 = new Bebida("Kalimotxo", EnumBebida.COPA, "vino", "Coca-Cola", 4);
+//	    	Bebida Bebida6 = new Bebida("Apple Martini" ,EnumBebida.COCTEL, "Vodka", "Licor de Manzana", 9);
+//	    	Bebida Bebida7 = new Bebida("GinTonic" ,EnumBebida.COPA, "Ginebra", "Tónica", 8);
+//	    	
+//
+//	    	
+//	    	Comida Comida1 = new Comida ("Hamburguesa Simple", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
+//	    	Comida Comida2 = new Comida("HotDog", EnumComida.HOTDOG,"mediano", 6.00 );
+//	    	Comida Comida3 = new Comida ("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
+//	    	Comida Comida4 = new Comida("Pizza barbacoa" , EnumComida.PIZZA, "pequeña", 8.00);
+//	    	
+	    	
+	    }
 
 
 	public void guardarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
@@ -74,6 +92,8 @@ public class Gestiondiscoteca {
     		
     	}
     }
+	
+	
     public void cargarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {
     	try {
     		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
@@ -81,10 +101,13 @@ public class Gestiondiscoteca {
     		ois.close();
     		lClientes.clear();
     		lClientes.addAll(lCargada);
-    		System.out.println("Despues de cargar fichero binario de Cliente" + lClientes);
+    		System.out.println("Despues de cargar fichero binario de CLientes" + lClientes);
     	}catch(IOException | ClassNotFoundException e) {
     		System.out.println("Error de lectura de fichero" + nombreFic);
     	}
 
     }
+    
+	
+    
 }

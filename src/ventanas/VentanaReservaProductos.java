@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,20 +24,34 @@ import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import logica.Bebida;
+import logica.Comida;
 import logica.Gestiondiscoteca;
 import logica.Producto;
 import logica.Reserva;
+import logica.Almacen;
 
-public class VentanaReserva extends JFrame{
+/**Ventana que permite al usuario hacer una reserva/ compra con antelanción para el día de la reserva
+ * @author Miguel Pérez
+ *
+ */
+public class VentanaReservaProductos extends JFrame{
 	
+
+	private static final long serialVersionUID = 1L;
 	//Componentes
 	private JList<Producto> productosJList;
 	private JLabel nombreInfo;
 	private JLabel precioInfo;
+	private JLabel tamanioInfo;
+	private JLabel clInfo;
 	private JLabel importeTotalInfo;
+	private static Reserva reserva;
+	private static Gestiondiscoteca Gs1;
 	
 	
-	public VentanaReserva(String nombre,  Reserva reserva, Gestiondiscoteca Gs1) {
+	
+	public VentanaReservaProductos(String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1) {
 		this.setMaximumSize(new Dimension(700,500));
 		
 		//Lista
@@ -62,13 +77,11 @@ public class VentanaReserva extends JFrame{
 		});
 		
 //		DefaultListModel listModel = new DefaultListModel<>();
-//		for (int i=0 i<)
+
 		
 		//Panel botones
 		JPanel panelCentral = new JPanel(new BorderLayout());
 		JPanel panelInferior = new JPanel(); 
-//		JButton bVolver = new JButton ("Volver");
-//		panelInferior.add(bVolver);
 		JButton bFinalizar = new JButton ("Finalizar");
 		panelInferior.add(bFinalizar);
 		JLabel importeTotal = new JLabel ("Importe a pagar:");
@@ -78,7 +91,7 @@ public class VentanaReserva extends JFrame{
 		
 		//Panel Información 
 		JPanel panelInformacionProductos = new JPanel();
-		panelInformacionProductos.setLayout(new GridLayout(1, 2));
+		panelInformacionProductos.setLayout(new GridLayout(2, 2));
 		Border border= BorderFactory.createTitledBorder("Información productos");
 		panelInformacionProductos.setBorder(border);
 		
@@ -96,6 +109,20 @@ public class VentanaReserva extends JFrame{
 		precioPanel.add(precioLabel);
 		precioPanel.add(precioInfo );
 		panelInformacionProductos.add(precioPanel);
+		
+		JPanel tamanioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel tamanioLabel = new JLabel("Tamaño:  ");
+		tamanioInfo = new JLabel();
+		tamanioPanel.add(tamanioLabel);
+		tamanioPanel.add(tamanioInfo );
+		panelInformacionProductos.add(tamanioPanel);
+		
+		JPanel clPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel clLabel = new JLabel("cl:  ");
+		clInfo = new JLabel();
+		clPanel.add(precioLabel);
+		clPanel.add(precioInfo );
+		panelInformacionProductos.add(clPanel);
 		
 		JButton bAnadir = new JButton ("Añadir");
 		JButton bEliminar = new JButton ("Eliminar");
@@ -117,15 +144,7 @@ public class VentanaReserva extends JFrame{
 		actualizarCarrito(reserva, panelMapa);
 		actualizarImporteTotal(reserva, panelInferior);
 		
-//		// Vuelve a la ventana de filtros para poder buscar productos distintos
-//		bVolver.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//				VentanaFiltros vf = new VentanaFiltros("Filtros",Sm1,venta,usuario);
-//				vf.setVisible(true);
-//				dispose();
-//			}
-//		});
+
 		
 //		// Finaliza la búsqueda para comprar los productos del carrito 
 //		bFinalizar.addActionListener(new ActionListener() {
@@ -136,6 +155,8 @@ public class VentanaReserva extends JFrame{
 //				VentanaLista.this.setVisible(false); 
 //			}
 //		});
+		
+		
 //		
 		// Añade al carrito (mapa) los productos seleccionados del productosJlist que van apareciendo en el panel
 		bAnadir.addActionListener(new ActionListener() {
@@ -145,13 +166,15 @@ public class VentanaReserva extends JFrame{
 					reserva.anadirAlMapa(productosJList.getSelectedValue());
 					actualizarCarrito(reserva,panelMapa);
 					actualizarImporteTotal(reserva, panelInferior);
-					VentanaReserva.this.repaint();
+					VentanaReservaProductos.this.repaint();
 				}
 				else {
-					JOptionPane.showMessageDialog(VentanaReserva.this, "Ningún producto seleccionado. Porfavor seleccione alguno.");
+					JOptionPane.showMessageDialog(VentanaReservaProductos.this, "Ningún producto seleccionado. Porfavor seleccione alguno.");
 				}
+				//if () mirar si quedan productos en el almacen 
 				
 			}
+			
 		});
 		
 		// Elimina los productos seleccionados del carrito (mapa) 
@@ -169,6 +192,12 @@ public class VentanaReserva extends JFrame{
 		
 
 	}
+	public static void main(String[] args) {
+		//VentanaReservaProductos ventana = new VentanaReservaProductos("GG", reserva, Gs1);
+	//	ventana.setVisible(true);
+		
+	}
+	
 	
 	/** Actualiza la información
 	 * 
@@ -178,6 +207,13 @@ public class VentanaReserva extends JFrame{
 			Producto producto = productosJList.getSelectedValue();
 			nombreInfo.setText(producto.getNombre());
 			precioInfo.setText( " " + producto.getPrecio());
+			if (producto instanceof Comida) {
+				clInfo.setText(" ");
+				//tamanioInfo.setText(((Comida) producto).);
+			}else if (producto instanceof Bebida) {
+				//clInfo.setText(" " + ((Bebida) producto).get);
+				tamanioInfo.setText(" ");
+			}
 		}
 	}
 	

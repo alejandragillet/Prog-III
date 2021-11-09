@@ -2,8 +2,9 @@ package logica;
 
 public abstract class Comida extends Producto {
 	protected EnumComida TipoComida;
+	protected EnumTamaño Tamaño;
 
-	public Comida(String nombre, EnumComida tipoComida) {
+	public Comida(String nombre, EnumComida tipoComida, String tamaño, double precio ) {
 		super(nombre);
 		TipoComida = tipoComida;
 	}
