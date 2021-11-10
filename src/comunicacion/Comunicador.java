@@ -40,18 +40,15 @@ public class Comunicador {
         outputAServer.println(mensaje);
         String respuesta = inputDesdeServer.readLine();
         return respuesta;
-        // TODO return "de la respuesta del servidor"
     }
 
     public void esperarConexion() {
         while (true) {
-            System.out.println(this.socket != null && this.socket.isConnected());
+            System.out.println(this.socket != null && this.socket.isConnected()); // preguntar
 
             if (this.socket != null && this.socket.isConnected()) {
-                return;
+                return; // dejar de esperar
             }
-
-           // System.out.println(outputAServer != null);
         } 
     }
 
