@@ -1,12 +1,16 @@
 package logica;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Cliente {
     protected String nombre;
     protected String contrasenia;
     protected ArrayList<Reserva> lReservas;
     protected String apellido; 
-    protected String DNI; 
+    protected String DNI;
+    private final static Logger LOGGER = Logger.getLogger("inicio.procesos.AltaCliente");
+    private final static Logger LOGGER1 = Logger.getLogger("inicio.procesos.BajaCliente");
     
 	
 	public Cliente(String nombre, String contrasenia, ArrayList<Reserva> lReservas) {
@@ -60,5 +64,16 @@ public class Cliente {
 	public String toString() {
 		return "Cliente: nombre=" + nombre  +  "Reservas=" + lReservas ;
 	}
+	
+	
+	public void AltaCliente() {
+        // Registro en el log el alta de usuario
+        LOGGER.log(Level.INFO, "Usuario dado de alta");
+	}
     
+	public void BajaUsuario() {
+        // Registro en el log el alta de usuario
+        LOGGER1.log(Level.INFO, "Usuario dado de baja");
+	}
+
 }

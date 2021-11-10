@@ -6,6 +6,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 
 import ventanas.VentanaUsuario;
 
@@ -13,6 +20,7 @@ public class Gestiondiscoteca {
     protected ArrayList<Producto> lProductos;
     protected ArrayList<Cliente> lClientes;
     protected ArrayList<Trabajador> lTrabajadores;
+    private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
     
     public Gestiondiscoteca() {
     	//this.lProductos;
@@ -22,9 +30,7 @@ public class Gestiondiscoteca {
     public void main(String[] args) {
     	Gestiondiscoteca Gs1 = new Gestiondiscoteca();
     	Gs1.init(Gs1);
-    	
     }
-    
     
     public ArrayList<Producto> getlProductos() {
 		return lProductos;
@@ -77,6 +83,9 @@ public class Gestiondiscoteca {
 //	    	
 	    	
 	    }
+	 
+	 
+	 
 
 	//guardar fichero en un futuro se cambiara por la base de datos
 	public void guardarFicheroBinarioCliente(ArrayList<Cliente> lClientes, String nombreFic) {

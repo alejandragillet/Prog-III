@@ -19,6 +19,7 @@ import logica.Gestiondiscoteca;
 
 public class VentanaCliente extends JFrame {
 public VentanaCliente(String titulo, Gestiondiscoteca gs) {
+	
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600,400);
