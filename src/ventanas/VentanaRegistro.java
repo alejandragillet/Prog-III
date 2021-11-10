@@ -16,12 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import logica.Cliente;
-import logica.Gestiondiscoteca;
+import logica.GestionDiscoteca;
 import logica.Persona;
 import logica.Producto;
 
 public class VentanaRegistro extends JFrame {
-public VentanaRegistro(String titulo, Gestiondiscoteca gs){
+public VentanaRegistro(String titulo, GestionDiscoteca gs){
 		
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,13 +32,13 @@ public VentanaRegistro(String titulo, Gestiondiscoteca gs){
 		JPanel pCentral = new JPanel();
 		JPanel pInferior = new JPanel();
 		
-		JLabel lTitulo = new JLabel ("Regístrate aqui!");
+		JLabel lTitulo = new JLabel ("Regï¿½strate aqui!");
 		JButton bAceptar = new JButton ("Aceptar");
 		JButton bLogIn = new JButton ("Log In");
 		JLabel lNick = new JLabel ("Nombre");
 		JLabel lApellido = new JLabel ("Apellido");
 		JLabel lDNI = new JLabel ("DNI");
-		JLabel lPasword = new JLabel ("Contraseña");
+		JLabel lPasword = new JLabel ("Contraseï¿½a");
 		JTextField tfNick = new JTextField(15);
 		JTextField tfApellido = new JTextField(15);
 		JTextField tfDNI = new JTextField(10);

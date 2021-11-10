@@ -26,7 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import logica.Bebida;
 import logica.Comida;
-import logica.Gestiondiscoteca;
+import logica.GestionDiscoteca;
 import logica.Producto;
 import logica.Reserva;
 import logica.Almacen;
@@ -35,6 +35,7 @@ import logica.Almacen;
  * @author Miguel Pérez
  *
  */
+@SuppressWarnings("serial")
 public class VentanaReservaProductos extends JFrame{
 	
 
@@ -47,12 +48,12 @@ public class VentanaReservaProductos extends JFrame{
 	private JLabel clInfo;
 	private JLabel importeTotalInfo;
 	private static Reserva reserva;
-	private static Gestiondiscoteca Gs1;
+	private static GestionDiscoteca Gs1;
 	
 	
-	
-	public VentanaReservaProductos(String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1) {
-		this.setMaximumSize(new Dimension(700,500));
+	// String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
+	public VentanaReservaProductos(VentanaReservaEntradas vrv1) {
+		
 		
 		//Lista
 		productosJList = new JList<Producto>();
@@ -141,8 +142,8 @@ public class VentanaReservaProductos extends JFrame{
 			
 		
 		// Actualización de los métodos de tanto el carrito como el importe 
-		actualizarCarrito(reserva, panelMapa);
-		actualizarImporteTotal(reserva, panelInferior);
+		//actualizarCarrito(reserva, panelMapa);
+		//actualizarImporteTotal(reserva, panelInferior);
 		
 
 		
@@ -189,12 +190,14 @@ public class VentanaReservaProductos extends JFrame{
 		});
 		setTitle("PRODUCTOS");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
+		this.setMaximumSize(new Dimension(700,500));
+		this.repaint();
 
 	}
 	public static void main(String[] args) {
-		//VentanaReservaProductos ventana = new VentanaReservaProductos("GG", reserva, Gs1);
-	//	ventana.setVisible(true);
+		Reserva reserva = new Reserva();
+		//VentanaReservaProductos ventana = new VentanaReservaProductos();
+		//ventana.setVisible(true);
 		
 	}
 	
