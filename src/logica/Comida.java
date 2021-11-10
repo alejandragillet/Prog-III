@@ -1,8 +1,8 @@
 package logica;
 
-public abstract class Comida extends Producto {
+public class Comida extends Producto {
 	protected EnumComida TipoComida;
-	protected EnumTamaño Tamaño;
+	
 
 	public Comida(String nombre, EnumComida tipoComida, String tamaño, double precio ) {
 		super(nombre);
@@ -20,6 +20,12 @@ public abstract class Comida extends Producto {
 	@Override
 	public String toString() {
 		return "Comida [TipoComida=" + TipoComida + "]";
+	}
+
+	@Override
+	public double getPrecio() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

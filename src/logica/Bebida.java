@@ -2,7 +2,7 @@ package logica;
 
 
 
-public abstract class Bebida extends Producto{
+public class Bebida extends Producto{
 	protected double cl;
 	protected EnumBebida TipoBebida;
 	private String alcohol;
@@ -26,6 +26,12 @@ public abstract class Bebida extends Producto{
 	@Override
 	public String toString() {
 		return "Bebida [TipoBebida=" + TipoBebida + "]";
+	}
+
+	@Override
+	public double getPrecio() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	

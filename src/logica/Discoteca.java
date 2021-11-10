@@ -44,8 +44,7 @@ public class Discoteca {
 
 	@Override
 	public String toString() {
-		return "Discoteca [dirección=" + direccion + ", aforo=" + aforo + ", numeroTrabajadores=" + numeroTrabajadores
-				+ ", nombre=" + nombre + "]";
+		return nombre ;
 	} 
     
 }

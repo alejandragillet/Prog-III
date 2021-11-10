@@ -15,10 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import logica.Cliente;
-import logica.Gestiondiscoteca;
+import logica.GestionDiscoteca;
 
 public class VentanaCliente extends JFrame {
-public VentanaCliente(String titulo, Gestiondiscoteca gs) {
+public VentanaCliente(String titulo, GestionDiscoteca gs) {
 	
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

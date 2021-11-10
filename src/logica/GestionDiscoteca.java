@@ -16,23 +16,46 @@ import java.util.logging.SimpleFormatter;
 
 import ventanas.VentanaUsuario;
 
-public class Gestiondiscoteca {
+public class GestionDiscoteca {
     protected ArrayList<Producto> lProductos;
+    private ArrayList<Discoteca> lDiscotecas;
     protected ArrayList<Cliente> lClientes;
     protected ArrayList<Trabajador> lTrabajadores;
     private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
     
-    public Gestiondiscoteca() {
+    public GestionDiscoteca() {
     	//this.lProductos;
     }
     
     
     public void main(String[] args) {
-    	Gestiondiscoteca Gs1 = new Gestiondiscoteca();
+    	GestionDiscoteca Gs1 = new GestionDiscoteca();
     	Gs1.init(Gs1);
     }
     
-    public ArrayList<Producto> getlProductos() {
+    
+    
+    public ArrayList<Discoteca> getlDiscotecas() {
+		return lDiscotecas;
+	}
+
+
+	public void setlDiscotecas(ArrayList<Discoteca> lDiscotecas) {
+		this.lDiscotecas = lDiscotecas;
+	}
+
+
+	public ArrayList<Cliente> getlClientes() {
+		return lClientes;
+	}
+
+
+	public void setlClientes(ArrayList<Cliente> lClientes) {
+		this.lClientes = lClientes;
+	}
+
+
+	public ArrayList<Producto> getlProductos() {
 		return lProductos;
 	}
 
@@ -61,26 +84,33 @@ public class Gestiondiscoteca {
 		this.lTrabajadores = lTrabajadores;
 	}
 	
-	 public void init(Gestiondiscoteca Gs1) {
+	 public void init(GestionDiscoteca Gs1) {
 	    	lProductos = new ArrayList<Producto>();
 	    	lClientes = new ArrayList<Cliente>();
 	    	lTrabajadores = new ArrayList<Trabajador>();
-//	    	
-//	    	Bebida Bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
-//	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPIT0, "tequila", " ", 3 );
-//	    	Bebida Bebida3 = new Bebida("Alexander" , EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida",9);
-//	    	Bebida Bebida4 = new Bebida ("RonCola", EnumBebida.COPA, "ron", "coca-cola", 7);
-//	    	Bebida Bebida5 = new Bebida("Kalimotxo", EnumBebida.COPA, "vino", "Coca-Cola", 4);
-//	    	Bebida Bebida6 = new Bebida("Apple Martini" ,EnumBebida.COCTEL, "Vodka", "Licor de Manzana", 9);
-//	    	Bebida Bebida7 = new Bebida("GinTonic" ,EnumBebida.COPA, "Ginebra", "Tónica", 8);
-//	    	
-//
-//	    	
-//	    	Comida Comida1 = new Comida ("Hamburguesa Simple", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
-//	    	Comida Comida2 = new Comida("HotDog", EnumComida.HOTDOG,"mediano", 6.00 );
-//	    	Comida Comida3 = new Comida ("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
-//	    	Comida Comida4 = new Comida("Pizza barbacoa" , EnumComida.PIZZA, "pequeña", 8.00);
-//	    	
+	    	lDiscotecas = new ArrayList<Discoteca>();
+	    	
+	    	
+	    	Bebida Bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
+	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPIT0, "tequila", " ", 3 );
+	    	Bebida Bebida3 = new Bebida("Alexander" , EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida",9);
+	    	Bebida Bebida4 = new Bebida ("RonCola", EnumBebida.COPA, "ron", "coca-cola", 7);
+	    	Bebida Bebida5 = new Bebida("Kalimotxo", EnumBebida.COPA, "vino", "Coca-Cola", 4);
+	    	Bebida Bebida6 = new Bebida("Apple Martini" ,EnumBebida.COCTEL, "Vodka", "Licor de Manzana", 9);
+	    	Bebida Bebida7 = new Bebida("GinTonic" ,EnumBebida.COPA, "Ginebra", "Tónica", 8);
+	    	
+
+	    	
+	    	Comida Comida1 = new Comida ("Hamburguesa Simple", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
+	    	Comida Comida2 = new Comida("HotDog", EnumComida.HOTDOG,"mediano", 6.00 );
+	    	Comida Comida3 = new Comida ("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
+	    	Comida Comida4 = new Comida("Pizza barbacoa" , EnumComida.PIZZA, "pequeña", 8.00);
+	    	
+	    	Discoteca Moma = new Discoteca("bbb", 200, 30, "Moma");
+	    	Discoteca Budha = new Discoteca ("aaa", 700, 90, "Budha"); 
+	    	
+	    	lDiscotecas.add(Budha);
+	    	lDiscotecas.add(Moma);
 	    	
 	    }
 	 

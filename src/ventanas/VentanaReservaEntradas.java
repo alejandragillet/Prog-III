@@ -3,6 +3,7 @@ package ventanas;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -16,27 +17,28 @@ import javax.swing.JLabel;
 
 import logica.Discoteca;
 import logica.EnumZona;
+import logica.GestionDiscoteca;
+import logica.Reserva;
 @SuppressWarnings("serial")
 public class VentanaReservaEntradas extends JFrame {
 	
-	private JComboBox<Integer> comboNumeroPersonas1;
-	private JComboBox<Integer> comboNumeroPersonas2;
-	private JComboBox<Integer> comboNumeroPersonas3;
+	private JTextField numeroPersonas;
 	private JComboBox<Discoteca> comboDiscoteca;
 	private JComboBox<EnumZona> comboZona;
+	private static GestionDiscoteca disco;
+	
 	
 	private JPanel panelSuperior;
 	private JPanel panelCentral; 
 	private JPanel panelInferior;
-	
-	public VentanaReservaEntradas(Discoteca discoteca) {
+	// Discoteca discoteca
+	public VentanaReservaEntradas(GestionDiscoteca disco) {
 		Container cp= this.getContentPane();
-		this.setMinimumSize(new Dimension(400, 200));
+		this.setMinimumSize(new Dimension(400, 400));
+		
 		
 		// Creación comboBox
-		comboNumeroPersonas1 = new JComboBox<Integer>();
-		comboNumeroPersonas2 = new JComboBox<Integer>();
-		comboNumeroPersonas3 = new JComboBox<Integer>();
+		numeroPersonas = new JTextField();
 		comboDiscoteca = new JComboBox<Discoteca>();
 		comboZona = new JComboBox<EnumZona>();
 		
@@ -45,7 +47,8 @@ public class VentanaReservaEntradas extends JFrame {
 		JPanel panelSuperior = new JPanel();
 		JPanel panelInferior = new JPanel();
 		JPanel panelCentral = new JPanel(); 
-		panelCentral.setLayout(new GridLayout(3,2));
+		panelSuperior.setLayout(new GridLayout(5,1));
+		panelCentral.setLayout(new GridLayout(4,1));
 		
 		//Creación JButtons
 		JButton JSeleccionar = new JButton("Seleccionar");
@@ -56,56 +59,56 @@ public class VentanaReservaEntradas extends JFrame {
 		JSeleccionar3.setSize(new Dimension(50,50));
 		
 		//Asignación de componentes a la ventana
+		panelSuperior.add(new JLabel("Proceso reserva entradas"));
 		panelSuperior.add(new JLabel("Selecciona discoteca"));
-		panelCentral.add(new JLabel("Zona de reserva en la discoteca")); 
-		panelCentral.add(comboDiscoteca);
-		panelCentral.add(JSeleccionar3);
-		panelCentral.add(comboZona);
-		panelCentral.add(JSeleccionar);
+		panelSuperior.add(comboDiscoteca);
+		
+		
+		panelSuperior.add(JSeleccionar);
 		cp.add(panelSuperior, BorderLayout.NORTH);
 		cp.add(panelCentral);
 		cp.add(panelInferior, BorderLayout.SOUTH);
+		for (Discoteca discoteca : disco.getlDiscotecas()) {
+			comboDiscoteca.addItem(discoteca);
+		}
 		
+		JSeleccionar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCentral.removeAll();
+				Discoteca discoSelec = (Discoteca) comboDiscoteca.getSelectedItem();
+				panelCentral.add(new JLabel("Zona discoteca")); 
+				panelCentral.add(comboZona);
+				panelCentral.add(JSeleccionar2);
+				VentanaReservaEntradas.this.repaint();
+				comboZona.addItem(EnumZona.MESA);
+				comboZona.addItem(EnumZona.PISTA);
+				comboZona.addItem(EnumZona.VIP);
+			}
+		});
+		//JComboBox inferior en función de la zona deseada 
+		JSeleccionar2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelInferior.removeAll();
+				panelInferior.add(new JLabel("Numero de personas:"));
+				panelInferior.add(numeroPersonas);
+				panelInferior.add(JSeleccionar3);
+				VentanaReservaEntradas.this.repaint();
+				
+			}
+		});
 		
 		
 		JSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (comboDiscoteca.getSelectedItem().equals("Moma")) {
-					panelCentral.add(new JLabel("Zona discoteca:"));
-					panelCentral.add(comboZona);
-					panelCentral.add(JSeleccionar);
-				}else if (comboDiscoteca.getSelectedItem().equals("Budha")) {
-					panelCentral.add(new JLabel("Zona discoteca:"));
-					panelCentral.add(comboZona);
-					panelCentral.add(JSeleccionar);
-				}
 				
 			}
 		});
-		//JComboBox inferior en función de la zona deseada 
-		JSeleccionar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (comboZona.getSelectedItem().equals("VIP")) {
-					panelInferior.removeAll();
-					panelInferior.add(new JLabel("Precio: 20€/persona"));
-					panelInferior.add(comboNumeroPersonas1);
-					panelInferior.add(JSeleccionar2);
-				}else if(comboZona.getSelectedItem().equals("Pista")) {
-					panelInferior.removeAll();
-					panelInferior.add(new JLabel("Precio: 10€/persona"));
-					panelInferior.add(comboNumeroPersonas2);
-					panelInferior.add(JSeleccionar2);
-				}else if (comboZona.getSelectedItem().equals("Mesa")) {
-					panelInferior.removeAll();
-					panelInferior.add(new JLabel("Precio: 15€/persona"));
-					panelInferior.add(JSeleccionar2);
-					panelInferior.add(comboNumeroPersonas3);
-				}
-				VentanaReservaEntradas.this.repaint();
-			}
-		});
+		
+		
+
 		
 //		JSeleccionar2.addActionListener(new ActionListener() {
 //			
@@ -116,6 +119,14 @@ public class VentanaReservaEntradas extends JFrame {
 //				if(discoteca.getAforo())
 //			}
 //		});
+		
+		
+		
+	}
+	public static void main(String[] args) {
+		Reserva reserva = new Reserva();
+		VentanaReservaEntradas ventana = new VentanaReservaEntradas( disco);
+		ventana.setVisible(true);
 		
 	}
 	
