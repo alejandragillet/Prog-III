@@ -24,10 +24,9 @@ public class VentanaTrabajador extends JFrame {
 		JPanel pInferior = new JPanel();
 		
 		
-		JLabel lTitulo = new JLabel ("Login");
-		JButton bAceptar = new JButton ("Aceptar");
+		JLabel lTitulo = new JLabel ("Inicia tu sesion");
 		JButton bCancelar = new JButton ("Cancelar");
-		JLabel lNick = new JLabel ("Nombre");
+		JLabel lNick = new JLabel ("DNI");
 		JLabel lPasword = new JLabel ("Contraseña");
 		JButton bIniciosesion = new JButton ("Inicio de sesion");
 		JTextField tfNick = new JTextField(15);
@@ -54,9 +53,9 @@ public class VentanaTrabajador extends JFrame {
 		pCentral.add(tfNick);
 		pCentral.add(lPasword);
 		pCentral.add(tfPass);
-		pCentral.add(bAceptar);
-		pCentral.add(bCancelar);
-		pInferior.add(bIniciosesion);
+		pCentral.add(bIniciosesion);
+		pInferior.add(bCancelar);
+		
 		
 		
 		setVisible(true);
