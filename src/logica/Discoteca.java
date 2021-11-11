@@ -9,19 +9,19 @@ public class Discoteca {
     protected ArrayList<Reserva> lReserva;
     
     
-	public Discoteca(String dirección, int aforo, int numeroTrabajadores, String nombre) {
+	public Discoteca(String direccion, int aforo, int numeroTrabajadores, String nombre) {
 		super();
-		this.direccion = dirección;
+		this.direccion = direccion;
 		this.aforo = aforo;
 		this.numeroTrabajadores = numeroTrabajadores;
 		this.nombre = nombre;
 	}
 	
-	public String getDirección() {
+	public String getDireccion() {
 		return direccion;
 	}
-	public void setDirección(String dirección) {
-		this.direccion = dirección;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	public int getAforo() {
 		return aforo;

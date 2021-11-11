@@ -33,7 +33,7 @@ public class Log {
 
 	// se a�aden las lineas donde se van mostrando los clientes que entran en el
 	// programa
-	public void anadeLinea(ArrayList<Cliente> lClientes) throws IOException {
+	public void anadeLinea(String tot) throws IOException {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
 		String formatoFecha = sdf.format(new Date());
 
@@ -42,7 +42,7 @@ public class Log {
 			this.abrirPrograma(true);
 		}
 
-		this.buffered.write("[" + formatoFecha + "]" + lClientes + "\n");
+		this.buffered.write("[" + formatoFecha + "]" + tot + "\n");
 		this.close();
 	}
 
@@ -78,19 +78,16 @@ public class Log {
 		this.buffered.close();
 	}
 
-
+	//Prueba del log
 	public static void main(String[] args) throws IOException {
 		Log miLog = new Log("milog.log");
 
-		ArrayList<Cliente> clientes = new ArrayList<>();
-		Cliente cliente = new Cliente("nombre", "contrasenia", null);
-		clientes.add(cliente);
 
-		miLog.anadeLinea(clientes);
+		miLog.anadeLinea("Ale");
 
-		miLog.resetLog();
+		//miLog.resetLog();
 
-		miLog.anadeLinea(clientes);
+		//miLog.anadeLinea("Pedro");
 	}
 
 }

@@ -4,7 +4,7 @@ public class Comida extends Producto {
 	protected EnumComida TipoComida;
 	
 
-	public Comida(String nombre, EnumComida tipoComida, String tamaño, double precio ) {
+	public Comida(String nombre, EnumComida tipoComida, String tamano, double precio ) {
 		super(nombre);
 		TipoComida = tipoComida;
 	}
