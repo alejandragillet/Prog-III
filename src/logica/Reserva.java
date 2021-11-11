@@ -10,6 +10,7 @@ public class Reserva {
     protected HashMap<Producto, Integer> mapaProducto = new HashMap<Producto, Integer>();
     protected int numeroPersonas;
     protected EnumZona zona;
+    private String nombre;
     
     public Reserva() {
     	this.importe = importe;

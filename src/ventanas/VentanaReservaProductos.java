@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import logica.Bebida;
 import logica.Comida;
+import logica.Discoteca;
 import logica.GestionDiscoteca;
 import logica.Producto;
 import logica.Reserva;
@@ -48,13 +49,14 @@ public class VentanaReservaProductos extends JFrame{
 	private JLabel clInfo;
 	private JLabel importeTotalInfo;
 	private static Reserva reserva;
+	private Almacen almacen;
 	private static GestionDiscoteca Gs1;
 	
 	
 	// String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
-	public VentanaReservaProductos(VentanaReservaEntradas vrv1) {
+	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
 		
-		
+		this.setMinimumSize(new Dimension(400, 400));
 		//Lista
 		productosJList = new JList<Producto>();
 		productosJList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
@@ -66,6 +68,18 @@ public class VentanaReservaProductos extends JFrame{
 		productosPanel.add(nomPanel,BorderLayout.NORTH);
 		productosPanel.add(productosScrollPane, BorderLayout.CENTER);
 		add(productosPanel, BorderLayout.WEST);
+		
+		DefaultListModel listModel = new DefaultListModel();
+		System.out.println(disco);
+		System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
+		for (Map.Entry<Producto, Integer> entry : disco.getAlmacen().getMapaProductoAlmacen().entrySet()) {
+			int i = 0;
+			Producto key = entry.getKey();
+			Integer value = entry.getValue();
+			listModel.add(i, key);
+			i ++;
+		}
+		productosJList.setModel(listModel);
 		
 		// Actualiza las características del producto
 		productosJList.addListSelectionListener(new ListSelectionListener() {
@@ -130,7 +144,7 @@ public class VentanaReservaProductos extends JFrame{
 		panelInformacionProductos.add(bAnadir);
 		panelInformacionProductos.add(bEliminar);
 		
-	panelCentral.add(panelInformacionProductos,BorderLayout.NORTH);
+		panelCentral.add(panelInformacionProductos,BorderLayout.NORTH);
 		
 		add(panelCentral,BorderLayout.CENTER);
 		
@@ -164,19 +178,31 @@ public class VentanaReservaProductos extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(productosJList.getSelectedValue()!=null) {
+					for (Map.Entry<Producto, Integer> entry : disco.getAlmacen().getMapaProductoAlmacen().entrySet()) {
+						Producto key = entry.getKey();
+						Integer value = entry.getValue();
+						if(productosJList.getSelectedValue() == key) {
+							if(value !=0) {
+								reserva.anadirAlMapa(productosJList.getSelectedValue());
+								actualizarCarrito(reserva,panelMapa);
+								actualizarImporteTotal(reserva, panelInferior);
+								VentanaReservaProductos.this.repaint();
+								
+							}else {
+								JOptionPane.showMessageDialog(VentanaReservaProductos.this, "No hay stock");
+							}
 					reserva.anadirAlMapa(productosJList.getSelectedValue());
-					actualizarCarrito(reserva,panelMapa);
-					actualizarImporteTotal(reserva, panelInferior);
-					VentanaReservaProductos.this.repaint();
+
 				}
 				else {
 					JOptionPane.showMessageDialog(VentanaReservaProductos.this, "Ningún producto seleccionado. Porfavor seleccione alguno.");
+				}	
+					}
+					
 				}
-				//if () mirar si quedan productos en el almacen 
-				
 			}
-			
 		});
+		
 		
 		// Elimina los productos seleccionados del carrito (mapa) 
 		bEliminar.addActionListener(new ActionListener() {
