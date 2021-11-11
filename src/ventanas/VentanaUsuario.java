@@ -56,6 +56,15 @@ public class VentanaUsuario extends JFrame {
 				
 			}
 		});
+		crearTrabajador.addActionListener (new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VentanaTrabajador vent=new VentanaTrabajador("Inicio");
+				vent.setLocation( 820, 500 );
+				vent.setVisible( true );
+			}
+		});
 	}
 		
 		//Posible hilo en el momento de clicar boton para cliente
@@ -76,3 +85,4 @@ public class VentanaUsuario extends JFrame {
 
 	}
 }
+
