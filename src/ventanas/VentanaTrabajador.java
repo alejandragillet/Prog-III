@@ -72,9 +72,9 @@ public class VentanaTrabajador extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-//				VentanaIniciosesion vr =new VentanaIniciosesion("Inicio de sesion"); 
-//				vr.setVisible(true);
-//				dispose();
+			VentanaIniciosesion vr =new VentanaIniciosesion("Inicio de sesion", null); 
+				vr.setVisible(true);
+				dispose();
 			}
 		});
 
