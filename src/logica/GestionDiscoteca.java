@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -13,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-
+import ventanas.VentanaReservaEntradas;
 import ventanas.VentanaUsuario;
 
 public class GestionDiscoteca {
@@ -21,6 +22,7 @@ public class GestionDiscoteca {
     private ArrayList<Discoteca> lDiscotecas;
     protected ArrayList<Cliente> lClientes;
     protected ArrayList<Trabajador> lTrabajadores;
+    
     private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
     
     public GestionDiscoteca() {
@@ -28,9 +30,11 @@ public class GestionDiscoteca {
     }
     
     
-    public void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
     	GestionDiscoteca Gs1 = new GestionDiscoteca();
     	Gs1.init(Gs1);
+    	VentanaReservaEntradas vre = new VentanaReservaEntradas(Gs1);
+    	vre.setVisible(true);
     }
     
     
@@ -91,6 +95,8 @@ public class GestionDiscoteca {
 	    	lDiscotecas = new ArrayList<Discoteca>();
 	    	
 	    	
+	  
+	    	
 	    	Bebida Bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
 	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPIT0, "tequila", " ", 3 );
 	    	Bebida Bebida3 = new Bebida("Alexander" , EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida",9);
@@ -99,19 +105,40 @@ public class GestionDiscoteca {
 	    	Bebida Bebida6 = new Bebida("Apple Martini" ,EnumBebida.COCTEL, "Vodka", "Licor de Manzana", 9);
 	    	Bebida Bebida7 = new Bebida("GinTonic" ,EnumBebida.COPA, "Ginebra", "Tónica", 8);
 	    	
-
+	      
+	    	
 	    	
 	    	Comida Comida1 = new Comida ("Hamburguesa Simple", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
 	    	Comida Comida2 = new Comida("HotDog", EnumComida.HOTDOG,"mediano", 6.00 );
 	    	Comida Comida3 = new Comida ("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
 	    	Comida Comida4 = new Comida("Pizza barbacoa" , EnumComida.PIZZA, "pequeña", 8.00);
 	    	
-	    	Discoteca Moma = new Discoteca("bbb", 200, 30, "Moma");
-	    	Discoteca Budha = new Discoteca ("aaa", 700, 90, "Budha"); 
+	    	HashMap<Producto,Integer> mapaProductoAlmacenBudha = new HashMap<Producto,Integer >();
+	    	mapaProductoAlmacenBudha.put(Bebida1, 4);
+	    	mapaProductoAlmacenBudha.put(Bebida2, 9);
+	    	mapaProductoAlmacenBudha.put(Bebida3, 0);
+	    	mapaProductoAlmacenBudha.put(Comida1, 1);
+	    	
+	    	
+	    	HashMap<Producto,Integer> mapaProductoAlmacenMoma = new HashMap<Producto,Integer >();
+	    	mapaProductoAlmacenMoma.put(Bebida5, 8);
+	    	mapaProductoAlmacenMoma.put(Comida4, 4);
+	    	mapaProductoAlmacenMoma.put(Comida3, 0);
+	    	
+	    	System.out.println(mapaProductoAlmacenBudha);
+	    	
+	    	Almacen almacenBudha = new Almacen(mapaProductoAlmacenBudha);
+	    	Almacen almacenMoma = new Almacen(mapaProductoAlmacenMoma);
+	    	
+	    	
+	    	Discoteca Moma = new Discoteca("bbb", 200, 30, "Moma", almacenBudha);
+	    	Discoteca Budha = new Discoteca ("aaa", 700, 90, "Budha",almacenMoma); 
 	    	
 	    	lDiscotecas.add(Budha);
 	    	lDiscotecas.add(Moma);
-	    	
+	    	Gs1.lDiscotecas = lDiscotecas;
+	    	System.out.println(lDiscotecas);
+
 	    }
 	 
 	 
