@@ -88,6 +88,7 @@ public class GestionDiscoteca {
 		this.lTrabajadores = lTrabajadores;
 	}
 	
+	// inicialización de los productos
 	 public void init(GestionDiscoteca Gs1) {
 	    	lProductos = new ArrayList<Producto>();
 	    	lClientes = new ArrayList<Cliente>();
@@ -96,7 +97,7 @@ public class GestionDiscoteca {
 	    	
 	    	
 	  
-	    	
+	    	// Crear productos
 	    	Bebida Bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
 	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPIT0, "tequila", " ", 3 );
 	    	Bebida Bebida3 = new Bebida("Alexander" , EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida",9);

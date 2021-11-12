@@ -22,11 +22,13 @@ import logica.EnumZona;
 import logica.GestionDiscoteca;
 import logica.Reserva;
 @SuppressWarnings("serial")
+// Ventana en la cual el cliente puede elegir la discotecaque quiere y reservar su entrada
+// Idea futura : crear nueva clase Sesión para añadir la fecha de la reserva y que hayas varias sesiones distintos días
 public class VentanaReservaEntradas extends JFrame {
 	
-	private JComboBox<Integer> numeroPersonas1;
-	private JComboBox<Discoteca> comboDiscoteca;
-	private JComboBox<EnumZona> comboZona;
+	private JComboBox<Integer> numeroPersonas1; //combo numero de personas 
+	private JComboBox<Discoteca> comboDiscoteca; // combo con las discotecas
+	private JComboBox<EnumZona> comboZona; // combo con la zona de la discoteca
 	private static Discoteca disco2;
 	private static GestionDiscoteca GDisco;
 	
@@ -65,14 +67,12 @@ public class VentanaReservaEntradas extends JFrame {
 		panelSuperior.add(new JLabel("Proceso reserva entradas"));
 		panelSuperior.add(new JLabel("Selecciona discoteca"));
 		panelSuperior.add(comboDiscoteca);
-		
-		
 		panelSuperior.add(JSeleccionar);
 		cp.add(panelSuperior, BorderLayout.NORTH);
 		cp.add(panelCentral);
 		cp.add(panelInferior, BorderLayout.SOUTH);
 		
-
+		// Añadir al comboBox las discotecas que hay en la lista
 		for (Discoteca discoteca : gDisco.getlDiscotecas()) {
 			Discoteca dis = discoteca.clone();
 			System.out.println(dis);
@@ -81,7 +81,7 @@ public class VentanaReservaEntradas extends JFrame {
 			
 		}
 		
-
+		// Añade el nuevo combobox y guarda la discoteca seleccionada
 		JSeleccionar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -96,7 +96,9 @@ public class VentanaReservaEntradas extends JFrame {
 				comboZona.addItem(EnumZona.VIP);
 			}
 		});
-		//JComboBox inferior en función de la zona deseada 
+		
+		
+		// Añade otro combobox para el numero de personas de la reserva 
 		JSeleccionar2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -111,6 +113,7 @@ public class VentanaReservaEntradas extends JFrame {
 			}
 		});
 
+		// compara a ver si el aforo de la discoteca se ha llenado y aparece un mensaje en el caso de que este lleno
 		JSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -119,7 +122,6 @@ public class VentanaReservaEntradas extends JFrame {
 				aforoDiscoteca = aforoDiscoteca + (Integer)numeroPersonas1.getSelectedItem();
 				if(aforoDiscoteca > disco2.getAforoMax()) {
 					JOptionPane.showMessageDialog(VentanaReservaEntradas.this, "No quedan entradas disponibles.No es posible hacer la reserva. ");
-					
 				}
 				else {
 					disco2.setAforo(disco2.getAforo() +1);

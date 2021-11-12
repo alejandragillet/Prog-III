@@ -55,8 +55,8 @@ public class VentanaReservaProductos extends JFrame{
 	
 	// String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
 	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
-		
 		this.setMinimumSize(new Dimension(400, 400));
+		
 		//Lista
 		productosJList = new JList<Producto>();
 		productosJList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
@@ -72,6 +72,7 @@ public class VentanaReservaProductos extends JFrame{
 		DefaultListModel listModel = new DefaultListModel();
 		System.out.println(disco);
 		System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
+		// Añade al productosJList los productos del almacen que hay en cada discoteca (MAPA)
 		for (Map.Entry<Producto, Integer> entry : disco.getAlmacen().getMapaProductoAlmacen().entrySet()) {
 			int i = 0;
 			Producto key = entry.getKey();
@@ -83,16 +84,14 @@ public class VentanaReservaProductos extends JFrame{
 		
 		// Actualiza las características del producto
 		productosJList.addListSelectionListener(new ListSelectionListener() {
-			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				actualizarInfo();
-				
 			}
 		});
 		
-//		DefaultListModel listModel = new DefaultListModel<>();
 
+		// FIn lista
 		
 		//Panel botones
 		JPanel panelCentral = new JPanel(new BorderLayout());
@@ -162,12 +161,7 @@ public class VentanaReservaProductos extends JFrame{
 
 		
 //		// Finaliza la búsqueda para comprar los productos del carrito 
-//		bFinalizar.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//				VentanaCompra vc = new VentanaCompra(venta,VentanaLista.this, usuario,Sm1);
-//				vc.setVisible(true);
-//				VentanaLista.this.setVisible(false); 
+//		bFinalizar.addActionListener(new ActionListener() { 
 //			}
 //		});
 		
