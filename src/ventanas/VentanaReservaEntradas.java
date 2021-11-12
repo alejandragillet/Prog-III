@@ -77,8 +77,6 @@ public class VentanaReservaEntradas extends JFrame {
 			Discoteca dis = discoteca.clone();
 			System.out.println(dis);
 			comboDiscoteca.addItem(dis);
-			
-			
 		}
 		
 		// Añade el nuevo combobox y guarda la discoteca seleccionada
