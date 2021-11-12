@@ -260,13 +260,13 @@ private static Exception lastError = null;  // Información de último error SQL o
 	 * @param rf	Rango de fechas de la reserva nueva
 	 * @return	true si la inserción es correcta, false en caso contrario
 	 */
-	public static boolean reservaInsert( Statement st, Discoteca d, String nomC, Date fecha ) {
+	public static boolean reservaInsert( Statement st, Discoteca d, String nomC, int fecha ) {
 		String sentSQL = "";
 		try {
 			sentSQL = "insert into reserva values(" +
 					"'" + secu(d.getNombre()) + "'," +
 					"'" + secu(nomC) + "'," +
-					fecha.getFechaInicio() + "," + rf.getFechaFin() + ")";
+					"," + fecha + ")";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla reserva añadida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que añadir 1 - error si no
