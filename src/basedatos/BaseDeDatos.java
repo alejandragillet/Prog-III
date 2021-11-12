@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.logging.*;
 
 import es.deusto.prog3.cap03.ejemploPartidas.BD;
-import logica.Discoteca;
+import logica.*;
 
 public class BaseDeDatos {
 private static Exception lastError = null;  // Información de último error SQL ocurrido
@@ -57,7 +57,7 @@ private static Exception lastError = null;  // Información de último error SQL o
 			statement.setQueryTimeout(30);  // poner timeout 30 msg
 			try {
 				statement.executeUpdate("create table trabajador " +
-					"(nombre string,dni integer, salario integer, contrasenaT string)");
+					"(dni String, salario integer, contrasenaT string)");
 			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 			try {
 				statement.executeUpdate("create table cliente " +
@@ -66,6 +66,10 @@ private static Exception lastError = null;  // Información de último error SQL o
 			try {
 				statement.executeUpdate("create table reserva " +
 					"(cliente_nombre string, disc_nombre string, fecha integer)");
+			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+			try {
+				statement.executeUpdate("create table discoteca " +
+					"(nombre String, aforoMax integer, numeroTrab integer, direccion String)");
 			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 			log( Level.INFO, "Creada base de datos", null );
 			return statement;
@@ -78,7 +82,7 @@ private static Exception lastError = null;  // Información de último error SQL o
 	}
 	
 	/** Reinicia en blanco las tablas de la base de datos. 
-	 * UTILIZAR ESTE MËTODO CON PRECAUCIÓN. Borra todos los datos que hubiera ya en las tablas
+	 * UTILIZAR ESTE METODO CON PRECAUCION. Borra todos los datos que hubiera ya en las tablas
 	 * @param con	Conexión ya creada y abierta a la base de datos
 	 * @return	sentencia de trabajo si se borra correctamente, null si hay cualquier error
 	 */
@@ -122,20 +126,18 @@ private static Exception lastError = null;  // Información de último error SQL o
 		return lastError;
 	}
 	
-	/////////////////////////////////////////////////////////////////////
-	//                      Operaciones de discoteca                       //
-	/////////////////////////////////////////////////////////////////////
 	
 	/** Añade un Discoteca a la tabla abierta de BD, usando la sentencia INSERT de SQL
-	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la discoteca)
-	 * @param h	Discoteca a añadir en la base de datos
-	 * @return	true si la inserción es correcta, false en caso contrario
+	 * @param st		Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la discoteca)
+	 * @param d			Discoteca a añadir en la base de datos
+	 * @return true 	si la inserción es correcta, false en caso contrario
 	 */
 	public static boolean DiscotecaInsert( Statement st, Discoteca  d ) {
 		String sentSQL = "";
 		try {
-			sentSQL = "insert into discoteca values(" +
-					"'" + secu(d.getNombre()) + "')";
+			sentSQL = "insert into cliente values(" +
+					"'" + secu(d.getNombre()) + "'," +
+					"'" + d.getAforoMax() + "'" +d.getNumeroTrabajadores()+ "'" + d.getDireccion()+")";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla Discoteca añadida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que añadir 1 - error si no
@@ -152,9 +154,9 @@ private static Exception lastError = null;  // Información de último error SQL o
 	}
 
 	/** Realiza una consulta a la tabla abierta de Discotecaes de la BD, usando la sentencia SELECT de SQL
-	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
+	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
 	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
-	 * @return	lista de nombres de Discotecaes cargados desde la base de datos, null si hay cualquier error
+	 * @return				lista de nombres de Discotecas cargadas desde la base de datos, null si hay cualquier error
 	 */
 	public static ArrayList<String> DiscotecaSelect( Statement st, String codigoSelect ) {
 		String sentSQL = "";
@@ -179,23 +181,21 @@ private static Exception lastError = null;  // Información de último error SQL o
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////
-	//                      Operaciones de habitación                  //
-	/////////////////////////////////////////////////////////////////////
 	
 
 	/** Añade una habitación a la tabla abierta de BD, usando la sentencia INSERT de SQL
-	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la habitación)
-	 * @param h	Discoteca del que es parte la habitación
-	 * @param hab	Habitación a añadir en la base de datos
-	 * @return	true si la inserción es correcta, false en caso contrario
+	 * @param st		 Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la habitación)
+	 * @param nombre	 nombre del cliente que queremos añadir
+	 * @param tlfn		 numero de telefono del cliente
+	 * @param contrasena contrasena del nuevo cliente
+	 * @return true 	 si la inserción es correcta, false en caso contrario
 	 */
 	public static boolean clienteInsert( Statement st, String nombre , String tlfn, String contrasena  ) {
 		String sentSQL = "";
 		try {
 			sentSQL = "insert into cliente values(" +
 					"'" + secu(nombre) + "'," +
-					"'" + secu(tlfn) +"'"+secu(contrasena)+ "')";
+					"'" + secu(tlfn) + "'" +secu(contrasena)+ "')";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla cliente añadida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que añadir 1 - error si no
@@ -212,19 +212,19 @@ private static Exception lastError = null;  // Información de último error SQL o
 	}
 
 	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
-	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
-	 * @param d		Discoteca del que se buscan las clientees (no null)
+	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
+	 * @param c				cliente que se busca seleccionar (no null)
 	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
-	 * @return	lista de clientes cargados desde la base de datos, null si hay cualquier error
+	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
-	public static ArrayList<String> clienteSelect( Statement st, Discoteca d, String codigoSelect ) {
-		if (d==null) return null;
+	public static ArrayList<String> clienteSelect( Statement st, Cliente c, String codigoSelect ) {
+		if (c==null) return null;
 		String sentSQL = "";
 		ArrayList<String> ret = new ArrayList<>();
 		try {
 			sentSQL = "select * from cliente";
-			if (d!=null) {
-				String where = "Discoteca_nombre='" + d.getNombre() + "'";
+			if (c!=null) {
+				String where = "Cliente_nombre='" + c.getNombre() + "'";
 				if (codigoSelect!=null && !codigoSelect.equals(""))
 					sentSQL = sentSQL + " where " + where + " AND " + codigoSelect;
 				else
@@ -232,7 +232,7 @@ private static Exception lastError = null;  // Información de último error SQL o
 			}
 			if (codigoSelect!=null && !codigoSelect.equals(""))
 				sentSQL = sentSQL + " where " + codigoSelect;
-			// System.out.println( sentSQL );  // Para ver lo que se hace en consola
+				System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
 			while (rs.next()) {
 				ret.add( rs.getString( "nombre" ) );
@@ -248,9 +248,71 @@ private static Exception lastError = null;  // Información de último error SQL o
 		}
 	}
 	
-	/////////////////////////////////////////////////////////////////////
-	//                      Operaciones de reserva                     //
-	/////////////////////////////////////////////////////////////////////
+	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
+	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
+	 * @param t				trabajador que se busac seleccionar (no null)
+	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
+	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
+	 */
+	
+	public static ArrayList<String> trabajadorSelect( Statement st, Trabajador t, String codigoSelect ) {
+		if (t==null) return null;
+		String sentSQL = "";
+		ArrayList<String> ret = new ArrayList<>();
+		try {
+			sentSQL = "select * from trabajador";
+			if (t!=null) {
+				String where = "Trabajador_nombre='" + t.getNombre() + "'";
+				if (codigoSelect!=null && !codigoSelect.equals(""))
+					sentSQL = sentSQL + " where " + where + " AND " + codigoSelect;
+				else
+					sentSQL = sentSQL + " where " + where;
+			}
+			if (codigoSelect!=null && !codigoSelect.equals(""))
+				sentSQL = sentSQL + " where " + codigoSelect;
+				System.out.println( sentSQL );  // Para ver lo que se hace en consola
+			ResultSet rs = st.executeQuery( sentSQL );
+			while (rs.next()) {
+				ret.add( rs.getString( "nombre" ) );
+			}
+			rs.close();
+			log( Level.INFO, "BD\t" + sentSQL, null );
+			return ret;
+		} catch (SQLException e) {
+			log( Level.SEVERE, "Error en BD\t" + sentSQL, e );
+			lastError = e;
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
+	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
+	 * @param dni			dni del trabajador que se inserta en la tabla
+	 * @param salario		salario del respactivo trabajador
+	 * aram contrasena		contrasena de acceso del respectivo trabajador
+	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
+	 */
+	public static boolean trabajadorInsert( Statement st, String dni , int salario, String contrasena  ) {
+		String sentSQL = "";
+		try {
+			sentSQL = "insert into cliente values(" +
+					"'" + secu(dni) + "'," +
+					"'" + salario +"'"+secu(contrasena)+ "')";
+			int val = st.executeUpdate( sentSQL );
+			log( Level.INFO, "BD tabla trabajador añadida " + val + " fila\t" + sentSQL, null );
+			if (val!=1) {  // Se tiene que añadir 1 - error si no
+				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
+				return false;  
+			}
+			return true;
+		} catch (SQLException e) {
+			log( Level.SEVERE, "Error en BD\t" + sentSQL, e );
+			lastError = e;
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 
 	/** Añade una reserva a la tabla abierta de BD, usando la sentencia INSERT de SQL
@@ -258,7 +320,7 @@ private static Exception lastError = null;  // Información de último error SQL o
 	 * @param d		Discoteca en la que se realiza la reserva
 	 * @param nomC	nombre del Cliente
 	 * @param rf	Rango de fechas de la reserva nueva
-	 * @return	true si la inserción es correcta, false en caso contrario
+	 * @return true si la inserción es correcta, false en caso contrario
 	 */
 	public static boolean reservaInsert( Statement st, Discoteca d, String nomC, int fecha ) {
 		String sentSQL = "";
@@ -267,9 +329,9 @@ private static Exception lastError = null;  // Información de último error SQL o
 					"'" + secu(d.getNombre()) + "'," +
 					"'" + secu(nomC) + "'," +
 					"," + fecha + ")";
-			int val = st.executeUpdate( sentSQL );
-			log( Level.INFO, "BD tabla reserva añadida " + val + " fila\t" + sentSQL, null );
-			if (val!=1) {  // Se tiene que añadir 1 - error si no
+			int eu = st.executeUpdate( sentSQL );
+			log( Level.INFO, "BD tabla reserva añadida " + eu + " fila\t" + sentSQL, null );
+			if (eu!=1) {  // Se tiene que añadir 1 - error si no
 				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
 				return false;  
 			}
@@ -285,18 +347,18 @@ private static Exception lastError = null;  // Información de último error SQL o
 	/** Realiza una consulta a la tabla abierta de reservas de la BD, usando la sentencia SELECT de SQL
 	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
 	 * @param h	Discoteca del que se buscan las reservas (no null)
-	 * @param hab	Habitación de la que se buscan las reservas (no null)
+	 * @param cliente	Cliente del que se buscan las reservas (no null)
 	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
 	 * @return	lista de reservas cargadas desde la base de datos, null si hay cualquier error
 	 */
-	public static ArrayList<RangoFechas> reservaSelect( Statement st, Discoteca d, String hab, String codigoSelect ) {
-		if (d==null || hab==null || hab.isEmpty()) return null;
+	public static ArrayList<String> reservaSelect( Statement st, Discoteca d, String cliente, String codigoSelect ) {
+		if (d==null || cliente==null || cliente.isEmpty()) return null;
 		String sentSQL = "";
-		ArrayList<RangoFechas> ret = new ArrayList<>();
+		ArrayList<String> ret = new ArrayList<>();
 		try {
 			sentSQL = "select * from reserva";
 			if (d!=null) {
-				String where = "Discoteca_nombre='" + d.getNombre() + "' AND hab_nombre='" + hab + "'";
+				String where = "Discoteca_nombre='" + d.getNombre() + "' AND cliente_nombre='" + cliente + "'";
 				if (codigoSelect!=null && !codigoSelect.equals(""))
 					sentSQL = sentSQL + " where " + where + " AND " + codigoSelect;
 				else
@@ -304,10 +366,10 @@ private static Exception lastError = null;  // Información de último error SQL o
 			}
 			if (codigoSelect!=null && !codigoSelect.equals(""))
 				sentSQL = sentSQL + " where " + codigoSelect;
-			// System.out.println( sentSQL );  // Para ver lo que se hace en consola
+			 System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
 			while (rs.next()) {
-				ret.add( new RangoFechas( rs.getInt( "fechaini" ), rs.getInt( "fechafin") ) );
+				ret.add(rs.getString( "fecha" ));
 			}
 			rs.close();
 			log( Level.INFO, "BD\t" + sentSQL, null );
@@ -321,35 +383,28 @@ private static Exception lastError = null;  // Información de último error SQL o
 	}
 
 	
-	/////////////////////////////////////////////////////////////////////
-	//                      Métodos privados                           //
-	/////////////////////////////////////////////////////////////////////
-
-	// Devuelve el string "securizado" para volcarlo en SQL
-	// (Implementación 1) Sustituye ' por '' y quita saltos de línea
-	// (Implementación 2) Mantiene solo los caracteres seguros en español
+	
 	private static String secu( String string ) {
 		// Implementación (1)
 		// return string.replaceAll( "'",  "''" ).replaceAll( "\\n", "" );
 		// Implementación (2)
-		StringBuffer ret = new StringBuffer();
+		StringBuffer sb = new StringBuffer();
 		for (char c : string.toCharArray()) {
-			if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZñÑáéíóúüÁÉÍÓÚÚ.,:;-_(){}[]-+*=<>'\"¿?¡!&%$@#/\\0123456789".indexOf(c)>=0) ret.append(c);
+			if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZñÑáéíóúüÁÉÍÓÚÚ.,:;-_(){}[]-+*=<>'\"¿?¡!&%$@#/\\0123456789".indexOf(c)>=0) sb.append(c);
 		}
-		return ret.toString();
+		return sb.toString();
 	}
 	
 
-	/////////////////////////////////////////////////////////////////////
-	//                      Logging                                    //
-	/////////////////////////////////////////////////////////////////////
+	/////////////////////////////////// LOGGER DE LA BASE DE DATOS ////////////////////////////////////////////////////
+	
 	
 	public static Logger logger = null;  // cambio en tarea 2 para poderlo utilizar desde allí
 	// Método público para asignar un logger externo
 	/** Asigna un logger ya creado para que se haga log de las operaciones de base de datos
 	 * @param logger	Logger ya creado
 	 */
-	public static void setLogger(java.util.logging.Logger logger) {
+	public static void setLogger(Logger logger) {
 		BD.logger=logger;
 	}
 	private static void log(Level level, String msg, Throwable exception) {
