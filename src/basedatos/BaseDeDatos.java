@@ -211,9 +211,9 @@ private static Exception lastError = null;  // Información de último error SQL o
 		}
 	}
 
-	/** Realiza una consulta a la tabla abierta de clientees de la BD, usando la sentencia SELECT de SQL
+	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
 	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
-	 * @param d	Discoteca del que se buscan las clientees (no null)
+	 * @param d		Discoteca del que se buscan las clientees (no null)
 	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
 	 * @return	lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
