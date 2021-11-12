@@ -32,10 +32,10 @@ public class VentanaReservaEntradas extends JFrame {
 	private static Discoteca disco2;
 	private static GestionDiscoteca GDisco;
 	
-	
 	private JPanel panelSuperior;
 	private JPanel panelCentral; 
 	private JPanel panelInferior;
+	
 	// Discoteca discoteca
 	public VentanaReservaEntradas(GestionDiscoteca gDisco) throws CloneNotSupportedException {
 		Container cp= this.getContentPane();
