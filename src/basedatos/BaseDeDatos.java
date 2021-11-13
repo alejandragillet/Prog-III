@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.*;
 import java.util.logging.*;
 
-import es.deusto.prog3.cap03.ejemploPartidas.BD;
+
 import logica.*;
 
 public class BaseDeDatos {
@@ -405,11 +405,11 @@ private static Exception lastError = null;  // Información de último error SQL o
 	 * @param logger	Logger ya creado
 	 */
 	public static void setLogger(Logger logger) {
-		BD.logger=logger;
+		BaseDeDatos.logger=logger;
 	}
 	private static void log(Level level, String msg, Throwable exception) {
 		if (logger == null) {
-			logger = logger.getLogger(BD.class.getName());
+			logger = logger.getLogger(BaseDeDatos.class.getName());
 			logger.setLevel(Level.ALL);
 			try {
 				logger.addHandler(new FileHandler("bd.log.xml", true));
