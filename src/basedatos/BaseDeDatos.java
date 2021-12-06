@@ -4,13 +4,16 @@ package basedatos;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.*;
 
 
 import logica.*;
 
 public class BaseDeDatos {
-private static Exception lastError = null;  // Información de último error SQL ocurrido
+private static Exception lastError = null; // Información de último error SQL ocurrido
+private static Connection conexion;
+private static String nombreBD = "discotecaBD";
 	
 	/** Inicializa una BD SQLITE y devuelve una conexión con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
@@ -183,11 +186,11 @@ private static Exception lastError = null;  // Información de último error SQL o
 
 	
 
-	/** Añade una habitación a la tabla abierta de BD, usando la sentencia INSERT de SQL
+	/** Añade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
 	 * @param st		 Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la habitación)
 	 * @param nombre	 nombre del cliente que queremos añadir
 	 * @param tlfn		 numero de telefono del cliente
-	 * @param contrasena contrasena del nuevo cliente
+	 * @param contrasenia contrasena del nuevo cliente
 	 * @return true 	 si la inserción es correcta, false en caso contrario
 	 */
 	public static boolean clienteInsert( Statement st, String nombre , String tlfn, String contrasena  ) {
@@ -395,6 +398,29 @@ private static Exception lastError = null;  // Información de último error SQL o
 		return sb.toString();
 	}
 	
+	public static ArrayList<Producto> getProductos() {
+		try (Statement statement = conexion.createStatement()) {
+			ArrayList<Producto> ret = new ArrayList<>();
+			String sent = "select * from producto;";
+			logger.log( Level.INFO, "Statement: " + sent );
+			ResultSet rs = statement.executeQuery( sent );
+			while( rs.next() ) { // Leer el resultset
+				String nombre = rs.getString("nombre");
+				double precio = rs.getDouble("precio");
+				//ret.add
+			}
+			return ret;
+		} catch (Exception e) {
+			//T6
+			//logger.log( Level.SEVERE, "Excepción", e );
+			procesarError((ex) -> { 
+				logger.log( Level.SEVERE, "Excepción en getProductos()");
+			    System.out.println("Excepcion: "+ex.getMessage());}, e);
+			//
+			return null;
+		}
+	}
+	
 
 	/////////////////////////////////// LOGGER DE LA BASE DE DATOS ////////////////////////////////////////////////////
 	
@@ -423,4 +449,11 @@ private static Exception lastError = null;  // Información de último error SQL o
 				logger.log(level, msg, exception);
 			}
 		}
+	
+/////////////////PROCESAR LOS ERRORES//////////////////////
+	private static void procesarError( Consumer<Exception> proceso, Exception msg ) {
+		proceso.accept( msg );
 	}
+	}
+
+
