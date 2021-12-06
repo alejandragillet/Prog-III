@@ -31,10 +31,10 @@ public class GestionDiscoteca {
     
     
     public static void main(String[] args) throws CloneNotSupportedException {
-    	GestionDiscoteca Gs1 = new GestionDiscoteca();
-    	Gs1.init(Gs1);
-    	VentanaReservaEntradas vre = new VentanaReservaEntradas(Gs1);
-    	vre.setVisible(true);
+//    	GestionDiscoteca Gs1 = new GestionDiscoteca();
+//    	Gs1.init(Gs1);
+//    	VentanaReservaEntradas vre = new VentanaReservaEntradas(Gs1);
+//    	vre.setVisible(true);
     }
     
     
