@@ -13,6 +13,7 @@ import logica.*;
 public class BaseDeDatos {
 private static Exception lastError = null; // Información de último error SQL ocurrido
 private static Connection conexion;
+private static String nombreBD = "discotecaBD";
 	
 	/** Inicializa una BD SQLITE y devuelve una conexión con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
@@ -185,11 +186,11 @@ private static Connection conexion;
 
 	
 
-	/** Añade una habitación a la tabla abierta de BD, usando la sentencia INSERT de SQL
+	/** Añade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
 	 * @param st		 Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la habitación)
 	 * @param nombre	 nombre del cliente que queremos añadir
 	 * @param tlfn		 numero de telefono del cliente
-	 * @param contrasena contrasena del nuevo cliente
+	 * @param contrasenia contrasena del nuevo cliente
 	 * @return true 	 si la inserción es correcta, false en caso contrario
 	 */
 	public static boolean clienteInsert( Statement st, String nombre , String tlfn, String contrasena  ) {
