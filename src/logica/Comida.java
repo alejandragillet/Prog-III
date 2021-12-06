@@ -19,7 +19,7 @@ public class Comida extends Producto {
 
 	@Override
 	public String toString() {
-		return " " + TipoComida;
+		return " " + nombre;
 	}
 
 	@Override

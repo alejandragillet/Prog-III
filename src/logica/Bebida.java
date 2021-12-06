@@ -22,11 +22,30 @@ public class Bebida extends Producto{
 	public void setTipoBebida(EnumBebida tipoBebida) {
 		TipoBebida = tipoBebida;
 	}
+	
+
+
+	public String getAlcohol() {
+		return alcohol;
+	}
+
+	public void setAlcohol(String alcohol) {
+		this.alcohol = alcohol;
+	}
+
+	public String getMezcla() {
+		return mezcla;
+	}
+
+	public void setMezcla(String mezcla) {
+		this.mezcla = mezcla;
+	}
 
 	@Override
 	public String toString() {
-		return " "+TipoBebida ;
+		return " "+nombre ;
 	}
+	
 
 	@Override
 	public double getPrecio() {
