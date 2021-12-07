@@ -70,6 +70,21 @@ public class VentanaUsuario extends JFrame {
 			
 		});
 		
+		crearTrabajador.addActionListener(new ActionListener() {
+			
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				GestionDiscoteca gs = new GestionDiscoteca();
+				
+				VentanaTrabajador vent= new VentanaTrabajador("Regis");
+				vent.setLocation( 620, 300 );
+				vent.setVisible( true );
+				
+				
+			}
+			
+		});
 		//Hilo para clicar y esperar unos segundos
 		crearCliente.addActionListener(new ActionListener() {
 			
