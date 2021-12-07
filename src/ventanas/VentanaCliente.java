@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -88,7 +89,14 @@ public class VentanaCliente extends JFrame {
 		bAceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Comunicador.login(tfNick.getText(), tfPass.getText());
+
+				try {
+					boolean existe = Comunicador.login(tfNick.getText(), tfPass.getText());
+					System.out.println(existe);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				// gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "clientes.dat");
 				// System.out.println(gs.getlCLientes());
 				// for (Cliente cliente : gs.getlCLientes()) {
@@ -110,7 +118,6 @@ public class VentanaCliente extends JFrame {
 
 	public static void main(String[] args) {
 		GestionDiscoteca gsn = new GestionDiscoteca();
-		VentanaCliente vc = new VentanaCliente("Hola", gsn);
-		vc.setVisible(true);
+		
 	}
 }

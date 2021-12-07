@@ -13,7 +13,7 @@ import logica.*;
 public class BaseDeDatos {
 private static Exception lastError = null; // Informaci�n de �ltimo error SQL ocurrido
 public static Connection conexion;
-private static String nombreBD = "discotecaBD";
+public static String nombreBD = "discotecaBD";
 	
 	/** Inicializa una BD SQLITE y devuelve una conexi�n con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
@@ -55,33 +55,26 @@ private static String nombreBD = "discotecaBD";
 	 * @return	sentencia de trabajo si se crea correctamente, null si hay cualquier error
 	 */
 	public static Statement usarCrearTablasBD( Connection con ) {
+		Statement statement = usarBD(con);
+
 		try {
-			Statement statement = con.createStatement();
-			statement.setQueryTimeout(30);  // poner timeout 30 msg
-			try {
-				statement.executeUpdate("create table trabajador " +
-					"(dni String, salario integer, contrasenaT string)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			try {
-				statement.executeUpdate("create table cliente " +
-					"(nombre string, numTlfn String, contrasena string)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			try {
-				statement.executeUpdate("create table reserva " +
-					"(cliente_nombre string, disc_nombre string, fecha integer)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			try {
-				statement.executeUpdate("create table discoteca " +
-					"(nombre String, aforoMax integer, numeroTrab integer, direccion String)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			log( Level.INFO, "Creada base de datos", null );
-			return statement;
-		} catch (SQLException e) {
-			lastError = e;
-			log( Level.SEVERE, "Error en creaci�n de base de datos", e );
-			e.printStackTrace();
-			return null;
-		}
+			statement.executeUpdate("create table trabajador " +
+				"(dni String, salario integer, contrasenaT string)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table cliente " +
+				"(nombre string, numTlfn String, contrasena string)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table reserva " +
+				"(cliente_nombre string, disc_nombre string, fecha integer)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table discoteca " +
+				"(nombre String, aforoMax integer, numeroTrab integer, direccion String)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		log( Level.INFO, "Creada base de datos", null );
+		return statement;
 	}
 	
 	/** Reinicia en blanco las tablas de la base de datos. 
@@ -220,21 +213,21 @@ private static String nombreBD = "discotecaBD";
 	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la b�squeda (vac�a si no se usa)
 	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
-	public static ArrayList<String> clienteSelect( Statement st, Cliente c, String codigoSelect ) {
+	public static ArrayList<String> clienteSelect( Statement st, Cliente c, String adicional ) {
 		if (c==null) return null;
 		String sentSQL = "";
 		ArrayList<String> ret = new ArrayList<>();
 		try {
 			sentSQL = "select * from cliente";
-			if (c!=null) {
+			
 				String where = "Cliente_nombre='" + c.getNombre() + "'";
-				if (codigoSelect!=null && !codigoSelect.equals(""))
-					sentSQL = sentSQL + " where " + where + " AND " + codigoSelect;
+				if (adicional!=null && !adicional.equals(""))
+					sentSQL = sentSQL + " where " + where + " AND " + adicional;
 				else
 					sentSQL = sentSQL + " where " + where;
-			}
-			if (codigoSelect!=null && !codigoSelect.equals(""))
-				sentSQL = sentSQL + " where " + codigoSelect;
+			
+			if (adicional!=null && !adicional.equals(""))
+				sentSQL = sentSQL + " where " + adicional;
 				System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
 			while (rs.next()) {

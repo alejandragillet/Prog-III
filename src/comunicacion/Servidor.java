@@ -46,9 +46,18 @@ public class Servidor {
                     String passC = split[1].split("-")[1];
                     Cliente clienteC = new Cliente(usuarioC, passC, null);
                     Statement st = BaseDeDatos.conexion.createStatement();
-                    ArrayList<String> resultadoR = BaseDeDatos.clienteSelect(st, clienteC, "");
+                    // select * from cliente where Cliente_nombre = 'aasdasd' and 
+                    ArrayList<String> resultadoR = BaseDeDatos.clienteSelect(st, clienteC, "Cliente_password = '" + passC + "';");
                     
-                outputACliente.println("RESPUESTA AL CLIENTE" + resultadoR);
+
+    
+
+                    if (resultadoR.size() > 0){
+                        outputACliente.println("respuesta-" + true);
+                    } else {
+                        outputACliente.println("respuesta-" + false);
+                    }
+
                 }
 
                 System.out.println("Recibido de cliente: [" + textoRecibido + "]");
