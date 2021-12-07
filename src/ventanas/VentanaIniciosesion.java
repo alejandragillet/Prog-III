@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +32,11 @@ public class VentanaIniciosesion extends JFrame {
 			JPanel pSuperior = new JPanel();		
 			JLabel lTitulo = new JLabel ("Bienvenido");
 			
+			JLabel lNick = new JLabel ("DNI");
+			JLabel lPasword = new JLabel ("Contraseña");
 
+			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
+//			pCentral.setLayout(new GridLayout(10, 17));
 			
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 
@@ -45,15 +50,16 @@ public class VentanaIniciosesion extends JFrame {
 
 		
 			setVisible(true);
-//			
-////			bLogIn.addActionListener(new ActionListener() {
-////				@Override
-////				public void actionPerformed(ActionEvent e) {
-////					VentanaTrabajador v1= new VentanaTrabajador("DeustoDisco");
-////					v1.setVisible(true);
-////					dispose();	
-////				}
-////			});			
+			
+		AbstractButton bLogIn = null;
+		bLogIn.addActionListener(new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent e) {
+					VentanaTrabajador v1= new VentanaTrabajador("DeustoDisco");
+				v1.setVisible(true);
+				dispose();	
+				}
+			});			
 }
 }
 	//Es un hilo para hacer un reloj en la sesion de inicio

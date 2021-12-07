@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import logica.RestrictedTextField;
+
 public class VentanaTrabajador extends JFrame {
 	public VentanaTrabajador (String titulo) {
 		
@@ -32,6 +34,8 @@ public class VentanaTrabajador extends JFrame {
 		JTextField tfNick = new JTextField(15);
 		JTextField tfPass = new JTextField(10);
 		
+		RestrictedTextField restricted = new RestrictedTextField();
+		restricted.setLimit(8);
 		
 		pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 		pCentral.setLayout(new GridLayout(10, 17));
