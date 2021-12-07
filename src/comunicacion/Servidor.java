@@ -1,11 +1,16 @@
 package comunicacion;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import basedatos.*;
+import logica.*;
 
 public class Servidor {
     private static int PUERTO = 4000;
@@ -31,14 +36,32 @@ public class Servidor {
                     finComunicacion = true;
                 }
 
+                // login:usuario-pass
+                String [] split = textoRecibido.split(":");
+                System.out.println(split[0]);
+
+
+                if(split[0].equals("login")) {
+                    String usuarioC = split[1].split("-")[0];
+                    String passC = split[1].split("-")[1];
+                    Cliente clienteC = new Cliente(usuarioC, passC, null);
+                    Statement st = BaseDeDatos.conexion.createStatement();
+                    ArrayList<String> resultadoR = BaseDeDatos.clienteSelect(st, clienteC, "");
+                    
+                outputACliente.println("RESPUESTA AL CLIENTE" + resultadoR);
+                }
+
                 System.out.println("Recibido de cliente: [" + textoRecibido + "]");
                 
-                outputACliente.println("RESPUESTA AL CLIENTE");
+             
             }
             System.out.println("El cliente se ha desconectado.");
             socket.close();
         } catch (IOException e) {
             System.err.println("Error en servidor: " + e.getMessage());
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }

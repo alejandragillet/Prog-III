@@ -1,4 +1,5 @@
 package ventanas;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,50 +15,45 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import comunicacion.Comunicador;
 import logica.Cliente;
 import logica.GestionDiscoteca;
 
 public class VentanaCliente extends JFrame {
-public VentanaCliente(String titulo, GestionDiscoteca gs) {
-	
-		
+	public VentanaCliente(String titulo, GestionDiscoteca gs) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(600,400);
-		setLocation(200,10);
+		setSize(600, 400);
+		setLocation(200, 10);
 		setTitle(titulo);
-		
+
 		JPanel pSuperior = new JPanel();
 		JPanel pCentral = new JPanel();
 		JPanel pInferior = new JPanel();
-		
-		
-		JLabel lTitulo = new JLabel ("Login");
-		JButton bAceptar = new JButton ("Aceptar");
-		JButton bCancelar = new JButton ("Cancelar");
-		JLabel lNick = new JLabel ("Nombre");
-		JLabel lPasword = new JLabel ("Contrase�a");
-		JLabel lRegistro = new JLabel ("Todavia no tienes cuenta");
-		JLabel lMensaje = new JLabel ("ERROR. No se ha encontrado ningun usuario");
-		JButton bRegistrarse = new JButton ("Registrarse");
+
+		JLabel lTitulo = new JLabel("Login");
+		JButton bAceptar = new JButton("Aceptar");
+		JButton bCancelar = new JButton("Cancelar");
+		JLabel lNick = new JLabel("Nombre");
+		JLabel lPasword = new JLabel("Contrase�a");
+		JLabel lRegistro = new JLabel("Todavia no tienes cuenta");
+		JLabel lMensaje = new JLabel("ERROR. No se ha encontrado ningun usuario");
+		JButton bRegistrarse = new JButton("Registrarse");
 		JTextField tfNick = new JTextField(15);
 		JTextField tfPass = new JTextField(10);
-		
-		
+
 		pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 		pCentral.setLayout(new GridLayout(10, 17));
-		
-		
+
 		pSuperior.setBackground(Color.WHITE);
 		pCentral.setBackground(Color.WHITE);
 		pInferior.setBackground(Color.WHITE);
 		lTitulo.setFont(new Font("Arial", Font.ITALIC, 26));
 		lTitulo.setBackground(Color.GRAY);
 		lTitulo.setOpaque(true);
-		
-		
-		add (pSuperior, BorderLayout.NORTH);
-		add (pCentral, BorderLayout.CENTER);
-		add (pInferior, BorderLayout.SOUTH);
+
+		add(pSuperior, BorderLayout.NORTH);
+		add(pCentral, BorderLayout.CENTER);
+		add(pInferior, BorderLayout.SOUTH);
 		pSuperior.add(lTitulo);
 		pCentral.add(lNick);
 		pCentral.add(tfNick);
@@ -67,69 +63,54 @@ public VentanaCliente(String titulo, GestionDiscoteca gs) {
 		pCentral.add(bCancelar);
 		pInferior.add(lRegistro);
 		pInferior.add(bRegistrarse);
-		
-		
+
 		setVisible(true);
-		
-		//Cerrar la ventana
+
+		// Cerrar la ventana
 		bCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();	
+				dispose();
 			}
 		});
 		bRegistrarse.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaRegistro vr =new VentanaRegistro("Registro", gs);
+				VentanaRegistro vr = new VentanaRegistro("Registro", gs);
 				vr.setVisible(true);
 				dispose();
 			}
 		});
-		
-		
+
 		// Cuenta de registro
 		bAceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "clientes.dat");
-			System.out.println(gs.getlCLientes());
-			for( Cliente cliente : gs.getlCLientes()) {
-				if(tfNick.getText().equals(cliente.getNombre()) && tfPass.getText().equals(cliente.getContrasenia())) {;
-					dispose();
-					return;
-				}
-			}
-			JOptionPane.showMessageDialog(VentanaCliente.this, "No coincide con ningun cliente, Por favor vuelva a intentarlo");
-			tfNick.setText("");
-			tfPass.setText("");
+				Comunicador.login(tfNick.getText(), tfPass.getText());
+				// gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "clientes.dat");
+				// System.out.println(gs.getlCLientes());
+				// for (Cliente cliente : gs.getlCLientes()) {
+				// 	if (tfNick.getText().equals(cliente.getNombre())
+				// 			&& tfPass.getText().equals(cliente.getContrasenia())) {
+				// 		;
+				// 		dispose();
+				// 		return;
+				// 	}
+				// }
+				// JOptionPane.showMessageDialog(VentanaCliente.this,
+				// 		"No coincide con ningun cliente, Por favor vuelva a intentarlo");
+				// tfNick.setText("");
+				// tfPass.setText("");
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+	}
+
+	public static void main(String[] args) {
+		GestionDiscoteca gsn = new GestionDiscoteca();
+		VentanaCliente vc = new VentanaCliente("Hola", gsn);
+		vc.setVisible(true);
 	}
 }

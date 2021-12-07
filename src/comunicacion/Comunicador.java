@@ -35,11 +35,17 @@ public class Comunicador {
         System.out.println("Fin del proceso del cliente");
     }
 
-    public String emitirMensaje(String mensaje) throws IOException {
+    public String emitirMensaje(String mensaje) throws IOException { //te devuelve el mensaje del servidor
         System.out.println("Emitiendo mensaje: " + mensaje);
         outputAServer.println(mensaje);
         String respuesta = inputDesdeServer.readLine();
         return respuesta;
+    }
+
+    public static boolean login(String nombre, String pass){
+
+        emitirMensaje("login:" + nombre + "-" + pass);
+
     }
 
     public void esperarConexion() {
