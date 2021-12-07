@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -22,6 +23,7 @@ public class GestionDiscoteca {
     private ArrayList<Discoteca> lDiscotecas;
     protected ArrayList<Cliente> lClientes;
     protected ArrayList<Trabajador> lTrabajadores;
+
     
     private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
     
@@ -31,10 +33,10 @@ public class GestionDiscoteca {
     
     
     public static void main(String[] args) throws CloneNotSupportedException {
-//    	GestionDiscoteca Gs1 = new GestionDiscoteca();
-//    	Gs1.init(Gs1);
-//    	VentanaReservaEntradas vre = new VentanaReservaEntradas(Gs1);
-//    	vre.setVisible(true);
+    	GestionDiscoteca Gs1 = new GestionDiscoteca();
+    	Gs1.init(Gs1);
+    	VentanaReservaEntradas vre = new VentanaReservaEntradas(Gs1);
+    	vre.setVisible(true);
     }
     
     
@@ -88,12 +90,18 @@ public class GestionDiscoteca {
 		this.lTrabajadores = lTrabajadores;
 	}
 	
+	
+	
+
+
+
 	// inicialización de los productos
 	 public void init(GestionDiscoteca Gs1) {
 	    	lProductos = new ArrayList<Producto>();
 	    	lClientes = new ArrayList<Cliente>();
 	    	lTrabajadores = new ArrayList<Trabajador>();
 	    	lDiscotecas = new ArrayList<Discoteca>();
+
 	    	
 	    	
 	  
@@ -109,10 +117,12 @@ public class GestionDiscoteca {
 	      
 	    	
 	    	
-	    	Comida Comida1 = new Comida ("Hamburguesa Simple", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
+	    	Comida Comida1 = new Comida ("Hamburguesa queso y bacon", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
 	    	Comida Comida2 = new Comida("HotDog", EnumComida.HOTDOG,"mediano", 6.00 );
 	    	Comida Comida3 = new Comida ("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
 	    	Comida Comida4 = new Comida("Pizza barbacoa" , EnumComida.PIZZA, "pequeña", 8.00);
+	    	
+	    	lProductos.addAll(Arrays.asList(Bebida1,Bebida2,Bebida3,Bebida4,Bebida5, Bebida6, Bebida7, Comida1, Comida2, Comida3, Comida4));
 	    	
 	    	HashMap<Producto,Integer> mapaProductoAlmacenBudha = new HashMap<Producto,Integer >();
 	    	mapaProductoAlmacenBudha.put(Bebida1, 4);
@@ -131,9 +141,9 @@ public class GestionDiscoteca {
 	    	Almacen almacenBudha = new Almacen(mapaProductoAlmacenBudha);
 	    	Almacen almacenMoma = new Almacen(mapaProductoAlmacenMoma);
 	    	
-	    	
-	    	Discoteca Moma = new Discoteca("bbb", 200, 30, "Moma", almacenBudha);
 	    	Discoteca Budha = new Discoteca ("aaa", 700, 90, "Budha",almacenMoma); 
+	    	Discoteca Moma = new Discoteca("bbb", 200, 30, "Moma", almacenBudha);
+	    	
 	    	
 	    	lDiscotecas.add(Budha);
 	    	lDiscotecas.add(Moma);

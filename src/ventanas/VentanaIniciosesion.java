@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,6 +30,7 @@ public class VentanaIniciosesion extends JFrame {
 			
 			JPanel pSuperior = new JPanel();		
 			JLabel lTitulo = new JLabel ("Bienvenido");
+			
 
 			
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -53,5 +56,25 @@ public class VentanaIniciosesion extends JFrame {
 ////			});			
 }
 }
+	//Es un hilo para hacer un reloj en la sesion de inicio
+	public void relojDeLaSesionDeInicio() {
+	DateTimeFormatter tiempo = DateTimeFormatter.ofPattern("HH:mm:ss");
+	JLabel tiempReloj = new JLabel("Reloj");
+	Runnable runnable = new Runnable() {
+	    @Override
+	    public void run() {
+	        while (true) {
+	            try {
+	                Thread.sleep(500);
+	                tiempReloj.setText(tiempo.format(LocalDateTime.now()));
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	};
+	Thread hilo = new Thread(runnable);
+	hilo.start();
+	}
 }
 

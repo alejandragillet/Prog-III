@@ -11,6 +11,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.swing.JFrame;
@@ -39,8 +42,14 @@ public class VentanaReservaEntradas extends JFrame {
 	// Discoteca discoteca
 	public VentanaReservaEntradas(GestionDiscoteca gDisco) throws CloneNotSupportedException {
 		Container cp= this.getContentPane();
-		this.setMinimumSize(new Dimension(400, 400));
+		this.setMinimumSize(new Dimension(400, 500));
+		 
 		
+		   SimpleDateFormat dtf = new SimpleDateFormat("yyyy/MM/dd");
+	        Calendar calendar = Calendar.getInstance();
+
+	        Date dateObj = calendar.getTime();
+	        String formattedDate = dtf.format(dateObj);
 		
 		// Creación comboBox
 		numeroPersonas1 = new JComboBox<Integer>();
@@ -64,7 +73,7 @@ public class VentanaReservaEntradas extends JFrame {
 		JSeleccionar3.setSize(new Dimension(50,50));
 		
 		//Asignación de componentes a la ventana
-		panelSuperior.add(new JLabel("Proceso reserva entradas"));
+		panelSuperior.add(new JLabel("Proceso reserva entradas del dia " + formattedDate ));
 		panelSuperior.add(new JLabel("Selecciona discoteca"));
 		panelSuperior.add(comboDiscoteca);
 		panelSuperior.add(JSeleccionar);
@@ -92,6 +101,7 @@ public class VentanaReservaEntradas extends JFrame {
 				comboZona.addItem(EnumZona.MESA);
 				comboZona.addItem(EnumZona.PISTA);
 				comboZona.addItem(EnumZona.VIP);
+				VentanaReservaEntradas.this.pack();
 			}
 		});
 		
@@ -107,7 +117,7 @@ public class VentanaReservaEntradas extends JFrame {
 					}
 				panelInferior.add(numeroPersonas1);
 				panelInferior.add(JSeleccionar3);
-				VentanaReservaEntradas.this.repaint();
+				VentanaReservaEntradas.this.pack();
 			}
 		});
 
@@ -115,14 +125,15 @@ public class VentanaReservaEntradas extends JFrame {
 		JSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(disco2);
+				System.out.println("jjjjj"+disco2);
 				Integer aforoDiscoteca = disco2.getAforo();
 				aforoDiscoteca = aforoDiscoteca + (Integer)numeroPersonas1.getSelectedItem();
 				if(aforoDiscoteca > disco2.getAforoMax()) {
 					JOptionPane.showMessageDialog(VentanaReservaEntradas.this, "No quedan entradas disponibles.No es posible hacer la reserva. ");
 				}
 				else {
-					disco2.setAforo(disco2.getAforo() +1);
+					disco2.setAforo(aforoDiscoteca);
+					System.out.println("aforo dis" + aforoDiscoteca);
 				}
 				VentanaReservaEntradas.this.repaint();
 				VentanaReservaProductos vr = new VentanaReservaProductos(disco2,gDisco);
@@ -135,8 +146,7 @@ public class VentanaReservaEntradas extends JFrame {
 		
 
 		
-		
-		
+
 		
 	}
 //	public static void main(String[] args) {

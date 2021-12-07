@@ -108,5 +108,15 @@ public VentanaRegistro(String titulo, GestionDiscoteca gs){
 		});
 		
 	}
+///HILO PARA INICIAR CON UNOS SEGUNDOS////////////////////
+		private void esperarXsegundos(int segundos) {
+			try {
+				Thread.sleep(segundos * 1000);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+			
+		}
+
 
 }

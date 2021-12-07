@@ -6,7 +6,7 @@ public class Almacen {
 	private HashMap<Producto, Integer> mapaProductoAlmacen;
 
 	public Almacen(HashMap<Producto, Integer> mapa) {
-		this.mapaProductoAlmacen = mapaProductoAlmacen;
+		this.mapaProductoAlmacen =mapa;
 	}
 
 	public HashMap<Producto, Integer> getMapaProductoAlmacen() {

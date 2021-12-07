@@ -3,7 +3,6 @@ package logica;
 
 
 public class Bebida extends Producto{
-	protected double cl;
 	protected EnumBebida TipoBebida;
 	private String alcohol;
 	private String mezcla;
@@ -11,8 +10,11 @@ public class Bebida extends Producto{
 	
 	
 	public Bebida(String nombre, EnumBebida tipoBebida, String alcohol, String mezcla, double precio) {
-		super(nombre);
-		TipoBebida = tipoBebida;
+		super(nombre,precio);
+		this.TipoBebida = tipoBebida;
+		this.alcohol = alcohol;
+		this.mezcla = mezcla; 
+		this.nombre = nombre;
 	}
 
 	public EnumBebida getTipoBebida() {
@@ -22,17 +24,31 @@ public class Bebida extends Producto{
 	public void setTipoBebida(EnumBebida tipoBebida) {
 		TipoBebida = tipoBebida;
 	}
+	
+
+
+	public String getAlcohol() {
+		return alcohol;
+	}
+
+	public void setAlcohol(String alcohol) {
+		this.alcohol = alcohol;
+	}
+
+	public String getMezcla() {
+		return mezcla;
+	}
+
+	public void setMezcla(String mezcla) {
+		this.mezcla = mezcla;
+	}
 
 	@Override
 	public String toString() {
-		return " "+TipoBebida ;
+		return " "+nombre ;
 	}
+	
 
-	@Override
-	public double getPrecio() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	
 	
