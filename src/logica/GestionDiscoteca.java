@@ -117,7 +117,7 @@ public class GestionDiscoteca {
 	      
 	    	
 	    	
-	    	Comida Comida1 = new Comida ("Hamburguesa Simple", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
+	    	Comida Comida1 = new Comida ("Hamburguesa queso y bacon", EnumComida.HAMBURGUESA, "pequeña", 8.00 );
 	    	Comida Comida2 = new Comida("HotDog", EnumComida.HOTDOG,"mediano", 6.00 );
 	    	Comida Comida3 = new Comida ("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
 	    	Comida Comida4 = new Comida("Pizza barbacoa" , EnumComida.PIZZA, "pequeña", 8.00);

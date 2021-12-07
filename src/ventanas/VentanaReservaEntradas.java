@@ -42,7 +42,7 @@ public class VentanaReservaEntradas extends JFrame {
 	// Discoteca discoteca
 	public VentanaReservaEntradas(GestionDiscoteca gDisco) throws CloneNotSupportedException {
 		Container cp= this.getContentPane();
-		this.setMinimumSize(new Dimension(400, 400));
+		this.setMinimumSize(new Dimension(400, 500));
 		 
 		
 		   SimpleDateFormat dtf = new SimpleDateFormat("yyyy/MM/dd");

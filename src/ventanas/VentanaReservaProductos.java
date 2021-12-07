@@ -49,6 +49,7 @@ public class VentanaReservaProductos extends JFrame{
 	private JLabel mezclaInfo;
 	private JLabel alcoholInfo;
 	private JLabel importeTotalInfo;
+	private JLabel info1;
 	private static Reserva reserva;
 	private Almacen almacen;
 	private static GestionDiscoteca Gs1;
@@ -56,7 +57,8 @@ public class VentanaReservaProductos extends JFrame{
 	
 	// String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
 	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
-		this.setMinimumSize(new Dimension(400, 400));
+		this.setMinimumSize(new Dimension(800, 600));
+		
 		
 		//Lista
 		productosJList = new JList<Producto>();
@@ -143,6 +145,13 @@ public class VentanaReservaProductos extends JFrame{
 		alcoholPanel.add(alcoholInfo );
 		panelInformacionProductos.add(alcoholPanel);
 		
+		JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel infoLabel = new JLabel(" ");
+		info1 = new JLabel();
+		infoPanel.add(infoLabel);
+		infoPanel.add(info1);
+		panelInformacionProductos.add(infoPanel);
+		
 		JButton bAnadir = new JButton ("Añadir");
 		JButton bEliminar = new JButton ("Eliminar");
 		panelInformacionProductos.add(bAnadir);
@@ -225,16 +234,21 @@ public class VentanaReservaProductos extends JFrame{
 	public void actualizarInfo() {
 		if (productosJList.getSelectedIndex() !=-1) {
 			Producto producto = productosJList.getSelectedValue();
+			System.out.println("Producto seleccionado:"+ producto +"   Precio" +producto.getPrecio() );
 			nombreInfo.setText(producto.getNombre());
 			precioInfo.setText( " " + producto.getPrecio());
 			if (producto instanceof Comida) {
 				mezclaInfo.setText(" ");
-				//tamanioInfo.setText(((Comida) producto).);
+				alcoholInfo.setText(" ");
+				tamanioInfo.setText( ((Comida) producto).getTamanio());
 			}else if (producto instanceof Bebida) {
-				//clInfo.setText(" " + ((Bebida) producto).get);
+				alcoholInfo.setText(((Bebida) producto).getAlcohol());
+				mezclaInfo.setText(((Bebida) producto).getMezcla());
 				tamanioInfo.setText(" ");
+				
 			}
 		}
+		VentanaReservaProductos.this.pack();
 	}
 	
 	/** Actualiza el carrito a medida que se van añadiendo los productos al mapa
