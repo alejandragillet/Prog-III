@@ -2,7 +2,7 @@ package basedatos;
 
 
 import java.sql.*;
-import java.sql.Date;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.*;
@@ -14,6 +14,11 @@ public class BaseDeDatos {
 private static Exception lastError = null; // Informaci�n de �ltimo error SQL ocurrido
 public static Connection conexion;
 public static String nombreBD = "discotecaBD";
+
+public static GestionDiscoteca gs = new GestionDiscoteca();
+//public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
+//public static ArrayList<Cliente> clientes = gs.getlClientes();
+//public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 	
 	/** Inicializa una BD SQLITE y devuelve una conexi�n con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
@@ -59,11 +64,11 @@ public static String nombreBD = "discotecaBD";
 
 		try {
 			statement.executeUpdate("create table trabajador " +
-				"(dni String, salario integer, contrasenaT string)");
+				"(nombre string, salario integer, contrasenaT string, precioHora integer, sueldo integer)");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table cliente " +
-				"(nombre string, numTlfn String, contrasena string)");
+				"(nombre string, dni String, contrasena string)");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table reserva " +
@@ -131,7 +136,7 @@ public static String nombreBD = "discotecaBD";
 	public static boolean DiscotecaInsert( Statement st, Discoteca  d ) {
 		String sentSQL = "";
 		try {
-			sentSQL = "insert into cliente values(" +
+			sentSQL = "insert into discoteca values(" +
 					"'" + secu(d.getNombre()) + "'," +
 					"'" + d.getAforoMax() + "'" +d.getNumeroTrabajadores()+ "'" + d.getDireccion()+")";
 			int val = st.executeUpdate( sentSQL );
@@ -147,6 +152,22 @@ public static String nombreBD = "discotecaBD";
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**Recoge la lista de discotecas del gestor y la insrta en la base de datos
+	 *  @param discotecas recoge la lista de discotecas del gestor y la recorre
+	 *  @param st sentencia abierta con la base de datos
+	 */
+	
+	public static boolean guardarDiscotecas(Statement st, ArrayList<Discoteca> discotecas) {
+		
+		discotecas = gs.getlDiscotecas();
+		
+		for (Discoteca d : discotecas) {
+			DiscotecaInsert(st,d);
+		}
+		
+		return false;	
 	}
 
 	/** Realiza una consulta a la tabla abierta de Discotecaes de la BD, usando la sentencia SELECT de SQL
@@ -186,12 +207,12 @@ public static String nombreBD = "discotecaBD";
 	 * @param contrasenia contrasena del nuevo cliente
 	 * @return true 	 si la inserci�n es correcta, false en caso contrario
 	 */
-	public static boolean clienteInsert( Statement st, String nombre , String tlfn, String contrasena  ) {
+	public static boolean clienteInsert( Statement st, String nombre , String DNI, String contrasena  ) {
 		String sentSQL = "";
 		try {
 			sentSQL = "insert into cliente values(" +
 					"'" + secu(nombre) + "'," +
-					"'" + secu(tlfn) + "'" +secu(contrasena)+ "')";
+					"'" + secu(DNI) +"'," + "'" +secu(contrasena)+ "')";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla cliente a�adida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que a�adir 1 - error si no
@@ -206,6 +227,22 @@ public static String nombreBD = "discotecaBD";
 			return false;
 		}
 	}
+	
+	/**Recoge la lista de discotecas del gestor y la insrta en la base de datos
+	 *  @param clientes recoge la lista de discotecas del gestor y la recorre
+	 *  @param st sentencia abierta con la base de datos
+	 */
+	public static boolean guardarClientes(Statement st, ArrayList<Cliente> clientes) {
+		
+		clientes = gs.getlClientes();
+		
+		for (Cliente c : clientes) {
+			clienteInsert(st, c.getNombre(), c.getContrasenia(), c.getDNI());
+		}
+		
+		return false;	
+	}
+
 
 	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
 	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
@@ -289,12 +326,12 @@ public static String nombreBD = "discotecaBD";
 	 * aram contrasena		contrasena de acceso del respectivo trabajador
 	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
-	public static boolean trabajadorInsert( Statement st, String dni , int salario, String contrasena  ) {
+	private static boolean trabajadorInsert(Statement st, String nombre, String contrasenia, int precioHora, int sueldo) {
 		String sentSQL = "";
 		try {
 			sentSQL = "insert into cliente values(" +
-					"'" + secu(dni) + "'," +
-					"'" + salario +"'"+secu(contrasena)+ "')";
+					"'" + secu(nombre) + "'," +
+					"'" + "'" + secu(contrasenia) + "',"+ precioHora + "'," + sueldo+"')";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla trabajador a�adida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que a�adir 1 - error si no
@@ -308,7 +345,28 @@ public static String nombreBD = "discotecaBD";
 			e.printStackTrace();
 			return false;
 		}
+		
 	}
+	/**Inserta en la base de datos todos los trabajadores que hay en la lista del gestor
+	 * 
+	 * @param st			sentencia ya abierta con la base de datos
+	 * @param trabajadores	lista de trabajadores que se recorre posteriormente
+	 * @return
+	 */
+	public static boolean guardarTrabajadores(Statement st, ArrayList<Trabajador> trabajadores) {
+			
+			trabajadores = gs.getlTrabajadores();
+			
+			for (Trabajador t  : trabajadores) {
+				trabajadorInsert(st, t.getNombre(), t.getContrasenia(), t.getPrecioHora(), t.getSueldo());
+			}
+			
+			return false;	
+		}
+	
+
+	
+
 	
 
 	/** A�ade una reserva a la tabla abierta de BD, usando la sentencia INSERT de SQL
