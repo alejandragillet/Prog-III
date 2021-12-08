@@ -128,7 +128,14 @@ public class GestionDiscoteca {
 	    	mapaProductoAlmacenBudha.put(Bebida1, 4);
 	    	mapaProductoAlmacenBudha.put(Bebida2, 9);
 	    	mapaProductoAlmacenBudha.put(Bebida3, 0);
+	    	mapaProductoAlmacenBudha.put(Bebida4, 15);
+	    	mapaProductoAlmacenBudha.put(Bebida5, 0);
+	    	mapaProductoAlmacenBudha.put(Bebida6, 1);
+	    	mapaProductoAlmacenBudha.put(Bebida7, 2);
 	    	mapaProductoAlmacenBudha.put(Comida1, 1);
+	    	mapaProductoAlmacenBudha.put(Comida2, 10);
+	    	mapaProductoAlmacenBudha.put(Comida3, 90);
+	    	mapaProductoAlmacenBudha.put(Comida4, 1);
 	    	
 	    	
 	    	HashMap<Producto,Integer> mapaProductoAlmacenMoma = new HashMap<Producto,Integer >();

@@ -120,21 +120,15 @@ public class VentanaReservaEntradas extends JFrame {
 				VentanaReservaEntradas.this.pack();
 			}
 		});
+		
 
 		// compara a ver si el aforo de la discoteca se ha llenado y aparece un mensaje en el caso de que este lleno
 		JSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("jjjjj"+disco2);
-				Integer aforoDiscoteca = disco2.getAforo();
-				aforoDiscoteca = aforoDiscoteca + (Integer)numeroPersonas1.getSelectedItem();
-				if(aforoDiscoteca > disco2.getAforoMax()) {
-					JOptionPane.showMessageDialog(VentanaReservaEntradas.this, "No quedan entradas disponibles.No es posible hacer la reserva. ");
-				}
-				else {
-					disco2.setAforo(aforoDiscoteca);
-					System.out.println("aforo dis" + aforoDiscoteca);
-				}
+				Integer numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
+				comprobarAforo(disco2, numeroPersonas);
+				
 				VentanaReservaEntradas.this.repaint();
 				VentanaReservaProductos vr = new VentanaReservaProductos(disco2,gDisco);
 				vr.setVisible(true);
@@ -149,6 +143,18 @@ public class VentanaReservaEntradas extends JFrame {
 
 		
 	}
+	public void comprobarAforo(Discoteca disco2, Integer numeroPersonas) {
+		Integer aforoDiscoteca = disco2.getAforo();
+		aforoDiscoteca = aforoDiscoteca + numeroPersonas;
+		if(aforoDiscoteca > disco2.getAforoMax()) {
+			JOptionPane.showMessageDialog(VentanaReservaEntradas.this, "No quedan entradas disponibles.No es posible hacer la reserva. ");
+		}
+		else {
+			disco2.setAforo(aforoDiscoteca);
+			System.out.println("Aforo de mometo: " + aforoDiscoteca);
+		}
+	}
+
 //	public static void main(String[] args) {
 //		Reserva reserva = new Reserva();
 //		GestionDiscoteca GestionDisco = new GestionDiscoteca();
