@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import basedatos.BaseDeDatos;
 import ventanas.VentanaReservaEntradas;
 import ventanas.VentanaUsuario;
 
@@ -184,6 +185,42 @@ public class GestionDiscoteca {
     	}
     	
     }
+    ///METODO RECUSIVO/////////////
+    private ArrayList<Producto> producto_max = null;
+    ArrayList<Producto> productos = BaseDeDatos.getProductos();
+    public void findMaxImporte() {
+		ArrayList<Producto> l_pro = BaseDeDatos.getProductos();
+		Producto productoM = findMaxImporte(l_pro, 0, l_pro.size() - 1);
+		double imp_max = productoM.getPrecio();
+		producto_max = new ArrayList<Producto>();
+		for (Producto p : l_pro) {
+			double imp = p.getPrecio();
+			if (imp == imp_max) {
+				producto_max.add(p);
+			}
+		}
+	}
+	
+	public Producto findMaxImporte(ArrayList<Producto> compras, int i, int j){
+		
+		int med;
+		Producto max_left, max_right;
+		if (i==j) {
+			return productos.get(i);
+		} else {
+			med = (i + j) / 2;
+		}
+		max_left = findMaxImporte(productos, i, med);
+		max_right =	findMaxImporte (productos, med+1, j);
+	
+		double imp_left =  max_left.getPrecio();
+		double imp_right = max_right.getPrecio();
+		
+		if (imp_left > imp_right) 
+			return max_left;
+		else
+			return max_right;
+	 }
 
     
 }
