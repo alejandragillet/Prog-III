@@ -7,14 +7,27 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import logica.RestrictedTextField;
 
 public class VentanaTrabajador extends JFrame {
+	private static Thread hilo;
 	public VentanaTrabajador (String titulo) {
-		
+		addWindowListener(new WindowAdapter() {
+			
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				hilo.interrupt();
+			}
+			
+		});
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600,400);
@@ -31,11 +44,28 @@ public class VentanaTrabajador extends JFrame {
 		JLabel lNick = new JLabel ("DNI");
 		JLabel lPasword = new JLabel ("Contraseña");
 		JButton bIniciosesion = new JButton ("Inicio de sesion");
-		JTextField tfNick = new JTextField(15);
-		JTextField tfPass = new JTextField(10);
+		JTextField tfNick = new JTextField(8);
 		
-		RestrictedTextField restricted = new RestrictedTextField();
-		restricted.setLimit(8);
+		JTextField tfPass = new JTextField(10);
+		hilo= new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while(!Thread.interrupted()) {
+					try {
+						char[] s = tfNick.getText().toCharArray();
+						if (s.length == new char[8].length) {
+							tfNick.setEditable(false);
+						}
+					} catch (NullPointerException e) {
+						// TODO: handle exception
+					}
+					
+				}
+			}
+		});
+		hilo.start();
+	
 		
 		pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 		pCentral.setLayout(new GridLayout(10, 17));
@@ -76,7 +106,7 @@ public class VentanaTrabajador extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			VentanaIniciosesion vr =new VentanaIniciosesion("Inicio de sesion", null); 
+			VentanaIniciosesion vr =new VentanaIniciosesion("Inicio de sesion", null, tfNick.getText(), tfPass.getText()); 
 				vr.setVisible(true);
 				dispose();
 			}

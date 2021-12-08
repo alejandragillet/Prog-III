@@ -20,9 +20,10 @@ import javax.swing.JTextField;
 
 
 import logica.GestionDiscoteca;
+import logica.Puestoaleatorio;
 
 public class VentanaIniciosesion extends JFrame {
-	public VentanaIniciosesion (String titulo, GestionDiscoteca gs) {
+	public VentanaIniciosesion (String titulo, GestionDiscoteca gs, String dni, String contraseña) {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); {
 			setSize(600,400);
@@ -32,12 +33,13 @@ public class VentanaIniciosesion extends JFrame {
 			JPanel pSuperior = new JPanel();		
 			JLabel lTitulo = new JLabel ("Bienvenido");
 			JPanel pCentral = new JPanel();
+			JPanel pInferior = new JPanel();
+			JButton bCancelar = new JButton ("Cancelar");
 			
-			
-			JLabel lNick = new JLabel ("DNI: ");
-			JLabel lPasword = new JLabel ("Contraseña: ");
-			JLabel lSueldo = new JLabel("Sueldo: ");
-			JLabel lPuesto = new JLabel ("Puesto de trabajo: ");
+			JLabel lNick = new JLabel ("DNI: " + dni);
+			JLabel lPasword = new JLabel ("Contraseña: " + contraseña);
+			JLabel lSueldo = new JLabel("Sueldo: " );
+			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1)));
 
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 			pCentral.setLayout(new GridLayout(10, 17));
@@ -50,6 +52,8 @@ public class VentanaIniciosesion extends JFrame {
 			
 			add (pSuperior, BorderLayout.NORTH);
 			add (pCentral, BorderLayout.CENTER);
+			add (pInferior, BorderLayout.SOUTH);
+
 
 			
 			pSuperior.add(lTitulo);
@@ -57,12 +61,19 @@ public class VentanaIniciosesion extends JFrame {
 			pCentral.add(lPasword);
 			pCentral.add(lSueldo);
 			pCentral.add(lPuesto);
-			
+			pInferior.add(bCancelar);
 
-		
+
+			bCancelar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dispose();	
+				}
+			});
+			
 			setVisible(true);
 		
-//		AbstractButton bLogIn = null;
+
 //		bLogIn.addActionListener(new ActionListener() {
 //			@Override
 //				public void actionPerformed(ActionEvent e) {
@@ -72,6 +83,8 @@ public class VentanaIniciosesion extends JFrame {
 //				}
 //			});			
 }
+		
+		
 }
 	//Es un hilo para hacer un reloj en la sesion de inicio
 	public void relojDeLaSesionDeInicio() {
