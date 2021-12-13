@@ -16,6 +16,10 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import basedatos.BaseDeDatos;
+
+import comunicacion.Comunicador;
+import ventanas.VentanaCliente;
+
 import ventanas.VentanaReservaEntradas;
 import ventanas.VentanaUsuario;
 
@@ -31,12 +35,16 @@ public class GestionDiscoteca {
     public GestionDiscoteca() {
     	//this.lProductos;
     }
-    
-    
+
     public static void main(String[] args) throws CloneNotSupportedException {
-    	GestionDiscoteca Gs1 = new GestionDiscoteca();
-    	Gs1.init(Gs1);
-    	VentanaReservaEntradas vre = new VentanaReservaEntradas(Gs1);
+    	GestionDiscoteca gs1 = new GestionDiscoteca();
+		gs1.initConexiones();
+    	gs1.init(gs1);
+
+		VentanaCliente vc = new VentanaCliente("Hola", gs1);
+		vc.setVisible(true);
+
+    	VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1);
     	vre.setVisible(true);
     }
     
@@ -93,7 +101,10 @@ public class GestionDiscoteca {
 	
 	
 	
-
+	private void initConexiones() {
+		BaseDeDatos.initBD(BaseDeDatos.nombreBD);
+		Comunicador.lanzaCliente();
+	}
 
 
 	// inicialización de los productos
@@ -129,7 +140,14 @@ public class GestionDiscoteca {
 	    	mapaProductoAlmacenBudha.put(Bebida1, 4);
 	    	mapaProductoAlmacenBudha.put(Bebida2, 9);
 	    	mapaProductoAlmacenBudha.put(Bebida3, 0);
+	    	mapaProductoAlmacenBudha.put(Bebida4, 15);
+	    	mapaProductoAlmacenBudha.put(Bebida5, 0);
+	    	mapaProductoAlmacenBudha.put(Bebida6, 1);
+	    	mapaProductoAlmacenBudha.put(Bebida7, 2);
 	    	mapaProductoAlmacenBudha.put(Comida1, 1);
+	    	mapaProductoAlmacenBudha.put(Comida2, 10);
+	    	mapaProductoAlmacenBudha.put(Comida3, 90);
+	    	mapaProductoAlmacenBudha.put(Comida4, 1);
 	    	
 	    	
 	    	HashMap<Producto,Integer> mapaProductoAlmacenMoma = new HashMap<Producto,Integer >();

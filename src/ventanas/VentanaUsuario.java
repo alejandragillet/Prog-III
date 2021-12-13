@@ -2,18 +2,19 @@ package ventanas;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+
 import javax.swing.*;
 
-import logica.GestionDiscoteca;
-import logica.Reserva;
-
+import logica.*;
+import basedatos.BaseDeDatos;
 
 
 
 public class VentanaUsuario extends JFrame {
 	private JButton crearCliente;
 	private JButton crearTrabajador;
-	
+	private GestionDiscoteca gs = new GestionDiscoteca();
 	
 	
 	public VentanaUsuario() {
@@ -44,7 +45,7 @@ public class VentanaUsuario extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				GestionDiscoteca gs = new GestionDiscoteca();
+				
 				
 				VentanaCliente vent= new VentanaCliente("Regis", gs);
 				vent.setLocation( 620, 300 );
@@ -59,7 +60,6 @@ public class VentanaUsuario extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				GestionDiscoteca gs = new GestionDiscoteca();
 				
 				VentanaCliente vent= new VentanaCliente("Regis", gs);
 				vent.setLocation( 620, 300 );
@@ -70,6 +70,21 @@ public class VentanaUsuario extends JFrame {
 			
 		});
 		
+		crearTrabajador.addActionListener(new ActionListener() {
+			
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+				VentanaTrabajador vent= new VentanaTrabajador("Regis");
+				vent.setLocation( 620, 300 );
+				vent.setVisible( true );
+				
+				
+			}
+			
+		});
 		//Hilo para clicar y esperar unos segundos
 		crearCliente.addActionListener(new ActionListener() {
 			
@@ -102,8 +117,9 @@ public class VentanaUsuario extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				// TODO ENVIAR DATOS/MODIFICACIONES A LA BBDD
-				
-				
+				BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")), gs.getlClientes());
+				BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")), gs.getlTrabajadores());
+				BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")), gs.getlDiscotecas());
 			}
 
 			

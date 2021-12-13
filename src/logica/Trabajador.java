@@ -4,12 +4,12 @@ public class Trabajador {
     protected String contrasenia;
     protected int horasTrabajadas;
     protected int precioHora;
-    protected double sueldo;
+    protected int sueldo;
     
     protected EnumPuesto puesto;
 	
     
-    public Trabajador(String nombre, String contrasenia, double sueldo, EnumPuesto puesto) {
+    public Trabajador(String nombre, String contrasenia, int sueldo, EnumPuesto puesto) {
 		super();
 		this.nombre = nombre;
 		this.contrasenia = contrasenia;
@@ -58,12 +58,12 @@ public class Trabajador {
 	}
 
 
-	public double getSueldo() {
+	public int getSueldo() {
 		return horasTrabajadas * precioHora;
 	}
 
 
-	public void setSueldo(double sueldo) {
+	public void setSueldo(int sueldo) {
 		this.sueldo = sueldo;
 	}
 

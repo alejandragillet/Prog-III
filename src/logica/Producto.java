@@ -9,6 +9,7 @@ public abstract class Producto {
 		this.precio = precio;
 	}
 	
+
 	public Producto() {
 		super();
 		this.nombre = "";
@@ -32,6 +33,13 @@ public abstract class Producto {
 		this.precio = precio;
 	}
 
-	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Producto)) return false;
+		Producto p2 = (Producto) obj;
+		return nombre.equals(p2.nombre);
+			
+		
+	}
     
 }

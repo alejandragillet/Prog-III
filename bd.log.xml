@@ -386,3 +386,293 @@
   <message>Excepción en getProductos()</message>
 </record>
 </log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-07T18:54:16.707800200Z</date>
+  <millis>1638903256707</millis>
+  <nanos>800200</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>SEVERE</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Error en conexi?n de base de datos discotecaBD</message>
+  <exception>
+    <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
+    <frame>
+      <class>jdk.internal.loader.BuiltinClassLoader</class>
+      <method>loadClass</method>
+      <line>581</line>
+    </frame>
+    <frame>
+      <class>jdk.internal.loader.ClassLoaders$AppClassLoader</class>
+      <method>loadClass</method>
+      <line>178</line>
+    </frame>
+    <frame>
+      <class>java.lang.ClassLoader</class>
+      <method>loadClass</method>
+      <line>521</line>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName0</method>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName</method>
+      <line>315</line>
+    </frame>
+    <frame>
+      <class>basedatos.BaseDeDatos</class>
+      <method>initBD</method>
+      <line>24</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>initConexiones</method>
+      <line>103</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>main</method>
+      <line>39</line>
+    </frame>
+  </exception>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-07T18:58:51.812387800Z</date>
+  <millis>1638903531812</millis>
+  <nanos>387800</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>SEVERE</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Error en conexi?n de base de datos discotecaBD</message>
+  <exception>
+    <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
+    <frame>
+      <class>jdk.internal.loader.BuiltinClassLoader</class>
+      <method>loadClass</method>
+      <line>581</line>
+    </frame>
+    <frame>
+      <class>jdk.internal.loader.ClassLoaders$AppClassLoader</class>
+      <method>loadClass</method>
+      <line>178</line>
+    </frame>
+    <frame>
+      <class>java.lang.ClassLoader</class>
+      <method>loadClass</method>
+      <line>521</line>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName0</method>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName</method>
+      <line>315</line>
+    </frame>
+    <frame>
+      <class>basedatos.BaseDeDatos</class>
+      <method>initBD</method>
+      <line>24</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>initConexiones</method>
+      <line>103</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>main</method>
+      <line>39</line>
+    </frame>
+  </exception>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-07T19:13:20.004811Z</date>
+  <millis>1638904400004</millis>
+  <nanos>811000</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>SEVERE</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Error en conexi?n de base de datos discotecaBD</message>
+  <exception>
+    <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
+    <frame>
+      <class>jdk.internal.loader.BuiltinClassLoader</class>
+      <method>loadClass</method>
+      <line>581</line>
+    </frame>
+    <frame>
+      <class>jdk.internal.loader.ClassLoaders$AppClassLoader</class>
+      <method>loadClass</method>
+      <line>178</line>
+    </frame>
+    <frame>
+      <class>java.lang.ClassLoader</class>
+      <method>loadClass</method>
+      <line>521</line>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName0</method>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName</method>
+      <line>315</line>
+    </frame>
+    <frame>
+      <class>basedatos.BaseDeDatos</class>
+      <method>initBD</method>
+      <line>24</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>initConexiones</method>
+      <line>103</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>main</method>
+      <line>39</line>
+    </frame>
+  </exception>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-07T19:15:53.020079700Z</date>
+  <millis>1638904553020</millis>
+  <nanos>79700</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>SEVERE</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Error en conexi?n de base de datos discotecaBD</message>
+  <exception>
+    <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
+    <frame>
+      <class>jdk.internal.loader.BuiltinClassLoader</class>
+      <method>loadClass</method>
+      <line>581</line>
+    </frame>
+    <frame>
+      <class>jdk.internal.loader.ClassLoaders$AppClassLoader</class>
+      <method>loadClass</method>
+      <line>178</line>
+    </frame>
+    <frame>
+      <class>java.lang.ClassLoader</class>
+      <method>loadClass</method>
+      <line>521</line>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName0</method>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName</method>
+      <line>315</line>
+    </frame>
+    <frame>
+      <class>basedatos.BaseDeDatos</class>
+      <method>initBD</method>
+      <line>24</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>initConexiones</method>
+      <line>103</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>main</method>
+      <line>39</line>
+    </frame>
+  </exception>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-07T19:19:33.040062Z</date>
+  <millis>1638904773040</millis>
+  <nanos>62000</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>SEVERE</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Error en conexi?n de base de datos discotecaBD</message>
+  <exception>
+    <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
+    <frame>
+      <class>jdk.internal.loader.BuiltinClassLoader</class>
+      <method>loadClass</method>
+      <line>581</line>
+    </frame>
+    <frame>
+      <class>jdk.internal.loader.ClassLoaders$AppClassLoader</class>
+      <method>loadClass</method>
+      <line>178</line>
+    </frame>
+    <frame>
+      <class>java.lang.ClassLoader</class>
+      <method>loadClass</method>
+      <line>521</line>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName0</method>
+    </frame>
+    <frame>
+      <class>java.lang.Class</class>
+      <method>forName</method>
+      <line>315</line>
+    </frame>
+    <frame>
+      <class>basedatos.BaseDeDatos</class>
+      <method>initBD</method>
+      <line>24</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>initConexiones</method>
+      <line>103</line>
+    </frame>
+    <frame>
+      <class>logica.GestionDiscoteca</class>
+      <method>main</method>
+      <line>39</line>
+    </frame>
+  </exception>
+</record>
+</log>

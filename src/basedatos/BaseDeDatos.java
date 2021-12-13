@@ -2,7 +2,7 @@ package basedatos;
 
 
 import java.sql.*;
-import java.sql.Date;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.*;
@@ -11,30 +11,35 @@ import java.util.logging.*;
 import logica.*;
 
 public class BaseDeDatos {
-private static Exception lastError = null; // Información de último error SQL ocurrido
-private static Connection conexion;
-private static String nombreBD = "discotecaBD";
+private static Exception lastError = null; // Informaciï¿½n de ï¿½ltimo error SQL ocurrido
+public static Connection conexion;
+public static String nombreBD = "discotecaBD";
+
+public static GestionDiscoteca gs = new GestionDiscoteca();
+//public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
+//public static ArrayList<Cliente> clientes = gs.getlClientes();
+//public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 	
-	/** Inicializa una BD SQLITE y devuelve una conexión con ella
+	/** Inicializa una BD SQLITE y devuelve una conexiï¿½n con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
-	 * @return	Conexión con la base de datos indicada. Si hay algún error, se devuelve null
+	 * @return	Conexiï¿½n con la base de datos indicada. Si hay algï¿½n error, se devuelve null
 	 */
 	public static Connection initBD( String nombreBD ) {
 		try {
 		    Class.forName("org.sqlite.JDBC");
-		    Connection con = DriverManager.getConnection("jdbc:sqlite:" + nombreBD );
+		    conexion = DriverManager.getConnection("jdbc:sqlite:" + nombreBD );
 			log( Level.INFO, "Conectada base de datos " + nombreBD, null );
-		    return con;
+		    return conexion;
 		} catch (ClassNotFoundException | SQLException e) {
 			lastError = e;
-			log( Level.SEVERE, "Error en conexión de base de datos " + nombreBD, e );
+			log( Level.SEVERE, "Error en conexiï¿½n de base de datos " + nombreBD, e );
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
 	/** Devuelve statement para usar la base de datos
-	 * @param con	Conexión ya creada y abierta a la base de datos
+	 * @param con	Conexiï¿½n ya creada y abierta a la base de datos
 	 * @return	sentencia de trabajo si se crea correctamente, null si hay cualquier error
 	 */
 	public static Statement usarBD( Connection con ) {
@@ -51,42 +56,35 @@ private static String nombreBD = "discotecaBD";
 	}
 	
 	/** Crea las tablas de la base de datos. Si ya existen, las deja tal cual
-	 * @param con	Conexión ya creada y abierta a la base de datos
+	 * @param con	Conexiï¿½n ya creada y abierta a la base de datos
 	 * @return	sentencia de trabajo si se crea correctamente, null si hay cualquier error
 	 */
 	public static Statement usarCrearTablasBD( Connection con ) {
+		Statement statement = usarBD(con);
+
 		try {
-			Statement statement = con.createStatement();
-			statement.setQueryTimeout(30);  // poner timeout 30 msg
-			try {
-				statement.executeUpdate("create table trabajador " +
-					"(dni String, salario integer, contrasenaT string)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			try {
-				statement.executeUpdate("create table cliente " +
-					"(nombre string, numTlfn String, contrasena string)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			try {
-				statement.executeUpdate("create table reserva " +
-					"(cliente_nombre string, disc_nombre string, fecha integer)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			try {
-				statement.executeUpdate("create table discoteca " +
-					"(nombre String, aforoMax integer, numeroTrab integer, direccion String)");
-			} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
-			log( Level.INFO, "Creada base de datos", null );
-			return statement;
-		} catch (SQLException e) {
-			lastError = e;
-			log( Level.SEVERE, "Error en creación de base de datos", e );
-			e.printStackTrace();
-			return null;
-		}
+			statement.executeUpdate("create table trabajador " +
+				"(nombre string, salario integer, contrasenaT string, precioHora integer, sueldo integer)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table cliente " +
+				"(nombre string, dni String, contrasena string)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table reserva " +
+				"(cliente_nombre string, disc_nombre string, fecha integer)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table discoteca " +
+				"(nombre String, aforoMax integer, numeroTrab integer, direccion String)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		log( Level.INFO, "Creada base de datos", null );
+		return statement;
 	}
 	
 	/** Reinicia en blanco las tablas de la base de datos. 
 	 * UTILIZAR ESTE METODO CON PRECAUCION. Borra todos los datos que hubiera ya en las tablas
-	 * @param con	Conexión ya creada y abierta a la base de datos
+	 * @param con	Conexiï¿½n ya creada y abierta a la base de datos
 	 * @return	sentencia de trabajo si se borra correctamente, null si hay cualquier error
 	 */
 	public static Statement reiniciarBD( Connection con ) {
@@ -107,7 +105,7 @@ private static String nombreBD = "discotecaBD";
 	}
 	
 	/** Cierra la base de datos abierta
-	 * @param con	Conexión abierta de la BD
+	 * @param con	Conexiï¿½n abierta de la BD
 	 * @param st	Sentencia abierta de la BD
 	 */
 	public static void cerrarBD( Connection con, Statement st ) {
@@ -122,28 +120,28 @@ private static String nombreBD = "discotecaBD";
 		}
 	}
 	
-	/** Devuelve la información de excepción del último error producido por cualquiera 
-	 * de los métodos de gestión de base de datos
+	/** Devuelve la informaciï¿½n de excepciï¿½n del ï¿½ltimo error producido por cualquiera 
+	 * de los mï¿½todos de gestiï¿½n de base de datos
 	 */
 	public static Exception getLastError() {
 		return lastError;
 	}
 	
 	
-	/** Añade un Discoteca a la tabla abierta de BD, usando la sentencia INSERT de SQL
+	/** Aï¿½ade un Discoteca a la tabla abierta de BD, usando la sentencia INSERT de SQL
 	 * @param st		Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la discoteca)
-	 * @param d			Discoteca a añadir en la base de datos
-	 * @return true 	si la inserción es correcta, false en caso contrario
+	 * @param d			Discoteca a aï¿½adir en la base de datos
+	 * @return true 	si la inserciï¿½n es correcta, false en caso contrario
 	 */
 	public static boolean DiscotecaInsert( Statement st, Discoteca  d ) {
 		String sentSQL = "";
 		try {
-			sentSQL = "insert into cliente values(" +
+			sentSQL = "insert into discoteca values(" +
 					"'" + secu(d.getNombre()) + "'," +
 					"'" + d.getAforoMax() + "'" +d.getNumeroTrabajadores()+ "'" + d.getDireccion()+")";
 			int val = st.executeUpdate( sentSQL );
-			log( Level.INFO, "BD tabla Discoteca añadida " + val + " fila\t" + sentSQL, null );
-			if (val!=1) {  // Se tiene que añadir 1 - error si no
+			log( Level.INFO, "BD tabla Discoteca aï¿½adida " + val + " fila\t" + sentSQL, null );
+			if (val!=1) {  // Se tiene que aï¿½adir 1 - error si no
 				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
 				return false;  
 			}
@@ -155,10 +153,26 @@ private static String nombreBD = "discotecaBD";
 			return false;
 		}
 	}
+	
+	/**Recoge la lista de discotecas del gestor y la insrta en la base de datos
+	 *  @param discotecas recoge la lista de discotecas del gestor y la recorre
+	 *  @param st sentencia abierta con la base de datos
+	 */
+	
+	public static boolean guardarDiscotecas(Statement st, ArrayList<Discoteca> discotecas) {
+		
+		discotecas = gs.getlDiscotecas();
+		
+		for (Discoteca d : discotecas) {
+			DiscotecaInsert(st,d);
+		}
+		
+		return false;	
+	}
 
 	/** Realiza una consulta a la tabla abierta de Discotecaes de la BD, usando la sentencia SELECT de SQL
 	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
-	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
+	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la bï¿½squeda (vacï¿½a si no se usa)
 	 * @return				lista de nombres de Discotecas cargadas desde la base de datos, null si hay cualquier error
 	 */
 	public static ArrayList<String> DiscotecaSelect( Statement st, String codigoSelect ) {
@@ -186,22 +200,22 @@ private static String nombreBD = "discotecaBD";
 
 	
 
-	/** Añade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
-	 * @param st		 Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la habitación)
-	 * @param nombre	 nombre del cliente que queremos añadir
+	/** Aï¿½ade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
+	 * @param st		 Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la habitaciï¿½n)
+	 * @param nombre	 nombre del cliente que queremos aï¿½adir
 	 * @param tlfn		 numero de telefono del cliente
 	 * @param contrasenia contrasena del nuevo cliente
-	 * @return true 	 si la inserción es correcta, false en caso contrario
+	 * @return true 	 si la inserciï¿½n es correcta, false en caso contrario
 	 */
-	public static boolean clienteInsert( Statement st, String nombre , String tlfn, String contrasena  ) {
+	public static boolean clienteInsert( Statement st, String nombre , String DNI, String contrasena  ) {
 		String sentSQL = "";
 		try {
 			sentSQL = "insert into cliente values(" +
 					"'" + secu(nombre) + "'," +
-					"'" + secu(tlfn) + "'" +secu(contrasena)+ "')";
+					"'" + secu(DNI) +"'," + "'" +secu(contrasena)+ "')";
 			int val = st.executeUpdate( sentSQL );
-			log( Level.INFO, "BD tabla cliente añadida " + val + " fila\t" + sentSQL, null );
-			if (val!=1) {  // Se tiene que añadir 1 - error si no
+			log( Level.INFO, "BD tabla cliente aï¿½adida " + val + " fila\t" + sentSQL, null );
+			if (val!=1) {  // Se tiene que aï¿½adir 1 - error si no
 				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
 				return false;  
 			}
@@ -213,28 +227,44 @@ private static String nombreBD = "discotecaBD";
 			return false;
 		}
 	}
+	
+	/**Recoge la lista de discotecas del gestor y la insrta en la base de datos
+	 *  @param clientes recoge la lista de discotecas del gestor y la recorre
+	 *  @param st sentencia abierta con la base de datos
+	 */
+	public static boolean guardarClientes(Statement st, ArrayList<Cliente> clientes) {
+		
+		clientes = gs.getlClientes();
+		
+		for (Cliente c : clientes) {
+			clienteInsert(st, c.getNombre(), c.getContrasenia(), c.getDNI());
+		}
+		
+		return false;	
+	}
+
 
 	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
 	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
 	 * @param c				cliente que se busca seleccionar (no null)
-	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
+	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la bï¿½squeda (vacï¿½a si no se usa)
 	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
-	public static ArrayList<String> clienteSelect( Statement st, Cliente c, String codigoSelect ) {
+	public static ArrayList<String> clienteSelect( Statement st, Cliente c, String adicional ) {
 		if (c==null) return null;
 		String sentSQL = "";
 		ArrayList<String> ret = new ArrayList<>();
 		try {
 			sentSQL = "select * from cliente";
-			if (c!=null) {
+			
 				String where = "Cliente_nombre='" + c.getNombre() + "'";
-				if (codigoSelect!=null && !codigoSelect.equals(""))
-					sentSQL = sentSQL + " where " + where + " AND " + codigoSelect;
+				if (adicional!=null && !adicional.equals(""))
+					sentSQL = sentSQL + " where " + where + " AND " + adicional;
 				else
 					sentSQL = sentSQL + " where " + where;
-			}
-			if (codigoSelect!=null && !codigoSelect.equals(""))
-				sentSQL = sentSQL + " where " + codigoSelect;
+			
+			if (adicional!=null && !adicional.equals(""))
+				sentSQL = sentSQL + " where " + adicional;
 				System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
 			while (rs.next()) {
@@ -254,7 +284,7 @@ private static String nombreBD = "discotecaBD";
 	/** Realiza una consulta a la tabla abierta de clientes de la BD, usando la sentencia SELECT de SQL
 	 * @param st			Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
 	 * @param t				trabajador que se busac seleccionar (no null)
-	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
+	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la bï¿½squeda (vacï¿½a si no se usa)
 	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
 	
@@ -296,15 +326,15 @@ private static String nombreBD = "discotecaBD";
 	 * aram contrasena		contrasena de acceso del respectivo trabajador
 	 * @return				lista de clientes cargados desde la base de datos, null si hay cualquier error
 	 */
-	public static boolean trabajadorInsert( Statement st, String dni , int salario, String contrasena  ) {
+	private static boolean trabajadorInsert(Statement st, String nombre, String contrasenia, int precioHora, int sueldo) {
 		String sentSQL = "";
 		try {
 			sentSQL = "insert into cliente values(" +
-					"'" + secu(dni) + "'," +
-					"'" + salario +"'"+secu(contrasena)+ "')";
+					"'" + secu(nombre) + "'," +
+					"'" + "'" + secu(contrasenia) + "',"+ precioHora + "'," + sueldo+"')";
 			int val = st.executeUpdate( sentSQL );
-			log( Level.INFO, "BD tabla trabajador añadida " + val + " fila\t" + sentSQL, null );
-			if (val!=1) {  // Se tiene que añadir 1 - error si no
+			log( Level.INFO, "BD tabla trabajador aï¿½adida " + val + " fila\t" + sentSQL, null );
+			if (val!=1) {  // Se tiene que aï¿½adir 1 - error si no
 				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
 				return false;  
 			}
@@ -315,15 +345,36 @@ private static String nombreBD = "discotecaBD";
 			e.printStackTrace();
 			return false;
 		}
+		
 	}
+	/**Inserta en la base de datos todos los trabajadores que hay en la lista del gestor
+	 * 
+	 * @param st			sentencia ya abierta con la base de datos
+	 * @param trabajadores	lista de trabajadores que se recorre posteriormente
+	 * @return
+	 */
+	public static boolean guardarTrabajadores(Statement st, ArrayList<Trabajador> trabajadores) {
+			
+			trabajadores = gs.getlTrabajadores();
+			
+			for (Trabajador t  : trabajadores) {
+				trabajadorInsert(st, t.getNombre(), t.getContrasenia(), t.getPrecioHora(), t.getSueldo());
+			}
+			
+			return false;	
+		}
 	
 
-	/** Añade una reserva a la tabla abierta de BD, usando la sentencia INSERT de SQL
+	
+
+	
+
+	/** Aï¿½ade una reserva a la tabla abierta de BD, usando la sentencia INSERT de SQL
 	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente a la reserva)
 	 * @param d		Discoteca en la que se realiza la reserva
 	 * @param nomC	nombre del Cliente
 	 * @param rf	Rango de fechas de la reserva nueva
-	 * @return true si la inserción es correcta, false en caso contrario
+	 * @return true si la inserciï¿½n es correcta, false en caso contrario
 	 */
 	public static boolean reservaInsert( Statement st, Discoteca d, String nomC, int fecha ) {
 		String sentSQL = "";
@@ -333,8 +384,8 @@ private static String nombreBD = "discotecaBD";
 					"'" + secu(nomC) + "'," +
 					"," + fecha + ")";
 			int eu = st.executeUpdate( sentSQL );
-			log( Level.INFO, "BD tabla reserva añadida " + eu + " fila\t" + sentSQL, null );
-			if (eu!=1) {  // Se tiene que añadir 1 - error si no
+			log( Level.INFO, "BD tabla reserva aï¿½adida " + eu + " fila\t" + sentSQL, null );
+			if (eu!=1) {  // Se tiene que aï¿½adir 1 - error si no
 				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
 				return false;  
 			}
@@ -351,7 +402,7 @@ private static String nombreBD = "discotecaBD";
 	 * @param st	Sentencia ya abierta de Base de Datos (con la estructura de tabla correspondiente al usuario)
 	 * @param h	Discoteca del que se buscan las reservas (no null)
 	 * @param cliente	Cliente del que se buscan las reservas (no null)
-	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la búsqueda (vacía si no se usa)
+	 * @param codigoSelect	Sentencia correcta de WHERE (sin incluirlo) para filtrar la bï¿½squeda (vacï¿½a si no se usa)
 	 * @return	lista de reservas cargadas desde la base de datos, null si hay cualquier error
 	 */
 	public static ArrayList<String> reservaSelect( Statement st, Discoteca d, String cliente, String codigoSelect ) {
@@ -388,12 +439,12 @@ private static String nombreBD = "discotecaBD";
 	
 	
 	private static String secu( String string ) {
-		// Implementación (1)
+		// Implementaciï¿½n (1)
 		// return string.replaceAll( "'",  "''" ).replaceAll( "\\n", "" );
-		// Implementación (2)
+		// Implementaciï¿½n (2)
 		StringBuffer sb = new StringBuffer();
 		for (char c : string.toCharArray()) {
-			if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZñÑáéíóúüÁÉÍÓÚÚ.,:;-_(){}[]-+*=<>'\"¿?¡!&%$@#/\\0123456789".indexOf(c)>=0) sb.append(c);
+			if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.,:;-_(){}[]-+*=<>'\"ï¿½?ï¿½!&%$@#/\\0123456789".indexOf(c)>=0) sb.append(c);
 		}
 		return sb.toString();
 	}
@@ -411,10 +462,8 @@ private static String nombreBD = "discotecaBD";
 			}
 			return ret;
 		} catch (Exception e) {
-			//T6
-			//logger.log( Level.SEVERE, "Excepción", e );
 			procesarError((ex) -> { 
-				logger.log( Level.SEVERE, "Excepción en getProductos()");
+				logger.log( Level.SEVERE, "Excepciï¿½n en getProductos()");
 			    System.out.println("Excepcion: "+ex.getMessage());}, e);
 			//
 			return null;
@@ -425,8 +474,8 @@ private static String nombreBD = "discotecaBD";
 	/////////////////////////////////// LOGGER DE LA BASE DE DATOS ////////////////////////////////////////////////////
 	
 	
-	public static Logger logger = null;  // cambio en tarea 2 para poderlo utilizar desde allí
-	// Método público para asignar un logger externo
+	public static Logger logger = null;  // cambio en tarea 2 para poderlo utilizar desde allï¿½
+	// Mï¿½todo pï¿½blico para asignar un logger externo
 	/** Asigna un logger ya creado para que se haga log de las operaciones de base de datos
 	 * @param logger	Logger ya creado
 	 */

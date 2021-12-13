@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -32,16 +33,18 @@ import logica.Producto;
 import logica.Reserva;
 import logica.Almacen;
 
-/**Ventana que permite al usuario hacer una reserva/ compra con antelanción para el día de la reserva
+/**
+ * Ventana que permite al usuario hacer una reserva/ compra con antelanción para
+ * el día de la reserva
+ * 
  * @author Maria Perez
  *
  */
 @SuppressWarnings("serial")
-public class VentanaReservaProductos extends JFrame{
-	
+public class VentanaReservaProductos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	//Componentes
+	// Componentes
 	private JList<Producto> productosJList;
 	private JLabel nombreInfo;
 	private JLabel precioInfo;
@@ -53,27 +56,25 @@ public class VentanaReservaProductos extends JFrame{
 	private static Reserva reserva;
 	private Almacen almacen;
 	private static GestionDiscoteca Gs1;
-	
-	
-	// String nombre,  Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
+
+	// String nombre, Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
 	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
 		this.setMinimumSize(new Dimension(800, 600));
-		
-		
-		//Lista
+
+		// Lista
 		productosJList = new JList<Producto>();
 		productosJList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 		JScrollPane productosScrollPane = new JScrollPane(productosJList);
 		JPanel productosPanel = new JPanel();
 		productosPanel.setLayout(new BorderLayout());
-		JPanel nomPanel = new JPanel( new GridBagLayout());
+		JPanel nomPanel = new JPanel(new GridBagLayout());
 		nomPanel.add(new JLabel("Productos"));
-		productosPanel.add(nomPanel,BorderLayout.NORTH);
+		productosPanel.add(nomPanel, BorderLayout.NORTH);
 		productosPanel.add(productosScrollPane, BorderLayout.CENTER);
 		add(productosPanel, BorderLayout.WEST);
-		
+
 		DefaultListModel listModel = new DefaultListModel();
-		
+
 		System.out.println(disco);
 		System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
 		// Añade al productosJList una serie de productos
@@ -81,7 +82,7 @@ public class VentanaReservaProductos extends JFrame{
 			listModel.addElement(producto);
 		}
 		productosJList.setModel(listModel);
-		
+
 		// Actualiza las características del producto
 		productosJList.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -89,26 +90,25 @@ public class VentanaReservaProductos extends JFrame{
 				actualizarInfo();
 			}
 		});
-		
 
 		// FIn lista
-		
-		//Panel botones
+
+		// Panel botones
 		JPanel panelCentral = new JPanel(new BorderLayout());
-		JPanel panelInferior = new JPanel(); 
-		JButton bFinalizar = new JButton ("Finalizar");
+		JPanel panelInferior = new JPanel();
+		JButton bFinalizar = new JButton("Finalizar");
 		panelInferior.add(bFinalizar);
-		JLabel importeTotal = new JLabel ("Importe a pagar:");
+		JLabel importeTotal = new JLabel("Importe a pagar:");
 		importeTotalInfo = new JLabel();
 		panelInferior.add(importeTotal);
-		panelCentral.add(panelInferior,BorderLayout.SOUTH);
-		
-		//Panel Información 
+		panelCentral.add(panelInferior, BorderLayout.SOUTH);
+
+		// Panel Información
 		JPanel panelInformacionProductos = new JPanel();
 		panelInformacionProductos.setLayout(new GridLayout(5, 2));
-		Border border= BorderFactory.createTitledBorder("Información productos");
+		Border border = BorderFactory.createTitledBorder("Información productos");
 		panelInformacionProductos.setBorder(border);
-		
+
 		// Creación panel
 		JPanel nombrePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel nombreLabel = new JLabel("Nombre: ");
@@ -116,153 +116,155 @@ public class VentanaReservaProductos extends JFrame{
 		nombrePanel.add(nombreLabel);
 		nombrePanel.add(nombreInfo);
 		panelInformacionProductos.add(nombrePanel);
-		
+
 		JPanel precioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel precioLabel = new JLabel("Precio: € ");
 		precioInfo = new JLabel();
 		precioPanel.add(precioLabel);
-		precioPanel.add(precioInfo );
+		precioPanel.add(precioInfo);
 		panelInformacionProductos.add(precioPanel);
-		
+
 		JPanel tamanioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel tamanioLabel = new JLabel("Tamaño:  ");
 		tamanioInfo = new JLabel();
 		tamanioPanel.add(tamanioLabel);
-		tamanioPanel.add(tamanioInfo );
+		tamanioPanel.add(tamanioInfo);
 		panelInformacionProductos.add(tamanioPanel);
-		
+
 		JPanel mezclaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel mezclaLabel = new JLabel("mezcla:  ");
 		mezclaInfo = new JLabel();
 		mezclaPanel.add(mezclaLabel);
-		mezclaPanel.add(mezclaInfo );
+		mezclaPanel.add(mezclaInfo);
 		panelInformacionProductos.add(mezclaPanel);
-		
+
 		JPanel alcoholPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel alcoholLabel = new JLabel("alcohol:  ");
 		alcoholInfo = new JLabel();
 		alcoholPanel.add(alcoholLabel);
-		alcoholPanel.add(alcoholInfo );
+		alcoholPanel.add(alcoholInfo);
 		panelInformacionProductos.add(alcoholPanel);
-		
+
 		JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel infoLabel = new JLabel(" ");
 		info1 = new JLabel();
 		infoPanel.add(infoLabel);
 		infoPanel.add(info1);
 		panelInformacionProductos.add(infoPanel);
-		
-		JButton bAnadir = new JButton ("Añadir");
-		JButton bEliminar = new JButton ("Eliminar");
+
+		JButton bAnadir = new JButton("Añadir");
+		JButton bEliminar = new JButton("Eliminar");
 		panelInformacionProductos.add(bAnadir);
 		panelInformacionProductos.add(bEliminar);
-		
-		panelCentral.add(panelInformacionProductos,BorderLayout.NORTH);
-		
-		add(panelCentral,BorderLayout.CENTER);
-		
+
+		panelCentral.add(panelInformacionProductos, BorderLayout.NORTH);
+
+		add(panelCentral, BorderLayout.CENTER);
+
 		// Panel productos añadidos
 		JPanel panelMapa = new JPanel();
 		Border border2 = BorderFactory.createTitledBorder("Carrito");
 		panelMapa.setBorder(border2);
-		panelCentral.add(panelMapa,BorderLayout.CENTER);
-			
-		
-		// Actualización de los métodos de tanto el carrito como el importe 
-		//actualizarCarrito(reserva, panelMapa);
-		//actualizarImporteTotal(reserva, panelInferior);
-		
+		panelCentral.add(panelMapa, BorderLayout.CENTER);
 
-		
+		// Actualización de los métodos de tanto el carrito como el importe
+		reserva = new Reserva();
+		// actualizarCarrito(reserva, panelMapa);
+		// actualizarImporteTotal(reserva, panelInferior);
 
-		
-		
 //		
-		// Añade al carrito (mapa) los productos seleccionados del productosJlist que van apareciendo en el panel
+		// Añade al carrito (mapa) los productos seleccionados del productosJlist que
+		// van apareciendo en el panel
 		bAnadir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(productosJList.getSelectedValue()!=null) {
+				Producto productoSeleccionado = productosJList.getSelectedValue();
+				if (productoSeleccionado != null) {
 					for (Map.Entry<Producto, Integer> entry : disco.getAlmacen().getMapaProductoAlmacen().entrySet()) {
 						Producto key = entry.getKey();
 						Integer value = entry.getValue();
-						if(productosJList.getSelectedValue() == key) {
-							if(value !=0) {
-								reserva.anadirAlMapa(productosJList.getSelectedValue());
-								actualizarCarrito(reserva,panelMapa);
+						if (productoSeleccionado.equals(key)) {
+							if (value != 0) {
+								System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
+								disco.actualizarAlmacenDico( productoSeleccionado);
+								reserva.anadirAlMapa(productoSeleccionado);
+								System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
+								actualizarCarrito(reserva, panelMapa);
 								actualizarImporteTotal(reserva, panelInferior);
-								VentanaReservaProductos.this.repaint();
 								
-							}else {
+								VentanaReservaProductos.this.repaint();
+
+							} else {
 								JOptionPane.showMessageDialog(VentanaReservaProductos.this, "No hay stock");
 							}
-					reserva.anadirAlMapa(productosJList.getSelectedValue());
+							break;
 
-				}
-				else {
-					JOptionPane.showMessageDialog(VentanaReservaProductos.this, "Ningún producto seleccionado. Porfavor seleccione alguno.");
-				}	
+						}
+
 					}
-					
+
+				} else {
+					JOptionPane.showMessageDialog(VentanaReservaProductos.this,
+							"Ningún producto seleccionado. Porfavor seleccione alguno.");
 				}
 			}
 		});
-		
-		
-		// Elimina los productos seleccionados del carrito (mapa) 
+
+		// Elimina los productos seleccionados del carrito (mapa)
 		bEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reserva.eliminarDelMapa(productosJList.getSelectedValue());
-				actualizarCarrito(reserva,panelMapa );
+				actualizarCarrito(reserva, panelMapa);
 				actualizarImporteTotal(reserva, panelInferior);
-				
+
 			}
 		});
 		setTitle("PRODUCTOS");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setMaximumSize(new Dimension(700,500));
+		this.setMaximumSize(new Dimension(700, 500));
 		this.repaint();
 
 	}
 
-	
-	
-	/** Actualiza la información
+	/**
+	 * Actualiza la información
 	 * 
 	 */
 	public void actualizarInfo() {
-		if (productosJList.getSelectedIndex() !=-1) {
+		if (productosJList.getSelectedIndex() != -1) {
 			Producto producto = productosJList.getSelectedValue();
-			System.out.println("Producto seleccionado:"+ producto +"   Precio" +producto.getPrecio() );
+			System.out.println("Producto seleccionado:" + producto + "   Precio" + producto.getPrecio());
 			nombreInfo.setText(producto.getNombre());
-			precioInfo.setText( " " + producto.getPrecio());
+			precioInfo.setText(" " + producto.getPrecio());
 			if (producto instanceof Comida) {
 				mezclaInfo.setText(" ");
 				alcoholInfo.setText(" ");
-				tamanioInfo.setText( ((Comida) producto).getTamanio());
-			}else if (producto instanceof Bebida) {
+				tamanioInfo.setText(((Comida) producto).getTamanio());
+			} else if (producto instanceof Bebida) {
 				alcoholInfo.setText(((Bebida) producto).getAlcohol());
 				mezclaInfo.setText(((Bebida) producto).getMezcla());
 				tamanioInfo.setText(" ");
-				
+
 			}
 		}
 		VentanaReservaProductos.this.pack();
 	}
-	
-	/** Actualiza el carrito a medida que se van añadiendo los productos al mapa
+
+	/**
+	 * Actualiza el carrito a medida que se van añadiendo los productos al mapa
+	 * 
 	 * @param reserva
 	 * @param jpanel
 	 */
 	public void actualizarCarrito(Reserva reserva, JPanel jpanel) {
 		jpanel.removeAll();
-		jpanel.setLayout(new GridLayout(reserva.getMapaProducto().size() + 1,2));
-		if(reserva.getMapaProducto().size() == 0) {
+		jpanel.setLayout(new GridLayout(reserva.getMapaProducto().size() + 1, 2));
+		if (reserva.getMapaProducto().size() == 0) {
 			jpanel.removeAll();
 			jpanel.revalidate();
-			
-		}else {
+
+		} else {
 			for (Map.Entry<Producto, Integer> entry : reserva.getMapaProducto().entrySet()) {
 				Producto key = entry.getKey();
 				Integer value = entry.getValue();
@@ -276,8 +278,11 @@ public class VentanaReservaProductos extends JFrame{
 		}
 		jpanel.revalidate();
 	}
-	
-	/**Actualiza el importe a pagar cada vez que se va añadiendo productos al carrito (mapa)
+
+	/**
+	 * Actualiza el importe a pagar cada vez que se va añadiendo productos al
+	 * carrito (mapa)
+	 * 
 	 * @param reserva
 	 * @param jpanel
 	 */
@@ -285,13 +290,15 @@ public class VentanaReservaProductos extends JFrame{
 		importeTotalInfo.setText(Double.toString(reserva.calcImporte()));
 		jpanel.add(importeTotalInfo);
 	}
-	
+
 	public void clear() {
 		nombreInfo.setText(" ");
 		precioInfo.setText(" ");
 		tamanioInfo.setText(" ");
 		mezclaInfo.setText(" ");
+		alcoholInfo.setText(" ");
 	}
 	
+
 
 }

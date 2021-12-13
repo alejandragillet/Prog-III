@@ -11,18 +11,18 @@ import java.net.Socket;
 public class Comunicador {
     private static final String HOST = "localhost";
     private static final int PORT = 4000;
-    Socket socket;
-    PrintWriter outputAServer;
-    BufferedReader inputDesdeServer;
-    boolean finComunicacion = false;
+    static Socket socket;
+    static PrintWriter outputAServer;
+    static BufferedReader inputDesdeServer;
+    static boolean finComunicacion = false;
 
     public Comunicador() {
 
     }
 
-    public void lanzaCliente() {
-        try (Socket socket = new Socket(HOST, PORT)) {
-            this.socket = socket;
+    public static void lanzaCliente() {
+        try (Socket s = new Socket(HOST, PORT)) {
+            socket = s;
             inputDesdeServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputAServer = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("Despues de outputAServer");
@@ -35,11 +35,29 @@ public class Comunicador {
         System.out.println("Fin del proceso del cliente");
     }
 
-    public String emitirMensaje(String mensaje) throws IOException {
+    /**
+     * Envia y mensaje al servidor. Y devuelve su respuesta
+     * @param mensaje a enviar al servidor
+     * @return la respuesta del servidor
+     * @throws IOException
+     */
+    private static String emitirMensaje(String mensaje) throws IOException { //te devuelve el mensaje del servidor
         System.out.println("Emitiendo mensaje: " + mensaje);
         outputAServer.println(mensaje);
         String respuesta = inputDesdeServer.readLine();
         return respuesta;
+    }
+
+    public static boolean login(String nombre, String pass) throws IOException {
+        String r = emitirMensaje("login:" + nombre + "-" + pass);
+        String [] splitted = r.split("-");
+        String respuestaLogin = splitted[1];
+
+        if (respuestaLogin == "true"){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void esperarConexion() {
