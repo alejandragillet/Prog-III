@@ -151,9 +151,17 @@ public class GestionDiscoteca {
 	    	
 	    	
 	    	HashMap<Producto,Integer> mapaProductoAlmacenMoma = new HashMap<Producto,Integer >();
-	    	mapaProductoAlmacenMoma.put(Bebida5, 8);
-	    	mapaProductoAlmacenMoma.put(Comida4, 4);
-	    	mapaProductoAlmacenMoma.put(Comida3, 0);
+	    	mapaProductoAlmacenMoma.put(Bebida1, 90);
+	    	mapaProductoAlmacenMoma.put(Bebida2, 12);
+	    	mapaProductoAlmacenMoma.put(Bebida3, 9);
+	    	mapaProductoAlmacenMoma.put(Bebida4, 3);
+	    	mapaProductoAlmacenMoma.put(Bebida5, 11);
+	    	mapaProductoAlmacenMoma.put(Bebida6, 0);
+	    	mapaProductoAlmacenMoma.put(Bebida7, 45);
+	    	mapaProductoAlmacenMoma.put(Comida1, 43);
+	    	mapaProductoAlmacenMoma.put(Comida2, 15);
+	    	mapaProductoAlmacenMoma.put(Comida3, 86);
+	    	mapaProductoAlmacenMoma.put(Comida4, 0);
 	    	
 	    	System.out.println(mapaProductoAlmacenBudha);
 	    	
