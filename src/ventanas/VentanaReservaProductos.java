@@ -54,8 +54,6 @@ public class VentanaReservaProductos extends JFrame {
 	private JLabel importeTotalInfo;
 	private JLabel info1;
 	private static Reserva reserva;
-	private Almacen almacen;
-	private static GestionDiscoteca Gs1;
 
 	// String nombre, Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
 	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
@@ -169,7 +167,7 @@ public class VentanaReservaProductos extends JFrame {
 
 		// Actualización de los métodos de tanto el carrito como el importe
 		reserva = new Reserva();
-		// actualizarCarrito(reserva, panelMapa);
+		actualizarCarrito(reserva, panelMapa);
 		// actualizarImporteTotal(reserva, panelInferior);
 
 //		

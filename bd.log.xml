@@ -676,3 +676,18 @@
   </exception>
 </record>
 </log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-08T18:07:51.785978600Z</date>
+  <millis>1638986871785</millis>
+  <nanos>978600</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
