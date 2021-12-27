@@ -462,8 +462,6 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			}
 			return ret;
 		} catch (Exception e) {
-			//T6
-			//logger.log( Level.SEVERE, "Excepci�n", e );
 			procesarError((ex) -> { 
 				logger.log( Level.SEVERE, "Excepci�n en getProductos()");
 			    System.out.println("Excepcion: "+ex.getMessage());}, e);

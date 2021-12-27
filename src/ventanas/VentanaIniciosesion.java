@@ -37,6 +37,7 @@ public class VentanaIniciosesion extends JFrame {
 			JButton bCancelar = new JButton ("Cancelar");
 			
 			JLabel lNick = new JLabel ("DNI: " + dni);
+
 			JLabel lPasword = new JLabel ("Contrase�a: " + contrasenia);
 			JLabel lSueldo = new JLabel("Sueldo: " );
 			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1)));
