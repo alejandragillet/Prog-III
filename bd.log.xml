@@ -676,3 +676,65 @@
   </exception>
 </record>
 </log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-08T18:07:51.785978600Z</date>
+  <millis>1638986871785</millis>
+  <nanos>978600</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-27T09:57:40.219597Z</date>
+  <millis>1640599060219</millis>
+  <nanos>597000</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-27T09:58:13.029405200Z</date>
+  <millis>1640599093029</millis>
+  <nanos>405200</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-27T10:07:10.583700800Z</date>
+  <millis>1640599630583</millis>
+  <nanos>700800</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>

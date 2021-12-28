@@ -119,7 +119,7 @@ public class GestionDiscoteca {
 	  
 	    	// Crear productos
 	    	Bebida Bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
-	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPIT0, "tequila", " ", 3 );
+	    	Bebida Bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPITO, "tequila", " ", 3 );
 	    	Bebida Bebida3 = new Bebida("Alexander" , EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida",9);
 	    	Bebida Bebida4 = new Bebida ("RonCola", EnumBebida.COPA, "ron", "coca-cola", 7);
 	    	Bebida Bebida5 = new Bebida("Kalimotxo", EnumBebida.COPA, "vino", "Coca-Cola", 4);
@@ -151,9 +151,17 @@ public class GestionDiscoteca {
 	    	
 	    	
 	    	HashMap<Producto,Integer> mapaProductoAlmacenMoma = new HashMap<Producto,Integer >();
-	    	mapaProductoAlmacenMoma.put(Bebida5, 8);
-	    	mapaProductoAlmacenMoma.put(Comida4, 4);
-	    	mapaProductoAlmacenMoma.put(Comida3, 0);
+	    	mapaProductoAlmacenMoma.put(Bebida1, 90);
+	    	mapaProductoAlmacenMoma.put(Bebida2, 12);
+	    	mapaProductoAlmacenMoma.put(Bebida3, 9);
+	    	mapaProductoAlmacenMoma.put(Bebida4, 3);
+	    	mapaProductoAlmacenMoma.put(Bebida5, 11);
+	    	mapaProductoAlmacenMoma.put(Bebida6, 0);
+	    	mapaProductoAlmacenMoma.put(Bebida7, 45);
+	    	mapaProductoAlmacenMoma.put(Comida1, 43);
+	    	mapaProductoAlmacenMoma.put(Comida2, 15);
+	    	mapaProductoAlmacenMoma.put(Comida3, 86);
+	    	mapaProductoAlmacenMoma.put(Comida4, 0);
 	    	
 	    	System.out.println(mapaProductoAlmacenBudha);
 	    	
@@ -204,41 +212,41 @@ public class GestionDiscoteca {
     	
     }
     ///METODO RECUSIVO/////////////
-    private ArrayList<Producto> producto_max = null;
-    ArrayList<Producto> productos = BaseDeDatos.getProductos();
-    public void findMaxImporte() {
-		ArrayList<Producto> l_pro = BaseDeDatos.getProductos();
-		Producto productoM = findMaxImporte(l_pro, 0, l_pro.size() - 1);
-		double imp_max = productoM.getPrecio();
-		producto_max = new ArrayList<Producto>();
-		for (Producto p : l_pro) {
-			double imp = p.getPrecio();
-			if (imp == imp_max) {
-				producto_max.add(p);
-			}
-		}
-	}
-	
-	public Producto findMaxImporte(ArrayList<Producto> compras, int i, int j){
-		
-		int med;
-		Producto max_left, max_right;
-		if (i==j) {
-			return productos.get(i);
-		} else {
-			med = (i + j) / 2;
-		}
-		max_left = findMaxImporte(productos, i, med);
-		max_right =	findMaxImporte (productos, med+1, j);
-	
-		double imp_left =  max_left.getPrecio();
-		double imp_right = max_right.getPrecio();
-		
-		if (imp_left > imp_right) 
-			return max_left;
-		else
-			return max_right;
-	 }
+//    private ArrayList<Producto> producto_max = null;
+//    ArrayList<Producto> productos = BaseDeDatos.getProductos();
+//    public void findMaxImporte() {
+//		ArrayList<Producto> l_pro = BaseDeDatos.getProductos();
+//		Producto productoM = findMaxImporte(l_pro, 0, l_pro.size() - 1);
+//		double imp_max = productoM.getPrecio();
+//		producto_max = new ArrayList<Producto>();
+//		for (Producto p : l_pro) {
+//			double imp = p.getPrecio();
+//			if (imp == imp_max) {
+//				producto_max.add(p);
+//			}
+//		}
+//	}
+//	
+//	public Producto findMaxImporte(ArrayList<Producto> compras, int i, int j){
+//		
+//		int med;
+//		Producto max_left, max_right;
+//		if (i==j) {
+//			return productos.get(i);
+//		} else {
+//			med = (i + j) / 2;
+//		}
+//		max_left = findMaxImporte(productos, i, med);
+//		max_right =	findMaxImporte (productos, med+1, j);
+//	
+//		double imp_left =  max_left.getPrecio();
+//		double imp_right = max_right.getPrecio();
+//		
+//		if (imp_left > imp_right) 
+//			return max_left;
+//		else
+//			return max_right;
+//	 }
 
     
 }

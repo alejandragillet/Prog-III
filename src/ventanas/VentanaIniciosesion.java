@@ -37,7 +37,8 @@ public class VentanaIniciosesion extends JFrame {
 			JButton bCancelar = new JButton ("Cancelar");
 			
 			JLabel lNick = new JLabel ("DNI: " + dni);
-			JLabel lPasword = new JLabel ("Contraseña: " + contrasenia);
+
+			JLabel lPasword = new JLabel ("Contraseï¿½a: " + contrasenia);
 			JLabel lSueldo = new JLabel("Sueldo: " );
 			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1)));
 
@@ -82,10 +83,10 @@ public class VentanaIniciosesion extends JFrame {
 //				dispose();	
 //				}
 //			});			
-}
+
+		}
 		
-		
-}
+	}
 	//Es un hilo para hacer un reloj en la sesion de inicio
 	public void relojDeLaSesionDeInicio() {
 	DateTimeFormatter tiempo = DateTimeFormatter.ofPattern("HH:mm:ss");

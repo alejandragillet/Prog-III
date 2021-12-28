@@ -1,6 +1,6 @@
 package logica;
 
 public enum EnumBebida {
-	COPA, CHUPIT0 ,COCTEL ,CERVEZA, REFRESCO
+	COPA, CHUPITO ,COCTEL ,CERVEZA, REFRESCO
 }
 

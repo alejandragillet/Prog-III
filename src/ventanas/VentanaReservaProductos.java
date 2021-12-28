@@ -54,8 +54,6 @@ public class VentanaReservaProductos extends JFrame {
 	private JLabel importeTotalInfo;
 	private JLabel info1;
 	private static Reserva reserva;
-	private Almacen almacen;
-	private static GestionDiscoteca Gs1;
 
 	// String nombre, Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
 	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
@@ -169,7 +167,7 @@ public class VentanaReservaProductos extends JFrame {
 
 		// Actualización de los métodos de tanto el carrito como el importe
 		reserva = new Reserva();
-		// actualizarCarrito(reserva, panelMapa);
+		actualizarCarrito(reserva, panelMapa);
 		// actualizarImporteTotal(reserva, panelInferior);
 
 //		
@@ -185,7 +183,6 @@ public class VentanaReservaProductos extends JFrame {
 						Integer value = entry.getValue();
 						if (productoSeleccionado.equals(key)) {
 							if (value != 0) {
-								System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
 								disco.actualizarAlmacenDico( productoSeleccionado);
 								reserva.anadirAlMapa(productoSeleccionado);
 								System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
@@ -214,11 +211,26 @@ public class VentanaReservaProductos extends JFrame {
 		bEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				reserva.eliminarDelMapa(productosJList.getSelectedValue());
+				Producto productoSeleccionado = productosJList.getSelectedValue();
+				System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
+				loop: for (Map.Entry<Producto, Integer> entry : reserva.getMapaProducto().entrySet()) {
+					Producto key = entry.getKey();
+					Integer value = entry.getValue();
+					if (productoSeleccionado.equals(key)) {
+						if (value > 0) {
+							disco.actualizarAlmacenDiscoBorrar(productosJList.getSelectedValue());
+							reserva.eliminarDelMapa(productosJList.getSelectedValue());
+						}else {
+							break loop;
+						}
+					}
+				}
+				System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
 				actualizarCarrito(reserva, panelMapa);
 				actualizarImporteTotal(reserva, panelInferior);
-
+				VentanaReservaProductos.this.repaint();
 			}
+					
 		});
 		setTitle("PRODUCTOS");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
