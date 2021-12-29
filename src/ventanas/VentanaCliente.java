@@ -37,7 +37,7 @@ public class VentanaCliente extends JFrame {
 		JButton bAceptar = new JButton("Aceptar");
 		JButton bCancelar = new JButton("Cancelar");
 		JLabel lNick = new JLabel("Nombre");
-		JLabel lPasword = new JLabel("Contrase�a");
+		JLabel lPasword = new JLabel("Contrasena");
 		JLabel lRegistro = new JLabel("Todavia no tienes cuenta");
 		JLabel lMensaje = new JLabel("ERROR. No se ha encontrado ningun usuario");
 		JButton bRegistrarse = new JButton("Registrarse");
