@@ -41,7 +41,7 @@ public class GestionDiscoteca {
 		gs1.initConexiones();
     	gs1.init(gs1);
 
-		VentanaCliente vc = new VentanaCliente("Hola", gs1);
+		VentanaCliente vc = new VentanaCliente("Registros", gs1);
 		vc.setVisible(true);
 
     	VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1);
@@ -211,7 +211,7 @@ public class GestionDiscoteca {
     	}
     	
     }
-    ///METODO RECUSIVO/////////////
+    /// Esta mal este METODO RECUSIVO/////////////
 //    private ArrayList<Producto> producto_max = null;
 //    ArrayList<Producto> productos = BaseDeDatos.getProductos();
 //    public void findMaxImporte() {

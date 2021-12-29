@@ -197,7 +197,6 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			return null;
 		}
 	}
-
 	
 
 	/** A�ade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
