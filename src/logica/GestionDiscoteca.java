@@ -211,6 +211,24 @@ public class GestionDiscoteca {
     	}
     	
     }
+    
+	private void calcularComprasPosibles( double disponible ) {
+		ArrayList<Producto> lProds = new ArrayList<>();
+		calcularComprasPosibles( lProductos, disponible, lProds );
+	}
+	private void calcularComprasPosibles( ArrayList<Producto> prods, double dineroQueda, ArrayList<Producto> lProdsComprados ) {
+		if (dineroQueda < 0 ) {  // Caso base: compra imposible  (no hay suficiente dinero)
+			return;
+		} else if (dineroQueda < 50) {  // Caso base: compra posible con menos de 100 euros sobrantes
+			System.out.println( "Posible compra (sobran " + String.format("%.2f",dineroQueda) + " euros): " + lProdsComprados );
+		} else {  // Caso general - probar por combinatoria todos los productos posibles para comprar
+			for (Producto p : prods) {
+				lProdsComprados.add( p );
+				calcularComprasPosibles( prods, dineroQueda - p.getPrecio(), lProdsComprados );
+				lProdsComprados.remove( lProdsComprados.size()-1 );
+			}
+		}
+	}
     ///METODO RECUSIVO/////////////
 //    private ArrayList<Producto> producto_max = null;
 //    ArrayList<Producto> productos = BaseDeDatos.getProductos();
