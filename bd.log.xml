@@ -738,6 +738,7 @@
   <thread>1</thread>
   <message>Conectada base de datos discotecaBD</message>
 </record>
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
@@ -745,6 +746,31 @@
   <date>2021-12-28T17:11:39.186611300Z</date>
   <millis>1640711499186</millis>
   <nanos>611300</nanos>
+=======
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-28T17:13:03.541506300Z</date>
+  <millis>1640711583541</millis>
+  <nanos>506300</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2021-12-29T15:22:04.274488Z</date>
+  <millis>1640791324274</millis>
+  <nanos>488000</nanos>
+>>>>>>> branch 'main' of https://github.com/alejandragillet/Prog-III.git
   <sequence>0</sequence>
   <logger>basedatos.BaseDeDatos</logger>
   <level>INFO</level>

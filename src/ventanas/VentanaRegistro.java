@@ -32,13 +32,13 @@ public VentanaRegistro(String titulo, GestionDiscoteca gs){
 		JPanel pCentral = new JPanel();
 		JPanel pInferior = new JPanel();
 		
-		JLabel lTitulo = new JLabel ("Reg�strate aqui!");
+		JLabel lTitulo = new JLabel ("Registrate aqui!");
 		JButton bAceptar = new JButton ("Aceptar");
 		JButton bLogIn = new JButton ("Log In");
 		JLabel lNick = new JLabel ("Nombre");
 		JLabel lApellido = new JLabel ("Apellido");
 		JLabel lDNI = new JLabel ("DNI");
-		JLabel lPasword = new JLabel ("Contrase�a");
+		JLabel lPasword = new JLabel ("Contrasena");
 		JTextField tfNick = new JTextField(15);
 		JTextField tfApellido = new JTextField(15);
 		JTextField tfDNI = new JTextField(10);

@@ -197,7 +197,6 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			return null;
 		}
 	}
-
 	
 
 	/** A�ade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
@@ -439,9 +438,6 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 	
 	
 	private static String secu( String string ) {
-		// Implementaci�n (1)
-		// return string.replaceAll( "'",  "''" ).replaceAll( "\\n", "" );
-		// Implementaci�n (2)
 		StringBuffer sb = new StringBuffer();
 		for (char c : string.toCharArray()) {
 			if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ��������������.,:;-_(){}[]-+*=<>'\"�?�!&%$@#/\\0123456789".indexOf(c)>=0) sb.append(c);
@@ -474,8 +470,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 	/////////////////////////////////// LOGGER DE LA BASE DE DATOS ////////////////////////////////////////////////////
 	
 	
-	public static Logger logger = null;  // cambio en tarea 2 para poderlo utilizar desde all�
-	// M�todo p�blico para asignar un logger externo
+	public static Logger logger = null;  
 	/** Asigna un logger ya creado para que se haga log de las operaciones de base de datos
 	 * @param logger	Logger ya creado
 	 */
