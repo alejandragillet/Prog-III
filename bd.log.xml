@@ -779,3 +779,34 @@
   <thread>1</thread>
   <message>Conectada base de datos discotecaBD</message>
 </record>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-01-02T18:08:28.422405300Z</date>
+  <millis>1641146908422</millis>
+  <nanos>405300</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-01-02T18:35:30.499233700Z</date>
+  <millis>1641148530499</millis>
+  <nanos>233700</nanos>
+  <sequence>0</sequence>
+  <logger>basedatos.BaseDeDatos</logger>
+  <level>INFO</level>
+  <class>basedatos.BaseDeDatos</class>
+  <method>log</method>
+  <thread>1</thread>
+  <message>Conectada base de datos discotecaBD</message>
+</record>
