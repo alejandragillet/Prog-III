@@ -97,24 +97,28 @@ public class Discoteca implements Cloneable {
 		return b;
 	}
 
-	public void actualizarAlmacenDico( Producto producto) {
-		for (Map.Entry<Producto, Integer> entry : almacen.getMapaProductoAlmacen().entrySet()) {
-			Producto key = entry.getKey();
-			Integer value = entry.getValue();
-			if (producto.equals(key)) {
-				almacen.getMapaProductoAlmacen().replace(key, value -1);
-			}
+	public void actualizarAlmacenDico(Producto producto) {
+		Integer stock = almacen.getMapaProductoAlmacen().get(producto);
+		if (stock != null) {
+			almacen.getMapaProductoAlmacen().put(producto, stock -1);
 		}
+		// for (Map.Entry<Producto, Integer> entry : almacen.getMapaProductoAlmacen().entrySet()) {
+		// 	Producto key = entry.getKey();
+		// 	Integer value = entry.getValue();
+		// 	if (producto.equals(key)) {
+		// 		almacen.getMapaProductoAlmacen().replace(key, value - 1);
+		// 	}
+		// }
 	}
-	
+
 	public void actualizarAlmacenDiscoBorrar(Producto producto) {
 		for (Map.Entry<Producto, Integer> entry : almacen.getMapaProductoAlmacen().entrySet()) {
 			Producto key = entry.getKey();
 			Integer value = entry.getValue();
 			if (producto.equals(key)) {
-				almacen.getMapaProductoAlmacen().replace(key, value +1);
+				almacen.getMapaProductoAlmacen().replace(key, value + 1);
 			}
-	
+
 		}
 	}
 

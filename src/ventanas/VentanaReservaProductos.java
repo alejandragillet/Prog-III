@@ -152,8 +152,10 @@ public class VentanaReservaProductos extends JFrame {
 
 		JButton bAnadir = new JButton("Añadir");
 		JButton bEliminar = new JButton("Eliminar");
+		JButton bGraficaStock = new JButton("Ver el stock");
 		panelInformacionProductos.add(bAnadir);
 		panelInformacionProductos.add(bEliminar);
+		panelInformacionProductos.add(bGraficaStock);
 
 		panelCentral.add(panelInformacionProductos, BorderLayout.NORTH);
 
@@ -188,7 +190,7 @@ public class VentanaReservaProductos extends JFrame {
 								System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
 								actualizarCarrito(reserva, panelMapa);
 								actualizarImporteTotal(reserva, panelInferior);
-								
+
 								VentanaReservaProductos.this.repaint();
 
 							} else {
@@ -232,6 +234,12 @@ public class VentanaReservaProductos extends JFrame {
 			}
 					
 		});
+
+		bGraficaStock.addActionListener(l -> { // java funcional
+			VentanaGraficaStock v = new VentanaGraficaStock(disco.getAlmacen().getMapaProductoAlmacen());
+			v.setVisible(true);
+		});
+
 		setTitle("PRODUCTOS");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setMaximumSize(new Dimension(700, 500));

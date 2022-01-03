@@ -2,6 +2,7 @@ package logica;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,18 +100,24 @@ public class Reserva {
 
 	public void eliminarDelMapa(Producto producto) {
 		try {
+			// arraylist to save the products to be removed
+			ArrayList<Producto> productosAEliminar = new ArrayList<Producto>();
 			for (Map.Entry<Producto, Integer> entry : mapaProducto.entrySet()) {
 				Producto key = entry.getKey();
 				Integer value = entry.getValue();
 				if (producto.getNombre().equals(key.getNombre())) {
 					if (value == 1) {
-						mapaProducto.remove(producto);
+						productosAEliminar.add(key); // para prevenir java.util.ConcurrentModificationException
 						return;
 					} else {
 						mapaProducto.replace(key, value - 1);
 						return;
 					}
 				}
+			}
+
+			for (Producto productoAEliminar : productosAEliminar) {
+				mapaProducto.remove(productoAEliminar);
 			}
 		} catch (Exception e) {
 
