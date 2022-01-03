@@ -11,7 +11,7 @@
   <class>basedatos.BaseDeDatos</class>
   <method>log</method>
   <thread>1</thread>
-  <message>Error en conexión de base de datos null</message>
+  <message>Error en conexiï¿½n de base de datos null</message>
   <exception>
     <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
     <frame>
@@ -189,7 +189,7 @@
   <class>basedatos.BaseDeDatos</class>
   <method>lambda$0</method>
   <thread>1</thread>
-  <message>Excepción en getProductos()</message>
+  <message>Excepciï¿½n en getProductos()</message>
 </record>
 </log>
 <?xml version="1.0" encoding="windows-1252" standalone="no"?>
@@ -205,7 +205,7 @@
   <class>basedatos.BaseDeDatos</class>
   <method>log</method>
   <thread>1</thread>
-  <message>Error en conexión de base de datos GestionDiscoteca.db</message>
+  <message>Error en conexiï¿½n de base de datos GestionDiscoteca.db</message>
   <exception>
     <message>java.lang.ClassNotFoundException: org.sqlite.JDBC</message>
     <frame>
@@ -383,7 +383,7 @@
   <class>basedatos.BaseDeDatos</class>
   <method>lambda$0</method>
   <thread>1</thread>
-  <message>Excepción en getProductos()</message>
+  <message>Excepciï¿½n en getProductos()</message>
 </record>
 </log>
 <?xml version="1.0" encoding="windows-1252" standalone="no"?>
@@ -738,15 +738,6 @@
   <thread>1</thread>
   <message>Conectada base de datos discotecaBD</message>
 </record>
-<<<<<<< HEAD
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2021-12-28T17:11:39.186611300Z</date>
-  <millis>1640711499186</millis>
-  <nanos>611300</nanos>
-=======
 <?xml version="1.0" encoding="windows-1252" standalone="no"?>
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
@@ -770,7 +761,6 @@
   <date>2021-12-29T15:22:04.274488Z</date>
   <millis>1640791324274</millis>
   <nanos>488000</nanos>
->>>>>>> branch 'main' of https://github.com/alejandragillet/Prog-III.git
   <sequence>0</sequence>
   <logger>basedatos.BaseDeDatos</logger>
   <level>INFO</level>

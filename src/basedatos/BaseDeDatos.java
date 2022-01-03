@@ -213,10 +213,11 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 					"'" + secu(nombre) + "'," +
 					"'" + secu(DNI) +"'," + "'" +secu(contrasena)+ "')";
 			int val = st.executeUpdate( sentSQL );
-			log( Level.INFO, "BD tabla cliente a�adida " + val + " fila\t" + sentSQL, null );
-			if (val!=1) {  // Se tiene que a�adir 1 - error si no
+			log( Level.INFO, "BD tabla cliente anadida " + val + " fila\t" + sentSQL, null );
+			if (val!=1) {  // Se tiene que anadir 1 - error si no
 				log( Level.SEVERE, "Error en insert de BD\t" + sentSQL, null );
 				return false;  
+				
 			}
 			return true;
 		} catch (SQLException e) {
