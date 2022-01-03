@@ -38,13 +38,15 @@ public class GestionDiscoteca {
 
     public static void main(String[] args) throws CloneNotSupportedException {
     	GestionDiscoteca gs1 = new GestionDiscoteca();
+    	Discoteca disco = new Discoteca();
+    	Cliente cliente = new Cliente();
 		gs1.initConexiones();
     	gs1.init(gs1);
 
 		VentanaCliente vc = new VentanaCliente("Registros", gs1);
 		vc.setVisible(true);
 
-    	VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1);
+    	VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1, cliente);
     	vre.setVisible(true);
     }
     

@@ -11,14 +11,11 @@ public class Reserva {
 	protected HashMap<Producto, Integer> mapaProducto = new HashMap<Producto, Integer>();
 	protected int numeroPersonas;
 	protected EnumZona zona;
-	private String nombre;
+	private String codigo;
 
 	public Reserva() {
 		this.importe = 0;
-		this.mapaProducto = mapaProducto;
-		this.numeroPersonas = numeroPersonas;
-		this.zona = zona;
-
+		this.mapaProducto = new HashMap<>();
 	}
 
 	public double getImporte() {
@@ -58,8 +55,10 @@ public class Reserva {
 	}
 
 	public void setZona(EnumZona zona) {
-		zona = zona;
+		this.zona = zona;
 	}
+	
+	
 
 	public double calcImporte() {
 		importe = 0;

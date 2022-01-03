@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import logica.Bebida;
+import logica.Cliente;
 import logica.Comida;
 import logica.Discoteca;
 import logica.GestionDiscoteca;
@@ -56,7 +57,7 @@ public class VentanaReservaProductos extends JFrame {
 	private static Reserva reserva;
 
 	// String nombre, Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
-	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco) {
+	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco, Cliente cliente) {
 		this.setMinimumSize(new Dimension(800, 600));
 
 		// Lista
@@ -74,7 +75,7 @@ public class VentanaReservaProductos extends JFrame {
 		DefaultListModel listModel = new DefaultListModel();
 
 		System.out.println(disco);
-		System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
+		//System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
 		// Añade al productosJList una serie de productos
 		for (Producto producto : gDisco.getlProductos()) {
 			listModel.addElement(producto);
@@ -170,7 +171,19 @@ public class VentanaReservaProductos extends JFrame {
 		actualizarCarrito(reserva, panelMapa);
 		// actualizarImporteTotal(reserva, panelInferior);
 
-//		
+	
+		
+		
+		// Finaliza la búsqueda para comprar los productos del carrito 
+		bFinalizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Reserva pasada: "+ reserva.getMapaProducto());
+				VentanaCompra vc = new VentanaCompra(reserva,VentanaReservaProductos.this, cliente,gDisco);
+				vc.setVisible(true);
+				VentanaReservaProductos.this.setVisible(false); 
+			}
+		});
 		// Añade al carrito (mapa) los productos seleccionados del productosJlist que
 		// van apareciendo en el panel
 		bAnadir.addActionListener(new ActionListener() {
@@ -178,6 +191,7 @@ public class VentanaReservaProductos extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Producto productoSeleccionado = productosJList.getSelectedValue();
 				if (productoSeleccionado != null) {
+					
 					for (Map.Entry<Producto, Integer> entry : disco.getAlmacen().getMapaProductoAlmacen().entrySet()) {
 						Producto key = entry.getKey();
 						Integer value = entry.getValue();
@@ -185,7 +199,6 @@ public class VentanaReservaProductos extends JFrame {
 							if (value != 0) {
 								disco.actualizarAlmacenDico( productoSeleccionado);
 								reserva.anadirAlMapa(productoSeleccionado);
-								System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
 								actualizarCarrito(reserva, panelMapa);
 								actualizarImporteTotal(reserva, panelInferior);
 								
@@ -236,8 +249,11 @@ public class VentanaReservaProductos extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setMaximumSize(new Dimension(700, 500));
 		this.repaint();
+		
 
+		
 	}
+	
 
 	/**
 	 * Actualiza la información
