@@ -26,9 +26,10 @@ public class TestProductos {
 		BaseDeDatos.cerrarBD(null, null);
 	}
 	@Test
-	public void testDiscotecas() {
+	public void testProductos() {
 		ArrayList<Producto> pT = BaseDeDatos.getProductos();
 		assertEquals( 11, pT.size() );
-		
+
 	}
+
 }
