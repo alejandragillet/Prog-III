@@ -16,7 +16,7 @@ public class Grafica extends JPanel {
 
     private List<Bar> bars = new ArrayList<Bar>();
 
-    public HistogramPanel()
+    public Grafica()
     {
         setBorder( new EmptyBorder(10, 10, 10, 10) );
         setLayout( new BorderLayout() );

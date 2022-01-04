@@ -15,7 +15,7 @@ class VentanaGraficaStock extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
 
-        HistogramPanel panel = new HistogramPanel();
+        Grafica panel = new Grafica();
         for (Map.Entry<Producto, Integer> entry : mapaStock.entrySet()) {
             panel.addHistogramColumn(entry.getKey().getNombre(), entry.getValue(), Color.BLACK);
         }
