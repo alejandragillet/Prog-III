@@ -111,7 +111,9 @@ public class VentanaUsuario extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				// TODO LLAMADA A LA BASE DE DATOS PARA CARGAR DATOS
-				
+				GestionDiscoteca.lClientes = BaseDeDatos.clienteSelectAll(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")));
+				GestionDiscoteca.lTrabajadores = BaseDeDatos.trabajadorSelectAll(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")));
+				GestionDiscoteca.lDiscotecas = BaseDeDatos.DiscotecaSelectAll(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")));
 			}
 
 			@Override
