@@ -19,4 +19,4 @@ import java.util.Scanner;
 			sueldo = horas*precio;
 			System.out.println("El sueldo es de" + "\t" + sueldo + "euros");
 		}
-	}
+	} 
