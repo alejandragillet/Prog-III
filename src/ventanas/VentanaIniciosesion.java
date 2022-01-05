@@ -23,6 +23,9 @@ import logica.GestionDiscoteca;
 import logica.Puestoaleatorio;
 
 public class VentanaIniciosesion extends JFrame {
+	private String horas= JOptionPane.showInputDialog("Horas trabajadas");
+	
+	
 	public VentanaIniciosesion (String titulo, GestionDiscoteca gs, String dni, String contrasenia) {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); {
@@ -36,11 +39,25 @@ public class VentanaIniciosesion extends JFrame {
 			JPanel pInferior = new JPanel();
 			JButton bCancelar = new JButton ("Cancelar");
 			
+			int hora= 0;
+			try {
+				hora = Integer.parseInt(horas);
+			} catch (NumberFormatException e) {
+			}
+			
+			String puesto = Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1));
+			int sueldo = 0;
+			if (puesto.equals("Segurata")) {
+				sueldo = 15;
+			}else if (puesto.equals("Camarero")) {
+				sueldo = 10;
+			}
+			
 			JLabel lNick = new JLabel ("DNI: " + dni);
 
 			JLabel lPasword = new JLabel ("Contrase�a: " + contrasenia);
-			JLabel lSueldo = new JLabel("Sueldo: " );
-			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1)));
+			JLabel lSueldo = new JLabel("Sueldo por noche: " + hora * sueldo);
+			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ puesto);
 
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 			pCentral.setLayout(new GridLayout(10, 17));

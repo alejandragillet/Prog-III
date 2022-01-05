@@ -55,20 +55,6 @@ public class VentanaUsuario extends JFrame {
 			}
 		});
 		
-		crearCliente.addActionListener(new ActionListener() {
-			
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				VentanaCliente vent= new VentanaCliente("Regis", gs);
-				vent.setLocation( 620, 300 );
-				vent.setVisible( true );
-				
-				
-			}
-			
-		});
 		
 		crearTrabajador.addActionListener(new ActionListener() {
 			
@@ -105,6 +91,7 @@ public class VentanaUsuario extends JFrame {
 			}
 			
 		});
+		/*
 		
 		this.addWindowListener(new WindowAdapter() {
 
@@ -126,7 +113,7 @@ public class VentanaUsuario extends JFrame {
 
 			
 			
-		});
+		});*/
 	}
 		
 		
