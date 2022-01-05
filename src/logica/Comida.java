@@ -29,7 +29,7 @@ public class Comida extends Producto {
 	}
 
 	@Override
-	public String toString() {
+	public String toString() { 
 		return " " + nombre;
 	}
 
