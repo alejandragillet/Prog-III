@@ -103,7 +103,7 @@ public VentanaRegistro(String titulo, GestionDiscoteca gs){
 				Cliente cl =new Cliente(tfNick.getText(),tfPass.getText(), tfApellido.getText(),tfDNI.getText()); //Crear nuevo cliente
 				gs.getlCLientes().add(cl);
 				System.out.println("Lista clientes: " + gs.getlCLientes());
-				BaseDeDatos.clienteInsert(null, tfNick.getText(), tfDNI.getText(), tfPass.getText());
+				//BaseDeDatos.clienteInsert(null, tfNick.getText(), tfDNI.getText(), tfPass.getText());
 				JOptionPane.showMessageDialog(VentanaRegistro.this, "Se ha registrado correctamente. Ahora registrate");
 			}
 		});
