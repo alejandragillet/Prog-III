@@ -428,7 +428,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 	/**Inserta en la base de datos todos los trabajadores que hay en la lista del gestor
 	 * 
 	 * @param st			sentencia ya abierta con la base de datos
-	 * @param trabajadores	lista de trabajadores que se recorre posteriormente
+	 * @param trabajadores	lista de trabajadores que se guarda
 	 * @return
 	 */
 	public static boolean guardarTrabajadores(Statement st, ArrayList<Trabajador> trabajadores) {
