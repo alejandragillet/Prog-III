@@ -39,7 +39,7 @@ public class VentanaIniciosesion extends JFrame {
 			JPanel pInferior = new JPanel();
 			JButton bCancelar = new JButton ("Cancelar");
 			
-			int hora= 0;
+			int hora= 0; 
 			try {
 				hora = Integer.parseInt(horas);
 			} catch (NumberFormatException e) {
