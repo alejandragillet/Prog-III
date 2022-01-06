@@ -2,6 +2,9 @@ package ventanas;
 
 import javax.swing.table.DefaultTableModel;
 
+
+
+
 import logica.*;
 
 
@@ -66,7 +69,7 @@ public class VentanaCompra extends JFrame{
 					new Vector<Vector<Object>>(),
 					cabeceras 
 				);
-			toTableModel(reserva.getMapaProducto(),mDatos);
+			toTableModel( reserva.getMapaProducto(),mDatos);
 			
 			tDatos.setModel(mDatos);
 			panelCentral.add(tDatos, BorderLayout.CENTER);
@@ -88,10 +91,48 @@ public class VentanaCompra extends JFrame{
 					dispose();
 				}
 			});
+			bFinalizar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					cliente.getlReservas().add(reserva);
+					System.out.println(cliente.getlReservas());
+					
+		
+					Thread hilo = new Thread() {
+						@Override
+						public void run() {
+							int tiempo = 0;
+							panelCentral.removeAll();
+							panelInferior.removeAll();
+							JLabel lReserva = new JLabel();
+							panelCentral.add(lReserva,BorderLayout.CENTER);
+							
+							while (tiempo<5) {
+								VentanaCompra.this.setMaximumSize(new Dimension(100,100));
+								if(tiempo==0) {
+									lReserva.setText("                                      Verificando compra...");
+								}else if(tiempo==3) {
+									lReserva.setText("     Finalizada la compra. Le llegará un mensaje de verificación.");
+								}
+								
+								VentanaCompra.this.repaint();
+								tiempo += 1;
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 
+							}
+							
+						}
+					};
+					
+					hilo.start();
+				}
+			});	
 			
 			}
-		
 		
 		
 		public  DefaultTableModel toTableModel(HashMap<Producto, Integer> map, DefaultTableModel mDatos) {
