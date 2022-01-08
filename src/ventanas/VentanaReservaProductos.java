@@ -153,9 +153,11 @@ public class VentanaReservaProductos extends JFrame {
 		JButton bAnadir = new JButton("Añadir");
 		JButton bEliminar = new JButton("Eliminar");
 		JButton bGraficaStock = new JButton("Ver el stock");
+		JButton bResumenPedido = new JButton("Ver pedido");
 		panelInformacionProductos.add(bAnadir);
 		panelInformacionProductos.add(bEliminar);
 		panelInformacionProductos.add(bGraficaStock);
+		panelInformacionProductos.add(bResumenPedido);
 
 		panelCentral.add(panelInformacionProductos, BorderLayout.NORTH);
 
@@ -175,6 +177,7 @@ public class VentanaReservaProductos extends JFrame {
 //		
 		// Añade al carrito (mapa) los productos seleccionados del productosJlist que
 		// van apareciendo en el panel
+		//pasar HashMap a JTable?? -> resumen de los productos que ha comprado y meterlo en la JTable
 		bAnadir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -238,6 +241,11 @@ public class VentanaReservaProductos extends JFrame {
 		bGraficaStock.addActionListener(l -> { // java funcional
 			VentanaGraficaStock v = new VentanaGraficaStock(disco.getAlmacen().getMapaProductoAlmacen());
 			v.setVisible(true);
+		});
+
+		bResumenPedido.addActionListener(l -> {
+			VentanaCompra c = new VentanaCompra(reserva.getMapaProducto());
+			c.setVisible(true);
 		});
 
 		setTitle("PRODUCTOS");
