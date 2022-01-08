@@ -1,12 +1,12 @@
 package logica;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 
 public class Almacen {
 	private HashMap<Producto, Integer> mapaProductoAlmacen;
 
 	public Almacen(HashMap<Producto, Integer> mapa) {
-		this.mapaProductoAlmacen =mapa;
+		this.mapaProductoAlmacen = mapa;
 	}
 
 	public HashMap<Producto, Integer> getMapaProductoAlmacen() {
@@ -21,11 +21,5 @@ public class Almacen {
 	public String toString() {
 		return "Almacen [mapaProductoAlmacen=" + mapaProductoAlmacen + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }

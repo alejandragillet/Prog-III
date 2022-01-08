@@ -16,10 +16,6 @@ public class Comunicador {
     static BufferedReader inputDesdeServer;
     static boolean finComunicacion = false;
 
-    public Comunicador() {
-
-    }
-
     public static void lanzaCliente() {
         try (Socket s = new Socket(HOST, PORT)) {
             socket = s;
@@ -27,7 +23,8 @@ public class Comunicador {
             outputAServer = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("Despues de outputAServer");
             do {
-                if (socket.isClosed()) finComunicacion = true;
+                if (socket.isClosed())
+                    finComunicacion = true;
             } while (!finComunicacion);
         } catch (IOException e) {
             System.err.println("Error en cliente: " + e.getMessage() + "\n");
@@ -37,11 +34,12 @@ public class Comunicador {
 
     /**
      * Envia y mensaje al servidor. Y devuelve su respuesta
+     * 
      * @param mensaje a enviar al servidor
      * @return la respuesta del servidor
      * @throws IOException
      */
-    private static String emitirMensaje(String mensaje) throws IOException { //te devuelve el mensaje del servidor
+    private static String emitirMensaje(String mensaje) throws IOException { // te devuelve el mensaje del servidor
         System.out.println("Emitiendo mensaje: " + mensaje);
         outputAServer.println(mensaje);
         String respuesta = inputDesdeServer.readLine();
@@ -50,50 +48,51 @@ public class Comunicador {
 
     public static boolean login(String nombre, String pass) throws IOException {
         String r = emitirMensaje("login:" + nombre + "-" + pass);
-        String [] splitted = r.split("-");
+        String[] splitted = r.split("-");
         String respuestaLogin = splitted[1];
 
-        if (respuestaLogin == "true"){
+        if (respuestaLogin == "true") {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public void esperarConexion() {
+    public static void esperarConexion() {
         while (true) {
-            System.out.println(this.socket != null && this.socket.isConnected()); // preguntar
-
-            if (this.socket != null && this.socket.isConnected()) {
-                return; // dejar de esperar
+            try {
+                Thread.sleep(1); // necesario
+                if (socket != null && socket.isConnected()) {
+                    System.out.println("Conexion establecida");
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error en esperarConexion: " + e.getMessage());
             }
-        } 
+        }
     }
 
     public static void main(String[] args) {
-        Servidor ss = new Servidor();
-        Comunicador cc = new Comunicador();
-
         (new Thread() {
             @Override
             public void run() {
-                ss.lanzaServidor();
+                Servidor.lanzaServidor();
             }
         }).start();
 
         (new Thread() {
             @Override
             public void run() {
-                cc.lanzaCliente();
+                Comunicador.lanzaCliente();
                 System.out.println("");
             }
         }).start();
 
-        cc.esperarConexion();
-        
+        Comunicador.esperarConexion();
+
         try {
             // para poder llamar a emitirMensaje, el outputAServer debe de esta definido (es decir, conexión establecida)
-            String respueta = cc.emitirMensaje("holaaaaa");
+            String respueta = Comunicador.emitirMensaje("holaaaaa");
             System.out.println("Respuesta: " + respueta);
         } catch (Exception e) {
             System.err.println(e);

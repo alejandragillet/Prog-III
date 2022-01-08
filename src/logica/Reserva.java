@@ -1,7 +1,9 @@
+
 package logica;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,11 +13,26 @@ public class Reserva {
 	protected HashMap<Producto, Integer> mapaProducto = new HashMap<Producto, Integer>();
 	protected int numeroPersonas;
 	protected EnumZona zona;
-	private String codigo;
+	private String nombre;
+	protected String discoteca;
 
 	public Reserva() {
 		this.importe = 0;
-		this.mapaProducto = new HashMap<>();
+		this.mapaProducto = mapaProducto;
+		this.numeroPersonas = numeroPersonas;
+		this.zona = zona;
+		this.discoteca = discoteca;
+
+	}
+
+
+	public Reserva(String fecha, String nombre, String discoteca, EnumZona zona, int numeroPersonas, int importe) {
+		this.fecha = fecha;
+		this.nombre = nombre;
+		this.discoteca = discoteca;
+		this.zona = zona;
+		this.numeroPersonas = numeroPersonas;
+		this.importe = importe;
 	}
 
 	public double getImporte() {
@@ -55,11 +72,24 @@ public class Reserva {
 	}
 
 	public void setZona(EnumZona zona) {
-		this.zona = zona;
+		zona = zona;
 	}
 	
-	
+	public String getNombre() {
+		return nombre;
+	}
 
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDiscoteca() {
+		return discoteca;
+	}
+
+	public void setDiscoteca(String discoteca) {
+		this.discoteca = discoteca;
+	}
 	public double calcImporte() {
 		importe = 0;
 		for (Map.Entry<Producto, Integer> entry : mapaProducto.entrySet()) {
@@ -98,12 +128,14 @@ public class Reserva {
 
 	public void eliminarDelMapa(Producto producto) {
 		try {
+			// arraylist to save the products to be removed
+			ArrayList<Producto> productosAEliminar = new ArrayList<Producto>();
 			for (Map.Entry<Producto, Integer> entry : mapaProducto.entrySet()) {
 				Producto key = entry.getKey();
 				Integer value = entry.getValue();
 				if (producto.getNombre().equals(key.getNombre())) {
 					if (value == 1) {
-						mapaProducto.remove(producto);
+						productosAEliminar.add(key); // para prevenir java.util.ConcurrentModificationException
 						return;
 					} else {
 						mapaProducto.replace(key, value - 1);
@@ -111,9 +143,14 @@ public class Reserva {
 					}
 				}
 			}
+
+			for (Producto productoAEliminar : productosAEliminar) {
+				mapaProducto.remove(productoAEliminar);
+			}
 		} catch (Exception e) {
 
 		}
 	}
 
 }
+

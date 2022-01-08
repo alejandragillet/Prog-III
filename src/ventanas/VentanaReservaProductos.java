@@ -153,8 +153,12 @@ public class VentanaReservaProductos extends JFrame {
 
 		JButton bAnadir = new JButton("Añadir");
 		JButton bEliminar = new JButton("Eliminar");
+		JButton bGraficaStock = new JButton("Ver el stock");
+		JButton bComprasPosibles = new JButton("Compras posibles");
 		panelInformacionProductos.add(bAnadir);
 		panelInformacionProductos.add(bEliminar);
+		panelInformacionProductos.add(bGraficaStock);
+		panelInformacionProductos.add(bComprasPosibles);
 
 		panelCentral.add(panelInformacionProductos, BorderLayout.NORTH);
 
@@ -201,7 +205,7 @@ public class VentanaReservaProductos extends JFrame {
 								reserva.anadirAlMapa(productoSeleccionado);
 								actualizarCarrito(reserva, panelMapa);
 								actualizarImporteTotal(reserva, panelInferior);
-								
+
 								VentanaReservaProductos.this.repaint();
 
 							} else {
@@ -245,15 +249,35 @@ public class VentanaReservaProductos extends JFrame {
 			}
 					
 		});
+
+		bGraficaStock.addActionListener(l -> { // java funcional
+			VentanaGraficaStock v = new VentanaGraficaStock(disco.getAlmacen().getMapaProductoAlmacen());
+			v.setVisible(true);
+		});
+		
+		bComprasPosibles.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String resp = JOptionPane.showInputDialog( VentanaReservaProductos.this, "Dinero disponible:", "1000" );
+					if (resp==null) return; // No definida cantidad
+					double dinero = Double.parseDouble( resp );
+					gDisco.calcularComprasPosibles(dinero);
+				} catch (NumberFormatException e2) { } // Error en cantidad - no se calcula nada
+			}
+		});
 		setTitle("PRODUCTOS");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setMaximumSize(new Dimension(700, 500));
 		this.repaint();
-		
+	}
+
+	
 
 		
-	}
 	
+
+
 
 	/**
 	 * Actualiza la información

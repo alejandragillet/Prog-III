@@ -15,14 +15,11 @@ import logica.*;
 public class Servidor {
     private static int PUERTO = 4000;
 
-    boolean finComunicacion = false;
-    Socket socket;
+    static boolean finComunicacion = false;
+    static Socket socket;
 
-    public Servidor() {
-       
-    }
 
-    public void lanzaServidor() {
+    public static void lanzaServidor() {
         try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
             socket = serverSocket.accept(); // Bloqueante
             System.out.println("Cliente conectado");
@@ -69,7 +66,6 @@ public class Servidor {
         } catch (IOException e) {
             System.err.println("Error en servidor: " + e.getMessage());
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

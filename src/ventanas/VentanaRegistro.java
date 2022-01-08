@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import basedatos.BaseDeDatos;
 import logica.Cliente;
 import logica.GestionDiscoteca;
 import logica.Persona;
@@ -102,7 +103,6 @@ public VentanaRegistro(String titulo, GestionDiscoteca gs){
 				Cliente cl =new Cliente(tfNick.getText(),tfPass.getText(), tfApellido.getText(),tfDNI.getText()); //Crear nuevo cliente
 				gs.getlCLientes().add(cl);
 				System.out.println("Lista clientes: " + gs.getlCLientes());
-				gs.guardarFicheroBinarioCliente(gs.getlCLientes(), "cliente.dat");//Guardamos usuario fichero
 				JOptionPane.showMessageDialog(VentanaRegistro.this, "Se ha registrado correctamente. Ahora registrate");
 			}
 		});
