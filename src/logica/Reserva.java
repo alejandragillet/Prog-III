@@ -13,13 +13,25 @@ public class Reserva {
 	protected int numeroPersonas;
 	protected EnumZona zona;
 	private String nombre;
+	protected String discoteca;
 
 	public Reserva() {
 		this.importe = 0;
 		this.mapaProducto = mapaProducto;
 		this.numeroPersonas = numeroPersonas;
 		this.zona = zona;
+		this.discoteca = discoteca;
 
+	}
+
+
+	public Reserva(String fecha, String nombre, String discoteca, EnumZona zona, int numeroPersonas, int importe) {
+		this.fecha = fecha;
+		this.nombre = nombre;
+		this.discoteca = discoteca;
+		this.zona = zona;
+		this.numeroPersonas = numeroPersonas;
+		this.importe = importe;
 	}
 
 	public double getImporte() {
@@ -61,7 +73,22 @@ public class Reserva {
 	public void setZona(EnumZona zona) {
 		zona = zona;
 	}
+	
+	public String getNombre() {
+		return nombre;
+	}
 
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDiscoteca() {
+		return discoteca;
+	}
+
+	public void setDiscoteca(String discoteca) {
+		this.discoteca = discoteca;
+	}
 	public double calcImporte() {
 		importe = 0;
 		for (Map.Entry<Producto, Integer> entry : mapaProducto.entrySet()) {

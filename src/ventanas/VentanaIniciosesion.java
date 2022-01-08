@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,6 +26,9 @@ import logica.GestionDiscoteca;
 import logica.Puestoaleatorio;
 
 public class VentanaIniciosesion extends JFrame {
+	private String horas= JOptionPane.showInputDialog("Horas trabajadas");
+	private int sueldo;
+	
 	public VentanaIniciosesion (String titulo, GestionDiscoteca gs, String dni, String contrasenia) {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); {
@@ -30,17 +36,33 @@ public class VentanaIniciosesion extends JFrame {
 			setLocation(200,10);
 			setTitle(titulo);
 			
+			
 			JPanel pSuperior = new JPanel();		
 			JLabel lTitulo = new JLabel ("Bienvenido");
 			JPanel pCentral = new JPanel();
 			JPanel pInferior = new JPanel();
 			JButton bCancelar = new JButton ("Cancelar");
 			
+			int hora= 0; 
+			try {
+				hora = Integer.parseInt(horas);
+			} catch (NumberFormatException e) {
+			}
+			
+			String puesto = Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1));
+			sueldo = 0;
+			if (puesto.equals("Segurata")) {
+				sueldo = 15;
+			}else if (puesto.equals("Camarero")) {
+				sueldo = 10;
+			}
+			sueldo *= hora;
+			
 			JLabel lNick = new JLabel ("DNI: " + dni);
 
 			JLabel lPasword = new JLabel ("Contrase�a: " + contrasenia);
-			JLabel lSueldo = new JLabel("Sueldo: " );
-			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1)));
+			JLabel lSueldo = new JLabel("Sueldo por noche: " + sueldo);
+			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ puesto);
 
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 			pCentral.setLayout(new GridLayout(10, 17));
@@ -63,6 +85,18 @@ public class VentanaIniciosesion extends JFrame {
 			pCentral.add(lSueldo);
 			pCentral.add(lPuesto);
 			pInferior.add(bCancelar);
+			
+			this.addWindowListener(new WindowAdapter() {
+			
+				@Override
+				public void windowClosed(WindowEvent e) {
+					System.out.println(dni);
+					System.out.println(contrasenia);
+					System.out.println(sueldo);
+					System.out.println(puesto);
+				}
+				
+			});
 
 
 			bCancelar.addActionListener(new ActionListener() {
@@ -74,15 +108,6 @@ public class VentanaIniciosesion extends JFrame {
 			
 			setVisible(true);
 		
-
-//		bLogIn.addActionListener(new ActionListener() {
-//			@Override
-//				public void actionPerformed(ActionEvent e) {
-//					VentanaTrabajador v1= new VentanaTrabajador("DeustoDisco");
-//				v1.setVisible(true);
-//				dispose();	
-//				}
-//			});			
 
 		}
 		

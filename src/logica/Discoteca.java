@@ -30,6 +30,15 @@ public class Discoteca implements Cloneable {
 
 	}
 
+
+	public Discoteca(String nombre, int aforoMax, int aforo, int numeroTrabajadores, String direccion) {
+		this.direccion = direccion;
+		this.aforoMax = aforoMax;
+		this.numeroTrabajadores = numeroTrabajadores;
+		this.nombre = nombre;
+		this.aforo = 0;
+	}
+
 	public String getDireccion() {
 		return direccion;
 	}

@@ -26,10 +26,10 @@ import ventanas.VentanaReservaEntradas;
 import ventanas.VentanaUsuario;
 
 public class GestionDiscoteca {
-	protected ArrayList<Producto> lProductos;
-	private ArrayList<Discoteca> lDiscotecas;
-	protected ArrayList<Cliente> lClientes;
-	protected ArrayList<Trabajador> lTrabajadores;
+	public static ArrayList<Producto> lProductos;
+	public static ArrayList<Discoteca> lDiscotecas;
+	public static ArrayList<Cliente> lClientes;
+	public static ArrayList<Trabajador> lTrabajadores;
 
 	private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
 
