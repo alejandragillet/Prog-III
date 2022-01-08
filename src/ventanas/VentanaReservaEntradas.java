@@ -5,6 +5,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -37,13 +38,13 @@ public class VentanaReservaEntradas extends JFrame {
 	private JComboBox<Discoteca> comboDiscoteca; // combo con las discotecas
 	private JComboBox<EnumZona> comboZona; // combo con la zona de la discoteca
 	private static Discoteca disco2;
-
+	public  Integer numeroPersonas;
 	private JPanel panelSuperior;
 	private JPanel panelCentral;
 	private JPanel panelInferior;
 
 	// Discoteca discoteca
-	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente) throws CloneNotSupportedException {
+	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente, Reserva reserva) throws CloneNotSupportedException {
 		Container cp = this.getContentPane();
 		this.setMinimumSize(new Dimension(400, 500));
 
@@ -128,11 +129,11 @@ public class VentanaReservaEntradas extends JFrame {
 		jSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Integer numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
+				numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
 				comprobarAforo(disco2, numeroPersonas);
 				
 				VentanaReservaEntradas.this.repaint();
-				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente);
+				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente, VentanaReservaEntradas.this);
 				vr.setVisible(true);
 				dispose();
 
@@ -150,6 +151,8 @@ public class VentanaReservaEntradas extends JFrame {
 			disco2.setAforo(aforoDiscoteca);
 			System.out.println("Aforo de mometo: " + aforoDiscoteca);
 		}
+		
+		
 	}
 
 //	public static void main(String[] args) {

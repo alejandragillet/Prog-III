@@ -54,10 +54,10 @@ public class VentanaReservaProductos extends JFrame {
 	private JLabel alcoholInfo;
 	private JLabel importeTotalInfo;
 	private JLabel info1;
-	private static Reserva reserva;
+	final Reserva reserva;
 
 	// String nombre, Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
-	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco, Cliente cliente) {
+	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco, Cliente cliente, VentanaReservaEntradas vre) {
 		this.setMinimumSize(new Dimension(800, 600));
 
 		// Lista
@@ -182,8 +182,7 @@ public class VentanaReservaProductos extends JFrame {
 		bFinalizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Reserva pasada: "+ reserva.getMapaProducto());
-				VentanaCompra vc = new VentanaCompra(reserva.getMapaProducto());
+				VentanaCompra vc = new VentanaCompra(reserva.getMapaProducto(), VentanaReservaProductos.this ,cliente, reserva, disco, vre );
 				vc.setVisible(true);
 				VentanaReservaProductos.this.setVisible(false); 
 			}
@@ -259,7 +258,7 @@ public class VentanaReservaProductos extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String resp = JOptionPane.showInputDialog( VentanaReservaProductos.this, "Dinero disponible:", "1000" );
+					String resp = JOptionPane.showInputDialog( VentanaReservaProductos.this, "Dinero disponible:", "5" );
 					if (resp==null) return; // No definida cantidad
 					double dinero = Double.parseDouble( resp );
 					gDisco.calcularComprasPosibles(dinero);
@@ -271,11 +270,6 @@ public class VentanaReservaProductos extends JFrame {
 		this.setMaximumSize(new Dimension(700, 500));
 		this.repaint();
 	}
-
-	
-
-		
-	
 
 
 
