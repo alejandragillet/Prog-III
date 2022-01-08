@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import logica.Cliente;
 import logica.Discoteca;
 import logica.EnumZona;
 import logica.GestionDiscoteca;
@@ -42,7 +43,7 @@ public class VentanaReservaEntradas extends JFrame {
 	private JPanel panelInferior;
 
 	// Discoteca discoteca
-	public VentanaReservaEntradas(GestionDiscoteca gDisco) throws CloneNotSupportedException {
+	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente) throws CloneNotSupportedException {
 		Container cp = this.getContentPane();
 		this.setMinimumSize(new Dimension(400, 500));
 
@@ -131,7 +132,7 @@ public class VentanaReservaEntradas extends JFrame {
 				comprobarAforo(disco2, numeroPersonas);
 				
 				VentanaReservaEntradas.this.repaint();
-				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco);
+				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente);
 				vr.setVisible(true);
 				dispose();
 

@@ -183,7 +183,7 @@ public class VentanaReservaProductos extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Reserva pasada: "+ reserva.getMapaProducto());
-				VentanaCompra vc = new VentanaCompra(reserva,VentanaReservaProductos.this, cliente,gDisco);
+				VentanaCompra vc = new VentanaCompra(reserva.getMapaProducto());
 				vc.setVisible(true);
 				VentanaReservaProductos.this.setVisible(false); 
 			}
