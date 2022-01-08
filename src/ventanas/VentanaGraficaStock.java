@@ -12,7 +12,6 @@ class VentanaGraficaStock extends JFrame {
 
     public VentanaGraficaStock(HashMap<Producto, Integer> mapaStock) {
         super("Stock");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
 
         Grafica panel = new Grafica();

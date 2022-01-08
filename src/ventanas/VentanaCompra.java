@@ -26,6 +26,7 @@ public class VentanaCompra extends JFrame {
     public VentanaCompra(HashMap<Producto, Integer> mapaStock) {
         super("Ejemplo 1");
 
+        setSize(500, 500);
         tbModel.addColumn( "nombre producto");
         tbModel.addColumn( "cantidad");
         tbModel.addColumn( "precio");
