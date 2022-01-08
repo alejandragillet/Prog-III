@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import logica.Cliente;
 import logica.Discoteca;
 import logica.EnumZona;
 import logica.GestionDiscoteca;
@@ -36,12 +35,14 @@ public class VentanaReservaEntradas extends JFrame {
 	private JComboBox<Integer> numeroPersonas1; // combo numero de personas
 	private JComboBox<Discoteca> comboDiscoteca; // combo con las discotecas
 	private JComboBox<EnumZona> comboZona; // combo con la zona de la discoteca
-	private static Discoteca discoSelected;
+	private static Discoteca disco2;
 
-
+	private JPanel panelSuperior;
+	private JPanel panelCentral;
+	private JPanel panelInferior;
 
 	// Discoteca discoteca
-	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente) throws CloneNotSupportedException {
+	public VentanaReservaEntradas(GestionDiscoteca gDisco) throws CloneNotSupportedException {
 		Container cp = this.getContentPane();
 		this.setMinimumSize(new Dimension(400, 500));
 
@@ -55,7 +56,7 @@ public class VentanaReservaEntradas extends JFrame {
 		numeroPersonas1 = new JComboBox<Integer>();
 		comboDiscoteca = new JComboBox<Discoteca>();
 		comboZona = new JComboBox<EnumZona>();
-		discoSelected = new Discoteca();
+		disco2 = new Discoteca();
 
 		// Creación paneles
 		JPanel panelSuperior = new JPanel();
@@ -93,7 +94,7 @@ public class VentanaReservaEntradas extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				panelCentral.removeAll();
-				discoSelected = (Discoteca) comboDiscoteca.getSelectedItem();
+				disco2 = (Discoteca) comboDiscoteca.getSelectedItem();
 				panelCentral.add(new JLabel("Zona discoteca"));
 				panelCentral.add(comboZona);
 				panelCentral.add(jSeleccionar2);
@@ -127,10 +128,10 @@ public class VentanaReservaEntradas extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Integer numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
-				comprobarAforo(discoSelected, numeroPersonas);
+				comprobarAforo(disco2, numeroPersonas);
 				
 				VentanaReservaEntradas.this.repaint();
-				VentanaReservaProductos vr = new VentanaReservaProductos( discoSelected, gDisco, cliente);
+				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco);
 				vr.setVisible(true);
 				dispose();
 
