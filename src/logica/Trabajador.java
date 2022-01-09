@@ -16,6 +16,17 @@ public class Trabajador {
 		this.sueldo = sueldo;
 		this.puesto = puesto;
 	}
+    
+    public Trabajador(String nombre, String contrasenia, int horastrabajadas, int preciohora, EnumPuesto puesto) {
+		super();
+		this.nombre = nombre;
+		this.contrasenia = contrasenia;
+		this.puesto = puesto;
+		this.horasTrabajadas = horastrabajadas;
+		this.precioHora = preciohora;
+		this.sueldo = horasTrabajadas * precioHora;
+	}
+
 
 
 	public String getNombre() {

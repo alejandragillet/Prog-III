@@ -17,12 +17,12 @@ import logica.*;
 public class BaseDeDatos {
 private static Exception lastError = null; // Informaci�n de �ltimo error SQL ocurrido
 public static Connection conexion;
-public static String nombreBD = "discotecaBD";
+public static String nombreBD = "discotecaBD.db";
 
 public static GestionDiscoteca gs = new GestionDiscoteca();
-//public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
-//public static ArrayList<Cliente> clientes = gs.getlClientes();
-//public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
+public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
+public static ArrayList<Cliente> clientes = gs.getlClientes();
+public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 	
 	/** Inicializa una BD SQLITE y devuelve una conexi�n con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
