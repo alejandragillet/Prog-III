@@ -142,6 +142,8 @@ public class GestionDiscoteca {
 						comida2,
 						comida3,
 						comida4));
+		gs1.guardarFicheroBinarioProductos(lProductos, "productos.dat");
+		
 
 		HashMap<Producto, Integer> mapaProductoAlmacenBudha = new HashMap<Producto, Integer>();
 		mapaProductoAlmacenBudha.put(bebida1, 4);
@@ -218,6 +220,40 @@ public class GestionDiscoteca {
 			System.out.println("Despues de cargar fichero binario de CLientes" + lClientes);
 		} catch (IOException | ClassNotFoundException e) {
 			System.out.println("Error de lectura de fichero" + nombreFic);
+		}
+	}
+	
+	/** Guardar productos en un fichero binario
+	 * @param lProductos
+	 * @param nombreFic
+	 */
+	public  void guardarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic  ) {
+		try {
+			File sFichero = new File(nombreFic);
+			sFichero.delete();
+			ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( nombreFic));
+			oos.writeObject(lProductos);
+			oos.close();
+		}catch (IOException e){
+			System.out.println("Error en escritura de fichero (Producto)" + nombreFic);
+			
+		} 
+	}
+
+	/** Cargar productos en un fichero binario
+	 * @param lProductos
+	 * @param nombreFic
+	 */
+	public void cargarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic) {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream( nombreFic));
+			ArrayList<Producto> lCargada = (ArrayList<Producto>) ois.readObject();
+			ois.close();
+			lProductos.clear();
+			lProductos.addAll(lCargada);
+			System.out.println("Despues de cargar fichero binario de Productos" + lProductos);
+		}catch (IOException | ClassNotFoundException e) {
+			System.out.println("Error en lectura de fichero " + nombreFic) ;
 		}
 	}
 

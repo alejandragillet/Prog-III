@@ -75,6 +75,10 @@ public class VentanaReservaProductos extends JFrame {
 		DefaultListModel listModel = new DefaultListModel();
 
 		System.out.println(disco);
+		
+		gDisco.cargarFicheroBinarioProductos(gDisco.getlProductos(),"productos.dat");
+		System.out.println("lista productos"+gDisco.getlProductos() );
+		
 		//System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
 		// Añade al productosJList una serie de productos
 		for (Producto producto : gDisco.getlProductos()) {
