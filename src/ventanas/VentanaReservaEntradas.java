@@ -100,7 +100,8 @@ public class VentanaReservaEntradas extends JFrame {
 				panelCentral.removeAll();
 				disco2 = (Discoteca) comboDiscoteca.getSelectedItem();
 				reserva.setDiscoteca(disco2);
-				panelCentral.add(new JLabel("Zona discoteca"));
+				panelCentral.add(new JLabel("Zona discoteca: "
+						+ "Mesa 12€ / Pista 17€ / VIP 25€"));
 				panelCentral.add(comboZona);
 				panelCentral.add(jSeleccionar2);
 				VentanaReservaEntradas.this.repaint();
