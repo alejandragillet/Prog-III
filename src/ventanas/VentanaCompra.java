@@ -2,6 +2,7 @@ package ventanas;
 
 import logica.Cliente;
 import logica.Discoteca;
+import logica.EnumZona;
 import logica.Producto;
 import logica.Reserva;
 
@@ -53,7 +54,7 @@ public class VentanaCompra extends JFrame {
      			panelInferior.add(panelImporte, BorderLayout.NORTH);
      			JLabel jImporte =new JLabel("Importe final (€): ");
      			panelImporte.add(jImporte);
-     			vPro.actualizarImporteTotal(reserva, panelImporte);
+     			vPro.actualizarImporteTotal(reserva, panelImporte,vre);
 
      		setSize(500, 500);
         tbModel.addColumn( "nombre producto");
@@ -64,6 +65,20 @@ public class VentanaCompra extends JFrame {
             tbModel.addRow(new String[] {entry.getKey().getNombre(), entry.getValue().toString(), new Double(entry.getKey().getPrecio()).toString()});
             //tbModel.addRow(new Object[] {entry.getKey().getNombre(), entry.getValue(),  entry.getKey().getPrecio()});
         }
+        
+        int numeroPersonas = vre.numeroPersonas();
+        EnumZona zona = vre.zonaSelec();
+        Discoteca discoteca = vre.discoSelec();
+        double precio = vre.calcularPrecioEntradas();
+        double precioPro = reserva.calcImporte();
+        
+        tbModel.addRow(new String[] { "Precio de los Productos: " , precioPro + " ",null  });
+        tbModel.addRow(new String[] { "Discoteca: " , discoteca + " " ,null  });
+        tbModel.addRow(new String[] { "Numero de Personas: " , numeroPersonas + " " , null });
+        tbModel.addRow(new String[] { "Zona: " , zona + " ", null });
+        tbModel.addRow(new String[] { "Precio de las Entradas: " , precio + " ",null  });
+       
+        
 
         // array de String's con los títulos de las columnas
 
@@ -81,6 +96,7 @@ public class VentanaCompra extends JFrame {
 
         // Agregamos el JScrollPane al contenedor
         getContentPane().add(scrollPane, BorderLayout.CENTER);
+        
         
         setTitle("RESERVA");
         
@@ -130,12 +146,15 @@ public class VentanaCompra extends JFrame {
 				};
 				
 				hilo.start();
-				
-				int contAforo =disco.getAforo();
-				contAforo = contAforo + vre.numeroPersonas;
-				System.out.println();
+				// bd.registrarReserva(cliente, reserva);
+				actualizarAforoDisco(disco, vre);
 			}
 		});	
 		
+    }
+    
+    public void actualizarAforoDisco(Discoteca disco, VentanaReservaEntradas vre) {
+    	Integer aforoDiscoteca = disco.getAforo();
+    	aforoDiscoteca = aforoDiscoteca + vre.numeroPersonas;
     }
 }

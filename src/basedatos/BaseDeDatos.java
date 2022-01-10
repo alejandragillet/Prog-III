@@ -10,6 +10,7 @@ import java.util.logging.*;
 
 import logica.*;
 
+
 /**
  * @author saioa
  *
@@ -76,11 +77,15 @@ public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table reserva " +
-				"(cliente_nombre string, discoteca_nombre string, fecha integer, string zona, numPers integer, importe integer)");
+				"(id INTEGER PRIMARY KEY AUTOINCREMENT, cliente_nombre varchar(20), discoteca_nombre varchar(20), fecha varchar(20), zona varchar(20), numPers int, importe double)");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table discoteca " +
 				"(nombre String, aforoMax integer, aforo integer, numeroTrab integer, direccion String)");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table productoMapa " +
+				"(idReserva int  , producto varchar(20), cantidad int)");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		
 		log( Level.INFO, "Creada base de datos", null );
@@ -99,6 +104,7 @@ public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 			statement.executeUpdate("drop table if exists Discoteca");
 			statement.executeUpdate("drop table if exists cliente");
 			statement.executeUpdate("drop table if exists reserva");
+			statement.executeUpdate("drop table if exists productoMapa");
 			log( Level.INFO, "Reiniciada base de datos", null );
 			return usarCrearTablasBD( con );
 		} catch (SQLException e) {
@@ -530,7 +536,7 @@ public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 				}else {
 					zona = EnumZona.PISTA;
 				}
-				ret.add(new Reserva (rs.getString( "cliente_nombre"),rs.getString("fecha"), rs.getString("discoteca_nombre"), zona, rs.getInt("numPers"), rs.getInt("importe")));
+				//ret.add(new Reserva (rs.getString( "cliente_nombre"),rs.getString("fecha"), rs.getString("discoteca_nombre"), zona, rs.getInt("numPers"), rs.getInt("importe")));
 			}
 			rs.close();
 			log( Level.INFO, "BD\t" + sentSQL, null );
@@ -542,6 +548,37 @@ public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 			return null;
 		}
 	}
+	public static int obtenerDNICliente(String nombreCliente) {
+		int dni = -1;
+		try {
+			PreparedStatement s = conexion.prepareStatement("select * from cliente where nombre = ?");
+			s.setString(1, nombreCliente);
+			ResultSet rs = s.executeQuery();
+			if(rs.next()) dni = rs.getInt("DNI");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return dni;
+	}
+	
+	public static void registraReserva(Cliente cliente, Reserva reserva) {
+		try {
+			PreparedStatement s = conexion.prepareStatement("insert into reserva (DNI, fecha, importe, mapaProducto, numeroPersonas, zona, discoteca) values (?, ?, ?, ?, ?, ?, ?, ?) ");
+			s.setInt(1, obtenerDNICliente(cliente.getNombre()));
+				//s.setString(2, reserva.getFecha());
+				s.setDouble(3, reserva.getImporte());
+				//s.setMap(4, reserva.getMapaProducto());
+				s.setInt(5, reserva.getNumeroPersonas());
+				s.setString(6, reserva.getZona().name());
+				s.setString(7, reserva.getDiscoteca().getNombre());
+
+			log(Level.INFO, "Se ha registradola reserva del cliente: " + cliente, null);
+		}catch(SQLException e) {
+			log(Level.SEVERE, "Error al registrar la reserva del cliente: " + cliente , e );
+		}
+	}
+	
+
 	
 	private static String secu( String string ) {
 		StringBuffer sb = new StringBuffer();

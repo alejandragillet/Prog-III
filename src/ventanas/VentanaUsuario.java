@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import org.sqlite.SQLiteException;
+
 
 import logica.*;
 import basedatos.BaseDeDatos;

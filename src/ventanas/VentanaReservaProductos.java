@@ -174,7 +174,7 @@ public class VentanaReservaProductos extends JFrame {
 		reserva = new Reserva();
 		actualizarCarrito(reserva, panelMapa);
 		// actualizarImporteTotal(reserva, panelInferior);
-
+		actualizarImporteTotal(reserva, panelInferior, vre);
 	
 		
 		
@@ -203,7 +203,7 @@ public class VentanaReservaProductos extends JFrame {
 								disco.actualizarAlmacenDico( productoSeleccionado);
 								reserva.anadirAlMapa(productoSeleccionado);
 								actualizarCarrito(reserva, panelMapa);
-								actualizarImporteTotal(reserva, panelInferior);
+								actualizarImporteTotal(reserva, panelInferior, vre);
 
 								VentanaReservaProductos.this.repaint();
 
@@ -243,7 +243,7 @@ public class VentanaReservaProductos extends JFrame {
 				}
 				System.out.println(disco.getAlmacen().getMapaProductoAlmacen());
 				actualizarCarrito(reserva, panelMapa);
-				actualizarImporteTotal(reserva, panelInferior);
+				actualizarImporteTotal(reserva, panelInferior, vre);
 				VentanaReservaProductos.this.repaint();
 			}
 					
@@ -269,8 +269,10 @@ public class VentanaReservaProductos extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setMaximumSize(new Dimension(700, 500));
 		this.repaint();
+		
 	}
-
+	
+	
 
 
 	/**
@@ -332,8 +334,10 @@ public class VentanaReservaProductos extends JFrame {
 	 * @param reserva
 	 * @param jpanel
 	 */
-	public void actualizarImporteTotal(Reserva reserva, JPanel jpanel) {
-		importeTotalInfo.setText(Double.toString(reserva.calcImporte()));
+	public void actualizarImporteTotal(Reserva reserva, JPanel jpanel, VentanaReservaEntradas vre) {
+		double precioProducto = reserva.calcImporte();
+		precioProducto = precioProducto + vre.calcularPrecioEntradas();
+		importeTotalInfo.setText(Double.toString(precioProducto));
 		jpanel.add(importeTotalInfo);
 	}
 

@@ -13,8 +13,8 @@ public class Reserva {
 	protected HashMap<Producto, Integer> mapaProducto = new HashMap<Producto, Integer>();
 	protected int numeroPersonas;
 	protected EnumZona zona;
-	private String nombre;
-	protected String discoteca;
+	protected Discoteca discoteca;
+	protected int idReserva;
 
 	public Reserva() {
 		this.importe = 0;
@@ -26,13 +26,13 @@ public class Reserva {
 	}
 
 
-	public Reserva(String fecha, String nombre, String discoteca, EnumZona zona, int numeroPersonas, int importe) {
+	public Reserva(String fecha, String nombre, Discoteca discoteca, EnumZona zona, int numeroPersonas, int importe) {
 		this.fecha = fecha;
-		this.nombre = nombre;
 		this.discoteca = discoteca;
 		this.zona = zona;
 		this.numeroPersonas = numeroPersonas;
 		this.importe = importe;
+
 	}
 
 	public double getImporte() {
@@ -75,19 +75,23 @@ public class Reserva {
 		zona = zona;
 	}
 	
-	public String getNombre() {
-		return nombre;
+
+
+	public int getId() {
+		return idReserva;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+
+	public void setId(int id) {
+		this.idReserva = id;
 	}
 
-	public String getDiscoteca() {
+
+	public Discoteca getDiscoteca() {
 		return discoteca;
 	}
 
-	public void setDiscoteca(String discoteca) {
+	public void setDiscoteca(Discoteca discoteca) {
 		this.discoteca = discoteca;
 	}
 	public double calcImporte() {
