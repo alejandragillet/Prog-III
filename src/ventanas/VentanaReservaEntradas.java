@@ -5,6 +5,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -20,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import logica.Cliente;
 import logica.Discoteca;
 import logica.EnumZona;
 import logica.GestionDiscoteca;
@@ -35,14 +37,14 @@ public class VentanaReservaEntradas extends JFrame {
 	private JComboBox<Integer> numeroPersonas1; // combo numero de personas
 	private JComboBox<Discoteca> comboDiscoteca; // combo con las discotecas
 	private JComboBox<EnumZona> comboZona; // combo con la zona de la discoteca
-	private static Discoteca disco2;
-
+	public static Discoteca disco2;
+	public  Integer numeroPersonas;
 	private JPanel panelSuperior;
 	private JPanel panelCentral;
 	private JPanel panelInferior;
 
 	// Discoteca discoteca
-	public VentanaReservaEntradas(GestionDiscoteca gDisco) throws CloneNotSupportedException {
+	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente, Reserva reserva) throws CloneNotSupportedException {
 		Container cp = this.getContentPane();
 		this.setMinimumSize(new Dimension(400, 500));
 
@@ -51,6 +53,8 @@ public class VentanaReservaEntradas extends JFrame {
 
 		Date dateObj = calendar.getTime();
 		String formattedDate = dtf.format(dateObj);
+		reserva.setFecha(formattedDate);
+		
 
 		// Creación comboBox
 		numeroPersonas1 = new JComboBox<Integer>();
@@ -95,7 +99,9 @@ public class VentanaReservaEntradas extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				panelCentral.removeAll();
 				disco2 = (Discoteca) comboDiscoteca.getSelectedItem();
-				panelCentral.add(new JLabel("Zona discoteca"));
+				reserva.setDiscoteca(disco2);
+				panelCentral.add(new JLabel("Zona discoteca: "
+						+ "Mesa 12€ / Pista 17€ / VIP 25€"));
 				panelCentral.add(comboZona);
 				panelCentral.add(jSeleccionar2);
 				VentanaReservaEntradas.this.repaint();
@@ -115,6 +121,7 @@ public class VentanaReservaEntradas extends JFrame {
 				for (int i = 1; i < 11; i++) {
 					numeroPersonas1.addItem(i);
 				}
+				reserva.setZona((EnumZona) comboZona.getSelectedItem());
 				panelInferior.add(numeroPersonas1);
 				panelInferior.add(jSeleccionar3);
 				VentanaReservaEntradas.this.pack();
@@ -127,11 +134,11 @@ public class VentanaReservaEntradas extends JFrame {
 		jSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Integer numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
+				numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
 				comprobarAforo(disco2, numeroPersonas);
-				
+				reserva.setNumeroPersonas((int) numeroPersonas1.getSelectedItem());
 				VentanaReservaEntradas.this.repaint();
-				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco);
+				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente, VentanaReservaEntradas.this);
 				vr.setVisible(true);
 				dispose();
 
@@ -149,15 +156,38 @@ public class VentanaReservaEntradas extends JFrame {
 			disco2.setAforo(aforoDiscoteca);
 			System.out.println("Aforo de mometo: " + aforoDiscoteca);
 		}
+		
+		
+	}
+	
+	public double calcularPrecioEntradas() {
+		double precioEntrada = 0.0;
+		if (comboZona.getSelectedItem().equals(EnumZona.VIP)) {
+			precioEntrada = 25* (Integer) numeroPersonas1.getSelectedItem();
+		}else if(comboZona.getSelectedItem().equals(EnumZona.PISTA)){
+			precioEntrada = 17 * (Integer) numeroPersonas1.getSelectedItem();
+		}else {
+			precioEntrada = 12 * (Integer) numeroPersonas1.getSelectedItem();
+		}
+		return precioEntrada;
+	}
+	
+	public int numeroPersonas() {
+		int numeroP = (int) numeroPersonas1.getSelectedItem();
+		return numeroP;
+	}
+	
+	public EnumZona zonaSelec() {
+		EnumZona zonaSelec = (EnumZona) comboZona.getSelectedItem();
+		return zonaSelec;
+	}
+	
+	public Discoteca discoSelec() {
+		Discoteca discoSelec = (Discoteca) comboDiscoteca.getSelectedItem();
+		return discoSelec;
 	}
 
-//	public static void main(String[] args) {
-//		Reserva reserva = new Reserva();
-//		GestionDiscoteca GestionDisco = new GestionDiscoteca();
-//		VentanaReservaEntradas ventana = new VentanaReservaEntradas(GDisco, disco2);
-//		ventana.setVisible(true);
-//		
-//	}
+
 	
 	
 

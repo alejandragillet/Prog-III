@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import org.sqlite.SQLiteException;
+
 
 import logica.*;
 import basedatos.BaseDeDatos;
@@ -97,14 +97,15 @@ public class VentanaUsuario extends JFrame {
 		
 		
 		this.addWindowListener(new WindowAdapter() {
-
+			Connection con = BaseDeDatos.initBD(BaseDeDatos.nombreBD);
 			@Override
 			public void windowOpened(WindowEvent e) {
 				// TODO LLAMADA A LA BASE DE DATOS PARA CARGAR DATOS
 				try {
-					GestionDiscoteca.lClientes = BaseDeDatos.clienteSelectAll(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")));
-					GestionDiscoteca.lTrabajadores = BaseDeDatos.trabajadorSelectAll(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")));
-					GestionDiscoteca.lDiscotecas = BaseDeDatos.DiscotecaSelectAll(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")));
+					BaseDeDatos.initBD(BaseDeDatos.nombreBD);
+					GestionDiscoteca.lClientes = BaseDeDatos.clienteSelectAll(BaseDeDatos.usarBD(con));
+					GestionDiscoteca.lTrabajadores = BaseDeDatos.trabajadorSelectAll(BaseDeDatos.usarBD(con));
+					GestionDiscoteca.lDiscotecas = BaseDeDatos.DiscotecaSelectAll(BaseDeDatos.usarBD(con));
 				} catch (NullPointerException e2) {}
 				 
 				
@@ -114,9 +115,12 @@ public class VentanaUsuario extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				// TODO ENVIAR DATOS/MODIFICACIONES A LA BBDD
 				try {
-					BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")), gs.getlClientes());
-					BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")), gs.getlTrabajadores());
-					BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(BaseDeDatos.initBD("DeustoDiscoBBDD")), gs.getlDiscotecas());
+					BaseDeDatos.reiniciarBD(con);
+					BaseDeDatos.usarCrearTablasBD(con);
+					BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(con), gs.getlClientes());
+					BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(con), gs.getlTrabajadores());
+					BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(con), gs.getlDiscotecas());
+					BaseDeDatos.cerrarBD(con , BaseDeDatos.usarBD(con));
 				} catch (NullPointerException e2) {}
 			}
 

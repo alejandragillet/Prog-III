@@ -28,6 +28,11 @@ public class Cliente {
 		this.apellido = apellido;
 		DNI = dNI;
 	}
+	
+	public Cliente() {
+		
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

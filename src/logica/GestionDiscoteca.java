@@ -1,3 +1,4 @@
+
 package logica;
 
 import java.io.File;
@@ -30,18 +31,23 @@ public class GestionDiscoteca {
 	public static ArrayList<Discoteca> lDiscotecas;
 	public static ArrayList<Cliente> lClientes;
 	public static ArrayList<Trabajador> lTrabajadores;
+	
+	
 
 	private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
 
 	public static void main(String[] args) throws CloneNotSupportedException {
 		GestionDiscoteca gs1 = new GestionDiscoteca();
-		gs1.initConexiones();
+		//gs1.initConexiones();
 		gs1.init(gs1);
 
-		VentanaCliente vc = new VentanaCliente("Registros", gs1);
-		vc.setVisible(true);
+		VentanaUsuario vU = new VentanaUsuario();
+		//vU.setVisible(true);
 
-		VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1);
+		 
+		Cliente cliente = new Cliente();
+		Reserva reserva = new Reserva();
+		VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1, cliente, reserva);
 		vre.setVisible(true);
 	}
 
@@ -87,7 +93,6 @@ public class GestionDiscoteca {
 
 	private void initConexiones() {
 		BaseDeDatos.initBD(BaseDeDatos.nombreBD);
-
 		(new Thread() {
 			@Override
 			public void run() {
@@ -103,9 +108,7 @@ public class GestionDiscoteca {
 
 	}
 
-	// inicialización de los productos
-	// https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html
-	// @meri
+
 	public void init(GestionDiscoteca gs1) {
 		lProductos = new ArrayList<Producto>();
 		lClientes = new ArrayList<Cliente>();
@@ -139,6 +142,8 @@ public class GestionDiscoteca {
 						comida2,
 						comida3,
 						comida4));
+		gs1.guardarFicheroBinarioProductos(lProductos, "productos.dat");
+		
 
 		HashMap<Producto, Integer> mapaProductoAlmacenBudha = new HashMap<Producto, Integer>();
 		mapaProductoAlmacenBudha.put(bebida1, 4);
@@ -217,17 +222,51 @@ public class GestionDiscoteca {
 			System.out.println("Error de lectura de fichero" + nombreFic);
 		}
 	}
+	
+	/** Guardar productos en un fichero binario
+	 * @param lProductos
+	 * @param nombreFic
+	 */
+	public  void guardarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic  ) {
+		try {
+			File sFichero = new File(nombreFic);
+			sFichero.delete();
+			ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( nombreFic));
+			oos.writeObject(lProductos);
+			oos.close();
+		}catch (IOException e){
+			System.out.println("Error en escritura de fichero (Producto)" + nombreFic);
+			
+		} 
+	}
 
-	private void calcularComprasPosibles(double disponible) {
+	/** Cargar productos en un fichero binario
+	 * @param lProductos
+	 * @param nombreFic
+	 */
+	public void cargarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic) {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream( nombreFic));
+			ArrayList<Producto> lCargada = (ArrayList<Producto>) ois.readObject();
+			ois.close();
+			lProductos.clear();
+			lProductos.addAll(lCargada);
+			System.out.println("Despues de cargar fichero binario de Productos" + lProductos);
+		}catch (IOException | ClassNotFoundException e) {
+			System.out.println("Error en lectura de fichero " + nombreFic) ;
+		}
+	}
+
+	public void calcularComprasPosibles(double disponible) {
 		ArrayList<Producto> lProds = new ArrayList<>();
 		calcularComprasPosibles(lProductos, disponible, lProds);
 	}
 
-	private void calcularComprasPosibles(ArrayList<Producto> prods, double dineroQueda,
+	public void calcularComprasPosibles(ArrayList<Producto> prods, double dineroQueda,
 			ArrayList<Producto> lProdsComprados) {
 		if (dineroQueda < 0) { // Caso base: compra imposible (no hay suficiente dinero)
 			return;
-		} else if (dineroQueda < 50) { // Caso base: compra posible con menos de 100 euros sobrantes
+		} else if (dineroQueda < 5) { // Caso base: compra posible con menos de 100 euros sobrantes
 			System.out.println(
 					"Posible compra (sobran " + String.format("%.2f", dineroQueda) + " euros): " + lProdsComprados);
 		} else { // Caso general - probar por combinatoria todos los productos posibles para
@@ -240,3 +279,4 @@ public class GestionDiscoteca {
 		}
 	}
 }
+

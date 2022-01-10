@@ -15,21 +15,11 @@ import basedatos.BaseDeDatos;
 
 
 public class TestProductos {
+	private Producto producto;
 	
-	@Before
-	public void init() throws Exception {
-		BaseDeDatos.initBD(null);
+	public void setUp() {
+	//	producto = new Producto("hotdog",4);
 	}
-
-	@After
-	public void finit() throws Exception {
-		BaseDeDatos.cerrarBD(null, null);
-	}
-	@Test
-	public void testProductos() {
-		ArrayList<Producto> pT = BaseDeDatos.getProductos();
-		assertEquals( 11, pT.size() );
-
-	}
-
+	
 }
+

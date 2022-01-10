@@ -1,7 +1,14 @@
 package ventanas;
 
+import logica.Cliente;
+import logica.Discoteca;
+import logica.EnumZona;
 import logica.Producto;
+import logica.Reserva;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 //public class VentanaCompra extends JFrame{
 
@@ -22,22 +29,56 @@ import java.util.Map;
 public class VentanaCompra extends JFrame {
 
     DefaultTableModel tbModel = new DefaultTableModel();
+    public JPanel panelSuperior;
+	public DefaultTableModel mDatos;
+	public JTable tDatos;
+	public JPanel panelInferior;
+	public JPanel panelImporte;
+	public JPanel panelCentral;
+    public VentanaCompra(HashMap<Producto, Integer> mapaStock, VentanaReservaProductos vPro, Cliente cliente, Reserva reserva, Discoteca disco, VentanaReservaEntradas vre) {
+         
+     // Panel superior
+     			panelSuperior = new JPanel();
+     			add(panelSuperior,BorderLayout.NORTH);
+     			JLabel lTitulo = new JLabel("Resumen de tu reserva.");
+     			panelSuperior.add(lTitulo);
+     			
+     			// Panel inferior
+     			panelInferior = new JPanel();
+     			add(panelInferior, BorderLayout.SOUTH);
+     			JButton bVolver = new JButton("Volver a la reserva");
+     			JButton bFinalizar = new JButton ("Comprar");
+     			panelInferior.add(bVolver);
+     			panelInferior.add(bFinalizar);
+     			panelImporte = new JPanel();
+     			panelInferior.add(panelImporte, BorderLayout.NORTH);
+     			JLabel jImporte =new JLabel("Importe final (€): ");
+     			panelImporte.add(jImporte);
+     			vPro.actualizarImporteTotal(reserva, panelImporte,vre);
 
-    public VentanaCompra(HashMap<Producto, Integer> mapaStock) {
-        super("Ejemplo 1");
-
-        setSize(500, 500);
+     		setSize(500, 500);
         tbModel.addColumn( "nombre producto");
         tbModel.addColumn( "cantidad");
         tbModel.addColumn( "precio");
 
-
         for (Map.Entry<Producto, Integer> entry : mapaStock.entrySet()) {
             tbModel.addRow(new String[] {entry.getKey().getNombre(), entry.getValue().toString(), new Double(entry.getKey().getPrecio()).toString()});
             //tbModel.addRow(new Object[] {entry.getKey().getNombre(), entry.getValue(),  entry.getKey().getPrecio()});
-
-
         }
+        
+        int numeroPersonas = vre.numeroPersonas();
+        EnumZona zona = vre.zonaSelec();
+        Discoteca discoteca = vre.discoSelec();
+        double precio = vre.calcularPrecioEntradas();
+        double precioPro = reserva.calcImporte();
+        
+        tbModel.addRow(new String[] { "Precio de los Productos: " , precioPro + " ",null  });
+        tbModel.addRow(new String[] { "Discoteca: " , discoteca + " " ,null  });
+        tbModel.addRow(new String[] { "Numero de Personas: " , numeroPersonas + " " , null });
+        tbModel.addRow(new String[] { "Zona: " , zona + " ", null });
+        tbModel.addRow(new String[] { "Precio de las Entradas: " , precio + " ",null  });
+       
+        
 
         // array de String's con los títulos de las columnas
 
@@ -55,5 +96,65 @@ public class VentanaCompra extends JFrame {
 
         // Agregamos el JScrollPane al contenedor
         getContentPane().add(scrollPane, BorderLayout.CENTER);
+        
+        
+        setTitle("RESERVA");
+        
+    	// Vuelve a la ventanaLista donde puede seguir modificando su reserva de productos
+		bVolver.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				vPro.setVisible(true);
+				dispose();
+			}
+		});
+		
+		bFinalizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//cliente.getlReservas().add(reserva);
+				
+	
+				Thread hilo = new Thread() {
+					@Override
+					public void run() {
+						int tiempo = 0;
+						getContentPane().removeAll();
+						panelInferior.removeAll();
+						JLabel lReserva = new JLabel();
+						getContentPane().add(lReserva,BorderLayout.CENTER);
+						
+						while (tiempo<5) {
+							VentanaCompra.this.setMaximumSize(new Dimension(100,100));
+							if(tiempo==0) {
+								lReserva.setText("                                          Verificando compra...");
+							}else if(tiempo==3) {
+								lReserva.setText("     Finalizada la compra. Le llegará un mensaje de verificación.");
+							}
+							
+							VentanaCompra.this.repaint();
+							tiempo += 1;
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+
+						}
+						
+					}
+				};
+				
+				hilo.start();
+				// bd.registrarReserva(cliente, reserva);
+				actualizarAforoDisco(disco, vre);
+			}
+		});	
+		cliente.setNombre(reserva.getNombreC());
+    }
+    
+    public void actualizarAforoDisco(Discoteca disco, VentanaReservaEntradas vre) {
+    	Integer aforoDiscoteca = disco.getAforo();
+    	aforoDiscoteca = aforoDiscoteca + vre.numeroPersonas;
     }
 }

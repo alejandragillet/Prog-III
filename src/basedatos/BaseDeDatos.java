@@ -1,3 +1,4 @@
+
 package basedatos;
 
 
@@ -10,6 +11,7 @@ import java.util.logging.*;
 
 import logica.*;
 
+
 /**
  * @author saioa
  *
@@ -17,12 +19,12 @@ import logica.*;
 public class BaseDeDatos {
 private static Exception lastError = null; // Informaci�n de �ltimo error SQL ocurrido
 public static Connection conexion;
-public static String nombreBD = "discotecaBD";
+public static String nombreBD = "discotecaBD.db";
 
 public static GestionDiscoteca gs = new GestionDiscoteca();
-//public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
-//public static ArrayList<Cliente> clientes = gs.getlClientes();
-//public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
+public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
+public static ArrayList<Cliente> clientes = gs.getlClientes();
+public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 	
 	/** Inicializa una BD SQLITE y devuelve una conexi�n con ella
 	 * @param nombreBD	Nombre de fichero de la base de datos
@@ -68,19 +70,23 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 
 		try {
 			statement.executeUpdate("create table trabajador " +
-				"(nombre string, puesto string, sueldo integer, contrasenaT string, precioHora integer)");
+				"(nombre VARCHAR(45), puesto VARCHAR(45), sueldo VARCHAR(45), contrasenaT VARCHAR(45), precioHora integer);");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table cliente " +
-				"(nombre string, apellido string, dni string, contrasena string)");
+				"(nombre VARCHAR(45), apellido VARCHAR(45), dni VARCHAR(45), contrasena VARCHAR(45), dni PRIMARY KEY);");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table reserva " +
-				"(cliente_nombre string, discoteca_nombre string, fecha integer, string zona, numPers integer, importe integer)");
+				"(id INTEGER PRIMARY KEY AUTOINCREMENT, cliente_nombre varchar(20), discoteca_nombre varchar(20), fecha varchar(20), zona varchar(20), numPers int, importe double);");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table discoteca " +
-				"(nombre String, aforoMax integer, aforo integer, numeroTrab integer, direccion String)");
+				"(nombre VARCHAR(45), aforoMax integer, aforo integer, numeroTrab integer, direccion VARCHAR(45));");
+		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
+		try {
+			statement.executeUpdate("create table productoMapa " +
+				"(idReserva int  PRIMARY KEY, producto varchar(20), cantidad int, idReserva PRIMARY KEY );");
 		} catch (SQLException e) {} // Tabla ya existe. Nada que hacer
 		
 		log( Level.INFO, "Creada base de datos", null );
@@ -99,6 +105,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			statement.executeUpdate("drop table if exists Discoteca");
 			statement.executeUpdate("drop table if exists cliente");
 			statement.executeUpdate("drop table if exists reserva");
+			statement.executeUpdate("drop table if exists productoMapa");
 			log( Level.INFO, "Reiniciada base de datos", null );
 			return usarCrearTablasBD( con );
 		} catch (SQLException e) {
@@ -143,7 +150,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 		try {
 			sentSQL = "insert into discoteca values(" +
 					"'" + secu(d.getNombre()) + "'," +
-					"'" + d.getAforoMax() + "'" +d.getNumeroTrabajadores()+ "'" + d.getDireccion()+")";
+					"'" + d.getAforoMax() + "'" +d.getNumeroTrabajadores()+ "'" + d.getDireccion()+");";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla Discoteca a�adida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que a�adir 1 - error si no
@@ -207,7 +214,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 		String sentSQL = "";
 		ArrayList<Discoteca> ret = new ArrayList<>();
 		try {
-			sentSQL = "select * from Discoteca";
+			sentSQL = "select * from Discoteca;";
 			
 			// System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
@@ -239,7 +246,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 		try {
 			sentSQL = "insert into cliente values(" +
 					"'" + secu(nombre) + "'," + "'" + secu(apellido) + "',"+
-					"'" + secu(DNI) +"'," + "'" + secu(contrasena)+ "')";
+					"'" + secu(DNI) +"'," + "'" + secu(contrasena)+ "');";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla cliente anadida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que anadir 1 - error si no
@@ -287,7 +294,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			
 				String where = "nombre='" + c.getNombre() + "'";
 				if (adicional!=null && !adicional.equals(""))
-					sentSQL = sentSQL + " where " + where + " AND " + adicional;
+					sentSQL = sentSQL + " where " + where + " AND " + adicional +";";
 				else
 					sentSQL = sentSQL + " where " + where;
 			
@@ -308,12 +315,13 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			return null;
 		}
 	}
+	
 	public static ArrayList<Cliente> clienteSelectAll( Statement st) {
 		
 		String sentSQL = "";
 		ArrayList<Cliente> ret = new ArrayList<>();
 		try {
-			sentSQL = "select * from cliente";
+			sentSQL = "select * from cliente;";
 			System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
 			while (rs.next()) {
@@ -372,7 +380,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 		String sentSQL = "";
 		ArrayList<Trabajador> ret = new ArrayList<>();
 		try {
-			sentSQL = "select * from trabajador";
+			sentSQL = "select * from trabajador;";
 			System.out.println( sentSQL );  // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery( sentSQL );
 			while (rs.next()) {
@@ -409,7 +417,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 		try {
 			sentSQL = "insert into cliente values(" +
 					"'" + secu(nombre) + "'," +
-					"'" + "'" + secu(contrasenia) + "',"+ precioHora + "'," + sueldo+"')";
+					"'" + "'" + secu(contrasenia) + "',"+ precioHora + "'," + sueldo+"');";
 			int val = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla trabajador a�adida " + val + " fila\t" + sentSQL, null );
 			if (val!=1) {  // Se tiene que a�adir 1 - error si no
@@ -459,7 +467,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 		try {
 			sentSQL = "insert into reserva values(" +
 					"'" + secu(nomCliente) + "'," + "'" + secu(discoteca) + "'," +"'" + fecha + "'," + "'" + zona + "'," + "'" + numPers + "',"
-					+ "'" + importe + "'" + ")";
+					+ "'" + importe + "'" + ");";
 			//cliente_nombre string, discoteca_nombre string, fecha integer, string zona, numPers integer, importe integer
 			int eu = st.executeUpdate( sentSQL );
 			log( Level.INFO, "BD tabla reserva a�adida " + eu + " fila\t" + sentSQL, null );
@@ -525,7 +533,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 				EnumZona zona = null;
 				if (rs.getString("zona")== "VIP" || rs.getString("zona") == "vip"){
 					zona = EnumZona.VIP;
-				} else if (rs.getString("zona") == "MESA" || rs.getString("zona") == "MESA") {
+				} else if (rs.getString("zona") == "MESA" || rs.getString("zona") == "mesa") {
 					zona = EnumZona.MESA;
 				}else {
 					zona = EnumZona.PISTA;
@@ -542,6 +550,37 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			return null;
 		}
 	}
+	public static int obtenerDNICliente(String nombreCliente) {
+		int dni = -1;
+		try {
+			PreparedStatement s = conexion.prepareStatement("select * from cliente where nombre = ?");
+			s.setString(1, nombreCliente);
+			ResultSet rs = s.executeQuery();
+			if(rs.next()) dni = rs.getInt("DNI");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return dni;
+	}
+	
+	public static void registraReserva(Cliente cliente, Reserva reserva) {
+		try {
+			PreparedStatement s = conexion.prepareStatement("insert into reserva (DNI, fecha, importe, mapaProducto, numeroPersonas, zona, discoteca) values (?, ?, ?, ?, ?, ?, ?, ?) ");
+			s.setInt(1, obtenerDNICliente(cliente.getNombre()));
+				//s.setString(2, reserva.getFecha());
+				s.setDouble(3, reserva.getImporte());
+				//s.setMap(4, reserva.getMapaProducto());
+				s.setInt(5, reserva.getNumeroPersonas());
+				s.setString(6, reserva.getZona().name());
+				s.setString(7, reserva.getDiscoteca());
+
+			log(Level.INFO, "Se ha registrado la reserva del cliente: " + cliente, null);
+		}catch(SQLException e) {
+			log(Level.SEVERE, "Error al registrar la reserva del cliente: " + cliente , e );
+		}
+	}
+	
+
 	
 	private static String secu( String string ) {
 		StringBuffer sb = new StringBuffer();
@@ -607,3 +646,4 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 			proceso.accept( msg );
 		}
 	}
+>>>>>>> branch 'main' of https://github.com/alejandragillet/Prog-III.git
