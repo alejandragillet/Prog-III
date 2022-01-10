@@ -31,7 +31,7 @@ public static GestionDiscoteca gs = new GestionDiscoteca();
 	public static Connection initBD( String nombreBD ) {
 		try {
 		    Class.forName("org.sqlite.JDBC");
-		    conexion = DriverManager.getConnection("jdbc:sqlite:" + nombreBD );
+		    conexion = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db" );
 			log( Level.INFO, "Conectada base de datos " + nombreBD, null );
 		    return conexion;
 		} catch (ClassNotFoundException | SQLException e) {
