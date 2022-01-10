@@ -563,16 +563,15 @@ public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
 	
 	public static void registraReserva(Cliente cliente, Reserva reserva) {
 		try {
-			PreparedStatement s = conexion.prepareStatement("insert into reserva (DNI, fecha, importe, mapaProducto, numeroPersonas, zona, discoteca) values (?, ?, ?, ?, ?, ?, ?, ?) ");
+			PreparedStatement s = conexion.prepareStatement("insert into reserva (DNI, fecha, importe, numeroPersonas, zona, discoteca) values (?, ?, ?, ?, ?, ?, ?, ?) ");
 			s.setInt(1, obtenerDNICliente(cliente.getNombre()));
-				//s.setString(2, reserva.getFecha());
+				s.setString(2, reserva.getFecha());
 				s.setDouble(3, reserva.getImporte());
-				//s.setMap(4, reserva.getMapaProducto());
 				s.setInt(5, reserva.getNumeroPersonas());
 				s.setString(6, reserva.getZona().name());
 				s.setString(7, reserva.getDiscoteca().getNombre());
 
-			log(Level.INFO, "Se ha registradola reserva del cliente: " + cliente, null);
+			log(Level.INFO, "Se ha registrado la reserva del cliente: " + cliente, null);
 		}catch(SQLException e) {
 			log(Level.SEVERE, "Error al registrar la reserva del cliente: " + cliente , e );
 		}
