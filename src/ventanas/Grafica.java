@@ -16,19 +16,18 @@ public class Grafica extends JPanel {
 
     private List<Bar> bars = new ArrayList<Bar>();
 
-    public Grafica()
-    {
-        setBorder( new EmptyBorder(10, 10, 10, 10) );
-        setLayout( new BorderLayout() );
+    public Grafica() {
+        setBorder(new EmptyBorder(10, 10, 10, 10));
+        setLayout(new BorderLayout());
 
-        barPanel = new JPanel( new GridLayout(1, 0, barGap, 0) );
+        barPanel = new JPanel(new GridLayout(1, 0, barGap, 0));
         Border outer = new MatteBorder(1, 1, 1, 1, Color.BLACK);
         Border inner = new EmptyBorder(10, 10, 0, 10);
         Border compound = new CompoundBorder(outer, inner);
-        barPanel.setBorder( compound );
+        barPanel.setBorder(compound);
 
-        labelPanel = new JPanel( new GridLayout(1, 0, barGap, 0) );
-        labelPanel.setBorder( new EmptyBorder(5, 10, 0, 10) );
+        labelPanel = new JPanel(new GridLayout(1, 0, barGap, 0));
+        labelPanel.setBorder(new EmptyBorder(5, 10, 0, 10));
 
         add(barPanel, BorderLayout.CENTER);
         add(labelPanel, BorderLayout.PAGE_END);

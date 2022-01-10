@@ -5,7 +5,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -38,13 +37,14 @@ public class VentanaReservaEntradas extends JFrame {
 	private JComboBox<Discoteca> comboDiscoteca; // combo con las discotecas
 	private JComboBox<EnumZona> comboZona; // combo con la zona de la discoteca
 	public static Discoteca disco2;
-	public  Integer numeroPersonas;
+	public Integer numeroPersonas;
 	private JPanel panelSuperior;
 	private JPanel panelCentral;
 	private JPanel panelInferior;
 
 	// Discoteca discoteca
-	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente, Reserva reserva) throws CloneNotSupportedException {
+	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente, Reserva reserva)
+			throws CloneNotSupportedException {
 		Container cp = this.getContentPane();
 		this.setMinimumSize(new Dimension(400, 500));
 
@@ -54,7 +54,6 @@ public class VentanaReservaEntradas extends JFrame {
 		Date dateObj = calendar.getTime();
 		String formattedDate = dtf.format(dateObj);
 		reserva.setFecha(formattedDate);
-		
 
 		// Creación comboBox
 		numeroPersonas1 = new JComboBox<Integer>();
@@ -87,6 +86,7 @@ public class VentanaReservaEntradas extends JFrame {
 		cp.add(panelInferior, BorderLayout.SOUTH);
 
 		// Añadir al comboBox las discotecas que hay en la lista
+		System.out.println(gDisco.getlDiscotecas());
 		for (Discoteca discoteca : gDisco.getlDiscotecas()) {
 			Discoteca dis = discoteca.clone();
 			System.out.println(dis);
@@ -127,18 +127,18 @@ public class VentanaReservaEntradas extends JFrame {
 				VentanaReservaEntradas.this.pack();
 			}
 		});
-		
 
 		// compara a ver si el aforo de la discoteca se ha llenado y aparece un mensaje
 		// en el caso de que este lleno
 		jSeleccionar3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numeroPersonas = (Integer)numeroPersonas1.getSelectedItem();
+				numeroPersonas = (Integer) numeroPersonas1.getSelectedItem();
 				comprobarAforo(disco2, numeroPersonas);
 				reserva.setNumeroPersonas((int) numeroPersonas1.getSelectedItem());
 				VentanaReservaEntradas.this.repaint();
-				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente, VentanaReservaEntradas.this);
+				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente,
+						VentanaReservaEntradas.this);
 				vr.setVisible(true);
 				dispose();
 
@@ -146,49 +146,45 @@ public class VentanaReservaEntradas extends JFrame {
 		});
 
 	}
+
 	public void comprobarAforo(Discoteca disco2, Integer numeroPersonas) {
 		Integer aforoDiscoteca = disco2.getAforo();
 		aforoDiscoteca = aforoDiscoteca + numeroPersonas;
-		if(aforoDiscoteca > disco2.getAforoMax()) {
-			JOptionPane.showMessageDialog(VentanaReservaEntradas.this, "No quedan entradas disponibles.No es posible hacer la reserva. ");
-		}
-		else {
+		if (aforoDiscoteca > disco2.getAforoMax()) {
+			JOptionPane.showMessageDialog(VentanaReservaEntradas.this,
+					"No quedan entradas disponibles.No es posible hacer la reserva. ");
+		} else {
 			disco2.setAforo(aforoDiscoteca);
 			System.out.println("Aforo de mometo: " + aforoDiscoteca);
 		}
-		
-		
+
 	}
-	
+
 	public double calcularPrecioEntradas() {
 		double precioEntrada = 0.0;
 		if (comboZona.getSelectedItem().equals(EnumZona.VIP)) {
-			precioEntrada = 25* (Integer) numeroPersonas1.getSelectedItem();
-		}else if(comboZona.getSelectedItem().equals(EnumZona.PISTA)){
+			precioEntrada = 25 * (Integer) numeroPersonas1.getSelectedItem();
+		} else if (comboZona.getSelectedItem().equals(EnumZona.PISTA)) {
 			precioEntrada = 17 * (Integer) numeroPersonas1.getSelectedItem();
-		}else {
+		} else {
 			precioEntrada = 12 * (Integer) numeroPersonas1.getSelectedItem();
 		}
 		return precioEntrada;
 	}
-	
+
 	public int numeroPersonas() {
 		int numeroP = (int) numeroPersonas1.getSelectedItem();
 		return numeroP;
 	}
-	
+
 	public EnumZona zonaSelec() {
 		EnumZona zonaSelec = (EnumZona) comboZona.getSelectedItem();
 		return zonaSelec;
 	}
-	
+
 	public Discoteca discoSelec() {
 		Discoteca discoSelec = (Discoteca) comboDiscoteca.getSelectedItem();
 		return discoSelec;
 	}
-
-
-	
-	
 
 }

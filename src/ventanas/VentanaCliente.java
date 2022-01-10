@@ -12,11 +12,14 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import comunicacion.Comunicador;
+import logica.Cliente;
 import logica.GestionDiscoteca;
+import logica.Reserva;
 
 public class VentanaCliente extends JFrame {
 
@@ -90,13 +93,19 @@ public class VentanaCliente extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					boolean existe = Comunicador.login(tfNick.getText(), tfPass.getText());
-					System.out.println(existe);
-				} catch (IOException e1) {
+					Cliente cliente = Comunicador.login(tfNick.getText(), tfPass.getText());
+					if (cliente == null) {
+						JOptionPane.showMessageDialog(VentanaCliente.this, "Ha ocurrido un error con el login");
+						return;
+					}
+
+					Reserva reserva = new Reserva();
+					VentanaReservaEntradas vre = new VentanaReservaEntradas(gs, cliente, reserva);
+					vre.setVisible(true);
+				} catch (IOException | CloneNotSupportedException e1) {
 					e1.printStackTrace();
 				}
-				
-				
+
 			}
 		});
 

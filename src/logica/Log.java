@@ -78,16 +78,15 @@ public class Log {
 		this.buffered.close();
 	}
 
-	//Prueba del log
+	// Prueba del log
 	public static void main(String[] args) throws IOException {
 		Log miLog = new Log("milog.log");
 
-
 		miLog.anadeLinea("Ale");
 
-		//miLog.resetLog();
+		// miLog.resetLog();
 
-		//miLog.anadeLinea("Pedro");
+		// miLog.anadeLinea("Pedro");
 	}
 
 }

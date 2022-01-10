@@ -30,7 +30,6 @@ public class Discoteca implements Cloneable {
 
 	}
 
-
 	public Discoteca(String nombre, int aforoMax, int aforo, int numeroTrabajadores, String direccion) {
 		this.direccion = direccion;
 		this.aforoMax = aforoMax;
@@ -109,14 +108,15 @@ public class Discoteca implements Cloneable {
 	public void actualizarAlmacenDico(Producto producto) {
 		Integer stock = almacen.getMapaProductoAlmacen().get(producto);
 		if (stock != null) {
-			almacen.getMapaProductoAlmacen().put(producto, stock -1);
+			almacen.getMapaProductoAlmacen().put(producto, stock - 1);
 		}
-		// for (Map.Entry<Producto, Integer> entry : almacen.getMapaProductoAlmacen().entrySet()) {
-		// 	Producto key = entry.getKey();
-		// 	Integer value = entry.getValue();
-		// 	if (producto.equals(key)) {
-		// 		almacen.getMapaProductoAlmacen().replace(key, value - 1);
-		// 	}
+		// for (Map.Entry<Producto, Integer> entry :
+		// almacen.getMapaProductoAlmacen().entrySet()) {
+		// Producto key = entry.getKey();
+		// Integer value = entry.getValue();
+		// if (producto.equals(key)) {
+		// almacen.getMapaProductoAlmacen().replace(key, value - 1);
+		// }
 		// }
 	}
 

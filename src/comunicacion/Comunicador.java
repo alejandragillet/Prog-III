@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import logica.Cliente;
+
 // en realidad debería llamarse Cliente, sin embargo, ya existe una clase Cliente.
 // TODO en proceso de creacion
 public class Comunicador {
@@ -46,16 +48,29 @@ public class Comunicador {
         return respuesta;
     }
 
-    public static boolean login(String nombre, String pass) throws IOException {
+    public static Cliente login(String nombre, String pass) throws IOException {
         String r = emitirMensaje("login:" + nombre + "-" + pass);
         String[] splitted = r.split("-");
         String respuestaLogin = splitted[1];
 
-        if (respuestaLogin == "true") {
-            return true;
-        } else {
-            return false;
+        if (respuestaLogin.equals("true")) {
+            String apellido = splitted[2];
+            String DNI = splitted[3];
+            return new Cliente(nombre, pass, apellido, DNI);
         }
+        return null;
+    }
+
+    public static Cliente registrarse(String nombre, String pass, String DNI, String apellido) throws IOException {
+        String r = emitirMensaje("register:" + nombre + "-" + pass + "-" + DNI + "-" + apellido);
+        String[] splitted = r.split("-");
+        String respuestaRegistro = splitted[1];
+        System.out.println(respuestaRegistro);
+
+        if (respuestaRegistro.equals("true")) {
+            return new Cliente(nombre, pass, apellido, DNI);
+        }
+        return null;
     }
 
     public static void esperarConexion() {
@@ -91,7 +106,8 @@ public class Comunicador {
         Comunicador.esperarConexion();
 
         try {
-            // para poder llamar a emitirMensaje, el outputAServer debe de esta definido (es decir, conexión establecida)
+            // para poder llamar a emitirMensaje, el outputAServer debe de esta definido (es
+            // decir, conexión establecida)
             String respueta = Comunicador.emitirMensaje("holaaaaa");
             System.out.println("Respuesta: " + respueta);
         } catch (Exception e) {

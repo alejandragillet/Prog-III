@@ -27,28 +27,20 @@ import ventanas.VentanaReservaEntradas;
 import ventanas.VentanaUsuario;
 
 public class GestionDiscoteca {
-	public static ArrayList<Producto> lProductos;
-	public static ArrayList<Discoteca> lDiscotecas;
-	public static ArrayList<Cliente> lClientes;
-	public static ArrayList<Trabajador> lTrabajadores;
-	
-	
+	public ArrayList<Producto> lProductos = new ArrayList<>();
+	public ArrayList<Discoteca> lDiscotecas = new ArrayList<>();
+	public ArrayList<Cliente> lClientes = new ArrayList<>();
+	public ArrayList<Trabajador> lTrabajadores = new ArrayList<>();
 
 	private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
 
 	public static void main(String[] args) throws CloneNotSupportedException {
 		GestionDiscoteca gs1 = new GestionDiscoteca();
-		//gs1.initConexiones();
-		gs1.init(gs1);
+		gs1.initConexiones();
+		GestionDiscoteca.init(gs1);
 
-		VentanaUsuario vU = new VentanaUsuario();
-		//vU.setVisible(true);
-
-		 
-		Cliente cliente = new Cliente();
-		Reserva reserva = new Reserva();
-		VentanaReservaEntradas vre = new VentanaReservaEntradas(gs1, cliente, reserva);
-		vre.setVisible(true);
+		VentanaUsuario vU = new VentanaUsuario(gs1);
+		vU.setVisible(true);
 	}
 
 	public ArrayList<Discoteca> getlDiscotecas() {
@@ -108,13 +100,12 @@ public class GestionDiscoteca {
 
 	}
 
-
-	public void init(GestionDiscoteca gs1) {
-		lProductos = new ArrayList<Producto>();
-		lClientes = new ArrayList<Cliente>();
-		lTrabajadores = new ArrayList<Trabajador>();
-		lDiscotecas = new ArrayList<Discoteca>();
-
+	/**
+	 * Inicializa una GestionDiscoteca con datos de ejemplo
+	 * 
+	 * @param gs1
+	 */
+	public static void init(GestionDiscoteca gs1) {
 		// Crear productos
 		Bebida bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
 		Bebida bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPITO, "tequila", " ", 3);
@@ -129,7 +120,7 @@ public class GestionDiscoteca {
 		Comida comida3 = new Comida("Pizza Jamón y Queso", EnumComida.PIZZA, "grande", 12.00);
 		Comida comida4 = new Comida("Pizza barbacoa", EnumComida.PIZZA, "pequeña", 8.00);
 
-		lProductos.addAll(
+		gs1.lProductos.addAll(
 				Arrays.asList(
 						bebida1,
 						bebida2,
@@ -142,8 +133,7 @@ public class GestionDiscoteca {
 						comida2,
 						comida3,
 						comida4));
-		gs1.guardarFicheroBinarioProductos(lProductos, "productos.dat");
-		
+		gs1.guardarFicheroBinarioProductos(gs1.lProductos, "productos.dat");
 
 		HashMap<Producto, Integer> mapaProductoAlmacenBudha = new HashMap<Producto, Integer>();
 		mapaProductoAlmacenBudha.put(bebida1, 4);
@@ -178,9 +168,8 @@ public class GestionDiscoteca {
 		Discoteca moma = new Discoteca("Rodríguez Arias Kalea, 66, 48013 Bilbo, Bizkaia", 200, 30, "Moma",
 				almacenBudha);
 
-		lDiscotecas.add(budha);
-		lDiscotecas.add(moma);
-		gs1.lDiscotecas = lDiscotecas;
+		gs1.lDiscotecas.add(budha);
+		gs1.lDiscotecas.add(moma);
 
 	}
 
@@ -222,38 +211,42 @@ public class GestionDiscoteca {
 			System.out.println("Error de lectura de fichero" + nombreFic);
 		}
 	}
-	
-	/** Guardar productos en un fichero binario
+
+	/**
+	 * Guardar productos en un fichero binario
+	 * 
 	 * @param lProductos
 	 * @param nombreFic
 	 */
-	public  void guardarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic  ) {
+	public void guardarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic) {
 		try {
 			File sFichero = new File(nombreFic);
 			sFichero.delete();
-			ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( nombreFic));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombreFic));
 			oos.writeObject(lProductos);
 			oos.close();
-		}catch (IOException e){
+		} catch (IOException e) {
 			System.out.println("Error en escritura de fichero (Producto)" + nombreFic);
-			
-		} 
+
+		}
 	}
 
-	/** Cargar productos en un fichero binario
+	/**
+	 * Cargar productos en un fichero binario
+	 * 
 	 * @param lProductos
 	 * @param nombreFic
 	 */
 	public void cargarFicheroBinarioProductos(ArrayList<Producto> lProductos, String nombreFic) {
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream( nombreFic));
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
 			ArrayList<Producto> lCargada = (ArrayList<Producto>) ois.readObject();
 			ois.close();
 			lProductos.clear();
 			lProductos.addAll(lCargada);
 			System.out.println("Despues de cargar fichero binario de Productos" + lProductos);
-		}catch (IOException | ClassNotFoundException e) {
-			System.out.println("Error en lectura de fichero " + nombreFic) ;
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Error en lectura de fichero " + nombreFic);
 		}
 	}
 
@@ -279,4 +272,3 @@ public class GestionDiscoteca {
 		}
 	}
 }
-

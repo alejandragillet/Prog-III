@@ -1,5 +1,5 @@
 package logica;
 
 public enum EnumZona {
-	 VIP, MESA, PISTA;
+	VIP, MESA, PISTA;
 }

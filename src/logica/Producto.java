@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 public abstract class Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	protected String nombre;
 	protected double precio;
-
 
 	/**
 	 * Crea un producto con nombre y precio

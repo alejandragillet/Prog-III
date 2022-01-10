@@ -3,10 +3,9 @@ package logica;
 public class Comida extends Producto {
 	protected EnumComida TipoComida;
 	private String tamanio;
-	
 
-	public Comida(String nombre, EnumComida tipoComida, String tamanio, double precio ) {
-		super(nombre,precio);
+	public Comida(String nombre, EnumComida tipoComida, String tamanio, double precio) {
+		super(nombre, precio);
 		this.TipoComida = tipoComida;
 		this.nombre = nombre;
 		this.tamanio = tamanio;
@@ -29,9 +28,8 @@ public class Comida extends Producto {
 	}
 
 	@Override
-	public String toString() { 
+	public String toString() {
 		return " " + nombre;
 	}
-
 
 }

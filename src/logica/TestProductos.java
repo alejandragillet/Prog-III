@@ -11,15 +11,11 @@ import org.junit.Test;
 
 import basedatos.BaseDeDatos;
 
-
-
-
 public class TestProductos {
 	private Producto producto;
-	
-	public void setUp() {
-	//	producto = new Producto("hotdog",4);
-	}
-	
-}
 
+	public void setUp() {
+		// producto = new Producto("hotdog",4);
+	}
+
+}

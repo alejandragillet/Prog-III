@@ -57,7 +57,8 @@ public class VentanaReservaProductos extends JFrame {
 	final Reserva reserva;
 
 	// String nombre, Reserva reserva, Almacen almacen, Gestiondiscoteca Gs1
-	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco, Cliente cliente, VentanaReservaEntradas vre) {
+	public VentanaReservaProductos(Discoteca disco, GestionDiscoteca gDisco, Cliente cliente,
+			VentanaReservaEntradas vre) {
 		this.setMinimumSize(new Dimension(800, 600));
 
 		// Lista
@@ -75,11 +76,11 @@ public class VentanaReservaProductos extends JFrame {
 		DefaultListModel listModel = new DefaultListModel();
 
 		System.out.println(disco);
-		
-		gDisco.cargarFicheroBinarioProductos(gDisco.getlProductos(),"productos.dat");
-		System.out.println("lista productos"+gDisco.getlProductos() );
-		
-		//System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
+
+		gDisco.cargarFicheroBinarioProductos(gDisco.getlProductos(), "productos.dat");
+		System.out.println("lista productos" + gDisco.getlProductos());
+
+		// System.out.println("almacen " + disco.getAlmacen().getMapaProductoAlmacen());
 		// Añade al productosJList una serie de productos
 		for (Producto producto : gDisco.getlProductos()) {
 			listModel.addElement(producto);
@@ -179,16 +180,15 @@ public class VentanaReservaProductos extends JFrame {
 		actualizarCarrito(reserva, panelMapa);
 		// actualizarImporteTotal(reserva, panelInferior);
 		actualizarImporteTotal(reserva, panelInferior, vre);
-	
-		
-		
-		// Finaliza la búsqueda para comprar los productos del carrito 
+
+		// Finaliza la búsqueda para comprar los productos del carrito
 		bFinalizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaCompra vc = new VentanaCompra(reserva.getMapaProducto(), VentanaReservaProductos.this ,cliente, reserva, disco, vre );
+				VentanaCompra vc = new VentanaCompra(reserva.getMapaProducto(), VentanaReservaProductos.this, cliente,
+						reserva, disco, vre);
 				vc.setVisible(true);
-				VentanaReservaProductos.this.setVisible(false); 
+				VentanaReservaProductos.this.setVisible(false);
 			}
 		});
 		// Añade al carrito (mapa) los productos seleccionados del productosJlist que
@@ -198,13 +198,13 @@ public class VentanaReservaProductos extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Producto productoSeleccionado = productosJList.getSelectedValue();
 				if (productoSeleccionado != null) {
-					
+
 					for (Map.Entry<Producto, Integer> entry : disco.getAlmacen().getMapaProductoAlmacen().entrySet()) {
 						Producto key = entry.getKey();
 						Integer value = entry.getValue();
 						if (productoSeleccionado.equals(key)) {
 							if (value != 0) {
-								disco.actualizarAlmacenDico( productoSeleccionado);
+								disco.actualizarAlmacenDico(productoSeleccionado);
 								reserva.anadirAlMapa(productoSeleccionado);
 								actualizarCarrito(reserva, panelMapa);
 								actualizarImporteTotal(reserva, panelInferior, vre);
@@ -240,7 +240,7 @@ public class VentanaReservaProductos extends JFrame {
 						if (value > 0) {
 							disco.actualizarAlmacenDiscoBorrar(productosJList.getSelectedValue());
 							reserva.eliminarDelMapa(productosJList.getSelectedValue());
-						}else {
+						} else {
 							break loop;
 						}
 					}
@@ -250,34 +250,33 @@ public class VentanaReservaProductos extends JFrame {
 				actualizarImporteTotal(reserva, panelInferior, vre);
 				VentanaReservaProductos.this.repaint();
 			}
-					
+
 		});
 
 		bGraficaStock.addActionListener(l -> { // java funcional
 			VentanaGraficaStock v = new VentanaGraficaStock(disco.getAlmacen().getMapaProductoAlmacen());
 			v.setVisible(true);
 		});
-		
-		bComprasPosibles.addActionListener( new ActionListener() {
+
+		bComprasPosibles.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String resp = JOptionPane.showInputDialog( VentanaReservaProductos.this, "Dinero disponible:", "5" );
-					if (resp==null) return; // No definida cantidad
-					double dinero = Double.parseDouble( resp );
+					String resp = JOptionPane.showInputDialog(VentanaReservaProductos.this, "Dinero disponible:", "5");
+					if (resp == null)
+						return; // No definida cantidad
+					double dinero = Double.parseDouble(resp);
 					gDisco.calcularComprasPosibles(dinero);
-				} catch (NumberFormatException e2) { } // Error en cantidad - no se calcula nada
+				} catch (NumberFormatException e2) {
+				} // Error en cantidad - no se calcula nada
 			}
 		});
 		setTitle("PRODUCTOS");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setMaximumSize(new Dimension(700, 500));
 		this.repaint();
-		
-	}
-	
-	
 
+	}
 
 	/**
 	 * Actualiza la información
@@ -352,7 +351,5 @@ public class VentanaReservaProductos extends JFrame {
 		mezclaInfo.setText(" ");
 		alcoholInfo.setText(" ");
 	}
-	
-
 
 }

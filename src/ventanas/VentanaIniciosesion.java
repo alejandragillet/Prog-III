@@ -21,73 +21,70 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 import logica.GestionDiscoteca;
 import logica.Puestoaleatorio;
 
 public class VentanaIniciosesion extends JFrame {
-	private String horas= JOptionPane.showInputDialog("Horas trabajadas");
+	private String horas = JOptionPane.showInputDialog("Horas trabajadas");
 	private int sueldo;
-	
-	public VentanaIniciosesion (String titulo, GestionDiscoteca gs, String dni, String contrasenia) {
-		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); {
-			setSize(600,400);
-			setLocation(200,10);
+
+	public VentanaIniciosesion(String titulo, GestionDiscoteca gs, String dni, String contrasenia) {
+
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		{
+			setSize(600, 400);
+			setLocation(200, 10);
 			setTitle(titulo);
-			
-			
-			JPanel pSuperior = new JPanel();		
-			JLabel lTitulo = new JLabel ("Bienvenido");
+
+			JPanel pSuperior = new JPanel();
+			JLabel lTitulo = new JLabel("Bienvenido");
 			JPanel pCentral = new JPanel();
 			JPanel pInferior = new JPanel();
-			JButton bCancelar = new JButton ("Cancelar");
-			
-			int hora= 0; 
+			JButton bCancelar = new JButton("Cancelar");
+
+			int hora = 0;
 			try {
 				hora = Integer.parseInt(horas);
 			} catch (NumberFormatException e) {
 			}
-			
+
 			String puesto = Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1));
 			sueldo = 0;
 			if (puesto.equals("Segurata")) {
 				sueldo = 15;
-			}else if (puesto.equals("Camarero")) {
+			} else if (puesto.equals("Camarero")) {
 				sueldo = 10;
 			}
 			sueldo *= hora;
-			
-			JLabel lNick = new JLabel ("DNI: " + dni);
 
-			JLabel lPasword = new JLabel ("Contrase�a: " + contrasenia);
+			JLabel lNick = new JLabel("DNI: " + dni);
+
+			JLabel lPasword = new JLabel("Contrase�a: " + contrasenia);
 			JLabel lSueldo = new JLabel("Sueldo por noche: " + sueldo);
-			JLabel lPuesto = new JLabel ("Puesto de trabajo: "+ puesto);
+			JLabel lPuesto = new JLabel("Puesto de trabajo: " + puesto);
 
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 			pCentral.setLayout(new GridLayout(10, 17));
-			
+
 			pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 			lTitulo.setFont(new Font("Arial", Font.ITALIC, 26));
 			lTitulo.setBackground(Color.GRAY);
 			lTitulo.setOpaque(true);
-			
-			add (pSuperior, BorderLayout.NORTH);
-			add (pCentral, BorderLayout.CENTER);
-			add (pInferior, BorderLayout.SOUTH);
 
+			add(pSuperior, BorderLayout.NORTH);
+			add(pCentral, BorderLayout.CENTER);
+			add(pInferior, BorderLayout.SOUTH);
 
-			
 			pSuperior.add(lTitulo);
 			pCentral.add(lNick);
 			pCentral.add(lPasword);
 			pCentral.add(lSueldo);
 			pCentral.add(lPuesto);
 			pInferior.add(bCancelar);
-			
+
 			this.addWindowListener(new WindowAdapter() {
-			
+
 				@Override
 				public void windowClosed(WindowEvent e) {
 					System.out.println(dni);
@@ -95,42 +92,40 @@ public class VentanaIniciosesion extends JFrame {
 					System.out.println(sueldo);
 					System.out.println(puesto);
 				}
-				
-			});
 
+			});
 
 			bCancelar.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					dispose();	
+					dispose();
 				}
 			});
-			
+
 			setVisible(true);
-		
 
 		}
-		
+
 	}
-	//Es un hilo para hacer un reloj en la sesion de inicio
+
+	// Es un hilo para hacer un reloj en la sesion de inicio
 	public void relojDeLaSesionDeInicio() {
-	DateTimeFormatter tiempo = DateTimeFormatter.ofPattern("HH:mm:ss");
-	JLabel tiempReloj = new JLabel("Reloj");
-	Runnable runnable = new Runnable() {
-	    @Override
-	    public void run() {
-	        while (true) {
-	            try {
-	                Thread.sleep(500);
-	                tiempReloj.setText(tiempo.format(LocalDateTime.now()));
-	            } catch (InterruptedException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-	};
-	Thread hilo = new Thread(runnable);
-	hilo.start();
+		DateTimeFormatter tiempo = DateTimeFormatter.ofPattern("HH:mm:ss");
+		JLabel tiempReloj = new JLabel("Reloj");
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(500);
+						tiempReloj.setText(tiempo.format(LocalDateTime.now()));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		Thread hilo = new Thread(runnable);
+		hilo.start();
 	}
 }
-
