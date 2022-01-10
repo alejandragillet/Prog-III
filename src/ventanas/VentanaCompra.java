@@ -150,7 +150,7 @@ public class VentanaCompra extends JFrame {
 				actualizarAforoDisco(disco, vre);
 			}
 		});	
-		
+		cliente.setNombre(reserva.getNombreC());
     }
     
     public void actualizarAforoDisco(Discoteca disco, VentanaReservaEntradas vre) {
