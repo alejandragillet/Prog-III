@@ -35,7 +35,7 @@ public VentanaRegistro(String titulo, GestionDiscoteca gs){
 		
 		JLabel lTitulo = new JLabel ("Registrate aqui!");
 		JButton bAceptar = new JButton ("Aceptar");
-		JButton bLogIn = new JButton ("Log In");
+		JButton bLogIn = new JButton ("Atras");
 		JLabel lNick = new JLabel ("Nombre");
 		JLabel lApellido = new JLabel ("Apellido");
 		JLabel lDNI = new JLabel ("DNI");
@@ -99,11 +99,28 @@ public VentanaRegistro(String titulo, GestionDiscoteca gs){
 						tfPass.setText("");
 						return;
 					}
+					if (tfNick.getText().isEmpty() || tfPass.getText().isEmpty()|| tfApellido.getText().isEmpty() || tfDNI.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Algun componente está vacio");
+					}
+					
 				}
+				
+				if(tfPass.getText().length()<6) {
+					JOptionPane.showMessageDialog(null, "La clave debe ser mayor a 6 digitos para que sea segura");
+					tfPass.setText("");
+					return;
+				}
+				if(tfDNI.getText().length()!=9) {
+					JOptionPane.showMessageDialog(null, "Por favor introduzca su dni real");
+					tfDNI.setText("");
+					return;
+				}else {
 				Cliente cl =new Cliente(tfNick.getText(),tfPass.getText(), tfApellido.getText(),tfDNI.getText()); //Crear nuevo cliente
 				gs.getlCLientes().add(cl);
+				
 				System.out.println("Lista clientes: " + gs.getlCLientes());
-				JOptionPane.showMessageDialog(VentanaRegistro.this, "Se ha registrado correctamente. Ahora registrate");
+				JOptionPane.showMessageDialog(VentanaRegistro.this, "Se ha registrado correctamente. Ahora pulse el boton de atras e inicie sesion");
+				}
 			}
 		});
 		

@@ -95,20 +95,8 @@ public class VentanaCliente extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// gs.cargarFicheroBinarioCliente(gs.getlCLientes(), "clientes.dat");
-				// System.out.println(gs.getlCLientes());
-				// for (Cliente cliente : gs.getlCLientes()) {
-				// if (tfNick.getText().equals(cliente.getNombre())
-				// && tfPass.getText().equals(cliente.getContrasenia())) {
-				// ;
-				// dispose();
-				// return;
-				// }
-				// }
-				// JOptionPane.showMessageDialog(VentanaCliente.this,
-				// "No coincide con ningun cliente, Por favor vuelva a intentarlo");
-				// tfNick.setText("");
-				// tfPass.setText("");
+				
+				
 			}
 		});
 

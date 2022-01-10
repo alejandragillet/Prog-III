@@ -13,8 +13,12 @@ public class Reserva {
 	protected HashMap<Producto, Integer> mapaProducto = new HashMap<Producto, Integer>();
 	protected int numeroPersonas;
 	protected EnumZona zona;
-	protected Discoteca discoteca;
+	protected String discoteca;
 	protected int idReserva;
+	protected String nombreC;
+
+	
+
 
 	public Reserva() {
 		this.importe = 0;
@@ -26,57 +30,86 @@ public class Reserva {
 	}
 
 
-	public Reserva(String fecha, String nombre, Discoteca discoteca, EnumZona zona, int numeroPersonas, int importe) {
+	public Reserva(String nombre, String fecha, String discoteca, EnumZona zona, int numeroPersonas, int importe) {
+		this.nombreC= nombre;
 		this.fecha = fecha;
 		this.discoteca = discoteca;
 		this.zona = zona;
 		this.numeroPersonas = numeroPersonas;
 		this.importe = importe;
-
 	}
 
+	
+	public int getIdReserva() {
+		return idReserva;
+	}
+
+
+	public void setIdReserva(int idReserva) {
+		this.idReserva = idReserva;
+	}
+
+
+	public String getNombreC() {
+		return nombreC;
+	}
+
+
+	public void setNombreC(String nombreC) {
+		this.nombreC = nombreC;
+	}
+	
+	
 	public double getImporte() {
 		return importe;
 	}
 
+	
 	public void setImporte(double importe) {
 		this.importe = importe;
 	}
 
+	
 	public String getFecha() {
 		return fecha;
 	}
 
+	
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 
+	
 	public HashMap<Producto, Integer> getMapaProducto() {
 		return mapaProducto;
 	}
 
+	
 	public void setMapaProducto(HashMap<Producto, Integer> mapaProducto) {
 		this.mapaProducto = mapaProducto;
 	}
 
+	
 	public int getNumeroPersonas() {
 		return numeroPersonas;
 	}
 
+	
 	public void setNumeroPersonas(int numeroPersonas) {
 		this.numeroPersonas = numeroPersonas;
 	}
 
+	
 	public EnumZona getZona() {
 		return zona;
 	}
 
+	
 	public void setZona(EnumZona zona) {
-		zona = zona;
+		this.zona = zona;
 	}
 	
-
-
+	
 	public int getId() {
 		return idReserva;
 	}
@@ -87,13 +120,17 @@ public class Reserva {
 	}
 
 
-	public Discoteca getDiscoteca() {
+	public String getDiscoteca() {
 		return discoteca;
 	}
 
-	public void setDiscoteca(Discoteca discoteca) {
+	
+	public void setDiscoteca(String discoteca) {
 		this.discoteca = discoteca;
 	}
+	
+	
+	
 	public double calcImporte() {
 		importe = 0;
 		for (Map.Entry<Producto, Integer> entry : mapaProducto.entrySet()) {
@@ -157,4 +194,3 @@ public class Reserva {
 	}
 
 }
-
