@@ -18,6 +18,9 @@ import javax.swing.JLabel;
 //}
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import basedatos.BaseDeDatos;
+
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -144,15 +147,21 @@ public class VentanaCompra extends JFrame {
 				};
 
 				hilo.start();
-				// bd.registrarReserva(cliente, reserva);
-				actualizarAforoDisco(disco, vre);
+				System.out.println("Reserva Enum" + reserva.getZona());
+				BaseDeDatos.registraReserva(cliente, reserva, disco);
+				for (Map.Entry<Producto, Integer> entry : mapaStock.entrySet()) {
+					Producto key = entry.getKey();
+					Integer value = entry.getValue();
+					//BaseDeDatos.registrarMapaProducto(key, reserva, value);
+				}
+				//BaseDeDatos.actualizarAforoDisco(disco, vre);
+				//BaseDeDatos.actualizarDiscoteca(disco);
+				
+				
 			}
 		});
 		cliente.setNombre(reserva.getNombreC());
 	}
 
-	public void actualizarAforoDisco(Discoteca disco, VentanaReservaEntradas vre) {
-		Integer aforoDiscoteca = disco.getAforo();
-		aforoDiscoteca = aforoDiscoteca + vre.numeroPersonas;
-	}
+
 }

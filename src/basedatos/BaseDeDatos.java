@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import java.util.logging.*;
 
 import logica.*;
+import ventanas.VentanaReservaEntradas;
 
 /**
  * @author saioa
@@ -639,21 +640,48 @@ public class BaseDeDatos {
 		return dni;
 	}
 
-	public static void registraReserva(Cliente cliente, Reserva reserva) {
+	public static void registraReserva(Cliente cliente, Reserva reserva, Discoteca disco) {
 		try {
 			PreparedStatement s = conexion.prepareStatement(
-					"insert into reserva (DNI, fecha, importe, mapaProducto, numeroPersonas, zona, discoteca) values (?, ?, ?, ?, ?, ?, ?, ?) ");
+					"insert into reserva (cliente_nombre, discoteca_nombre, fecha, importe,  numPers, zona ) values (?, ?, ?, ?, ?, ?) ");
 			s.setInt(1, obtenerDNICliente(cliente.getNombre()));
-			// s.setString(2, reserva.getFecha());
-			s.setDouble(3, reserva.getImporte());
-			// s.setMap(4, reserva.getMapaProducto());
+			 s.setString(2, reserva.getFecha());
+			 s.setString(3, disco.getNombre());
+			s.setDouble(4, reserva.getImporte());
 			s.setInt(5, reserva.getNumeroPersonas());
 			s.setString(6, reserva.getZona().name());
-			s.setString(7, reserva.getDiscoteca().getNombre());
+			
 
 			log(Level.INFO, "Se ha registrado la reserva del cliente: " + cliente, null);
 		} catch (SQLException e) {
 			log(Level.SEVERE, "Error al registrar la reserva del cliente: " + cliente, e);
+		}
+	}
+	
+	public static void actualizarAforoDisco(Discoteca disco, VentanaReservaEntradas vre) {
+		Integer aforoDiscoteca = disco.getAforo();
+		aforoDiscoteca = aforoDiscoteca + vre.numeroPersonas;
+	}
+	
+	public static void actualizarDiscoteca(Discoteca disco) {
+		try {
+			PreparedStatement s = conexion.prepareStatement(
+					"UPDATE discoteca SET aforo = " + disco.getAforo() + "where nombre = "+ disco.getNombre() +";" );
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void registrarMapaProducto(Producto producto,  Reserva reserva, Integer cantidad) {
+		try {
+			PreparedStatement s = conexion.prepareStatement(
+					"insert into productoMapa (idReserva, producto, cantidad) values (?, ?, ?) ");
+				s.setInt(1, reserva.getId());
+				s.setString(2, producto.getNombre());
+				s.setInt(3, cantidad);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 

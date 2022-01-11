@@ -38,6 +38,11 @@ public class Servidor {
                 System.out.println(split[0]);
 
                 if (split[0].equals("login")) {
+                    if (split.length != 2 || split[1].split("-").length != 2) {
+                        outputACliente.println("respuesta-" +  false);
+                        continue;
+                    }
+
                     String usuarioC = split[1].split("-")[0];
                     String passC = split[1].split("-")[1];
                     Cliente clienteC = new Cliente(usuarioC, passC, null);

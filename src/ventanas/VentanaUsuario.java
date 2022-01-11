@@ -30,7 +30,7 @@ public class VentanaUsuario extends JFrame {
 		cp.add(panelCentral);
 
 		setTitle("Eleccion usuario/trabajador");
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 
 		crearCliente.addActionListener(new ActionListener() {

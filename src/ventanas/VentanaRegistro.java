@@ -124,6 +124,7 @@ public class VentanaRegistro extends JFrame {
 								tfApellido.getText());
 						if (cl == null) {
 							JOptionPane.showMessageDialog(VentanaRegistro.this, "Ha ocurrido un error con el registro");
+							return;
 						}
 						gs.getlCLientes().add(cl);
 

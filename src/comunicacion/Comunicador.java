@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import logica.Cliente;
+import logica.Reserva;
 
 // en realidad debería llamarse Cliente, sin embargo, ya existe una clase Cliente.
 // TODO en proceso de creacion
@@ -72,6 +73,7 @@ public class Comunicador {
         }
         return null;
     }
+    
 
     public static void esperarConexion() {
         while (true) {

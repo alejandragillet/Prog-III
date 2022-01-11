@@ -37,6 +37,7 @@ public class VentanaReservaEntradas extends JFrame {
 	private JComboBox<Discoteca> comboDiscoteca; // combo con las discotecas
 	private JComboBox<EnumZona> comboZona; // combo con la zona de la discoteca
 	public static Discoteca disco2;
+	public static EnumZona zona;
 	public Integer numeroPersonas;
 	private JPanel panelSuperior;
 	private JPanel panelCentral;
@@ -99,9 +100,11 @@ public class VentanaReservaEntradas extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				panelCentral.removeAll();
 				disco2 = (Discoteca) comboDiscoteca.getSelectedItem();
+				System.out.println("hh " + disco2.getAforo());
 				reserva.setDiscoteca(disco2);
 				panelCentral.add(new JLabel("Zona discoteca: "
 						+ "Mesa 12€ / Pista 17€ / VIP 25€"));
+	
 				panelCentral.add(comboZona);
 				panelCentral.add(jSeleccionar2);
 				VentanaReservaEntradas.this.repaint();
@@ -121,13 +124,26 @@ public class VentanaReservaEntradas extends JFrame {
 				for (int i = 1; i < 11; i++) {
 					numeroPersonas1.addItem(i);
 				}
-				reserva.setZona((EnumZona) comboZona.getSelectedItem());
+			
 				panelInferior.add(numeroPersonas1);
 				panelInferior.add(jSeleccionar3);
 				VentanaReservaEntradas.this.pack();
+				switch (comboZona.getSelectedItem()+ "") {
+				case  "PISTA" :
+					reserva.setZona(EnumZona.PISTA); 
+					break;
+				case "VIP" :
+					reserva.setZona(EnumZona.VIP);
+					break;
+				case "MESA" : 
+					reserva.setZona(EnumZona.MESA);
+					break;
+				default : break;
+			}
+				System.out.println("aa" + reserva);
 			}
 		});
-
+	
 		// compara a ver si el aforo de la discoteca se ha llenado y aparece un mensaje
 		// en el caso de que este lleno
 		jSeleccionar3.addActionListener(new ActionListener() {
@@ -138,7 +154,7 @@ public class VentanaReservaEntradas extends JFrame {
 				reserva.setNumeroPersonas((int) numeroPersonas1.getSelectedItem());
 				VentanaReservaEntradas.this.repaint();
 				VentanaReservaProductos vr = new VentanaReservaProductos(disco2, gDisco, cliente,
-						VentanaReservaEntradas.this);
+						VentanaReservaEntradas.this, reserva);
 				vr.setVisible(true);
 				dispose();
 
@@ -150,6 +166,8 @@ public class VentanaReservaEntradas extends JFrame {
 	public void comprobarAforo(Discoteca disco2, Integer numeroPersonas) {
 		Integer aforoDiscoteca = disco2.getAforo();
 		aforoDiscoteca = aforoDiscoteca + numeroPersonas;
+		System.out.println("Disxo " + aforoDiscoteca);
+		System.out.println("Disxo max" + disco2.getAforoMax());
 		if (aforoDiscoteca > disco2.getAforoMax()) {
 			JOptionPane.showMessageDialog(VentanaReservaEntradas.this,
 					"No quedan entradas disponibles.No es posible hacer la reserva. ");

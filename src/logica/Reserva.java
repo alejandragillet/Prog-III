@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Reserva {
+public class Reserva implements Cloneable{
 	protected double importe;
 	protected String fecha;
 	protected HashMap<Producto, Integer> mapaProducto = new HashMap<Producto, Integer>();
@@ -26,7 +26,7 @@ public class Reserva {
 
 	}
 
-	public Reserva(String nombre, String fecha, Discoteca discoteca, EnumZona zona, int numeroPersonas, int importe) {
+	public Reserva(String nombre, String fecha, Discoteca discoteca, EnumZona zona, int numeroPersonas, double importe) {
 		this.nombreC = nombre;
 		this.fecha = fecha;
 		this.discoteca = discoteca;
@@ -167,5 +167,19 @@ public class Reserva {
 
 		}
 	}
+	
+	protected Object clone() throws CloneNotSupportedException{
+		Reserva reserva = new Reserva(this.nombreC, this.fecha, this.discoteca, this.zona, this.numeroPersonas, this.importe);
+		return reserva;
+	}
+
+	@Override
+	public String toString() {
+		return "Reserva [importe=" + importe + ", fecha=" + fecha + ", mapaProducto=" + mapaProducto
+				+ ", numeroPersonas=" + numeroPersonas + ", zona=" + zona + ", discoteca=" + discoteca + ", idReserva="
+				+ idReserva + ", nombreC=" + nombreC + "]";
+	}
+	
+	
 
 }

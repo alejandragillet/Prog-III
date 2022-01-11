@@ -164,7 +164,7 @@ public class GestionDiscoteca {
 		Almacen almacenBudha = new Almacen(mapaProductoAlmacenBudha);
 		Almacen almacenMoma = new Almacen(mapaProductoAlmacenMoma);
 
-		Discoteca budha = new Discoteca("Urkixo Zumarkalea, 88, 48013 Bilbo, Bizkaia", 700, 90, "Budha", almacenMoma);
+		Discoteca budha = new Discoteca("Urkixo Zumarkalea, 88, 48013 Bilbo, Bizkaia", 700, 70,"Budha", almacenMoma);
 		Discoteca moma = new Discoteca("Rodríguez Arias Kalea, 66, 48013 Bilbo, Bizkaia", 200, 30, "Moma",
 				almacenBudha);
 
