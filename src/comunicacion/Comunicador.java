@@ -50,7 +50,7 @@ public class Comunicador {
     }
 
     public static Cliente login(String nombre, String pass) throws IOException {
-        String r = emitirMensaje("login:" + nombre + "-" + pass);
+        String r = emitirMensaje("login: " + nombre + " - " + pass);
         String[] splitted = r.split("-");
         String respuestaLogin = splitted[1];
 
@@ -63,7 +63,7 @@ public class Comunicador {
     }
 
     public static Cliente registrarse(String nombre, String pass, String DNI, String apellido) throws IOException {
-        String r = emitirMensaje("register:" + nombre + "-" + pass + "-" + DNI + "-" + apellido);
+        String r = emitirMensaje("register: " + nombre + " - " + pass + " - " + DNI + " - " + apellido);
         String[] splitted = r.split("-");
         String respuestaRegistro = splitted[1];
         System.out.println(respuestaRegistro);

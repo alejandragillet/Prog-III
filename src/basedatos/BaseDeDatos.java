@@ -93,7 +93,7 @@ public class BaseDeDatos {
 		} // Tabla ya existe. Nada que hacer
 		try {
 			statement.executeUpdate("create table discoteca " +
-					"(nombre VARCHAR(45), aforoMax integer, aforo integer, numeroTrab integer, direccion VARCHAR(45));");
+					"(nombre VARCHAR(45), aforoMax integer, aforo integer DEFAULT 0, numeroTrab integer, direccion VARCHAR(45));");
 		} catch (SQLException e) {
 		} // Tabla ya existe. Nada que hacer
 		try {
@@ -176,7 +176,7 @@ public class BaseDeDatos {
 		try {
 			sentSQL = "insert into discoteca values(" +
 					"'" + secu(d.getNombre()) + "'," +
-					"'" + d.getAforoMax() + "'" + d.getNumeroTrabajadores() + "'" + d.getDireccion() + ");";
+					"" + d.getAforoMax() + "," + d.getAforo()+", " + d.getNumeroTrabajadores() + ","+ "'" + d.getDireccion() +"'"+ ");";
 			int val = st.executeUpdate(sentSQL);
 			log(Level.INFO, "BD tabla Discoteca a�adida " + val + " fila\t" + sentSQL, null);
 			if (val != 1) { // Se tiene que a�adir 1 - error si no
@@ -193,22 +193,26 @@ public class BaseDeDatos {
 	}
 
 	/**
-	 * Recoge la lista de discotecas del gestor y la insrta en la base de datos
+	 * Recoge la lista de discotecas del gestor y la inserta en la base de datos
 	 * 
 	 * @param discotecas recoge la lista de discotecas del gestor y la recorre
 	 * @param st         sentencia abierta con la base de datos
 	 */
 
-	public static boolean guardarDiscotecas(Statement st, ArrayList<Discoteca> discotecas) {
-
-		discotecas = gs.getlDiscotecas();
-
-		for (Discoteca d : discotecas) {
-			DiscotecaInsert(st, d);
+		public static boolean guardarDiscotecas(Statement st, ArrayList<Discoteca> discotecas, GestionDiscoteca gs) {
+	
+			discotecas = gs.getlDiscotecas();
+			try {
+				for (Discoteca d : discotecas) {
+					DiscotecaInsert(st, d);
+				}
+				} catch (Exception e) {
+					log(Level.SEVERE, "Error al guardar discotecas en base de datos", e);
+			}
+			System.out.println("Ventana cerrada, disoctecas subidas a la base de datos correctamente");
+			
+			return false;
 		}
-
-		return false;
-	}
 
 	/**
 	 * Realiza una consulta a la tabla abierta de Discotecaes de la BD, usando la
@@ -250,7 +254,7 @@ public class BaseDeDatos {
 		try {
 			sentSQL = "select * from Discoteca;";
 
-			// System.out.println( sentSQL ); // Para ver lo que se hace en consola
+			System.out.println( sentSQL ); // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery(sentSQL);
 			while (rs.next()) {
 				ret.add(new Discoteca(rs.getString("nombre"), rs.getInt("aforomax"), rs.getInt("aforo"),
@@ -275,8 +279,7 @@ public class BaseDeDatos {
 	 * @param st          Sentencia ya abierta de Base de Datos (con la estructura
 	 *                    de tabla correspondiente a la habitaci�n)
 	 * @param nombre      nombre del cliente que queremos a�adir
-	 * @param tlfn        numero de telefono del cliente
-	 * @param contrasenia contrasena del nuevo cliente
+	 * @param contrasena contrasena del nuevo cliente
 	 * @return true si la inserci�n es correcta, false en caso contrario
 	 */
 	public static boolean clienteInsert(Statement st, String nombre, String apellido, String DNI, String contrasena) {
@@ -307,14 +310,17 @@ public class BaseDeDatos {
 	 * @param clientes recoge la lista de discotecas del gestor y la recorre
 	 * @param st       sentencia abierta con la base de datos
 	 */
-	public static boolean guardarClientes(Statement st, ArrayList<Cliente> clientes) {
+	public static boolean guardarClientes(Statement st, ArrayList<Cliente> clientes, GestionDiscoteca gs) {
 
 		clientes = gs.getlClientes();
-
-		for (Cliente c : clientes) {
-			clienteInsert(st, c.getNombre(), c.getApellido(), c.getContrasenia(), c.getDNI());
+		try {
+			for (Cliente c : clientes) {
+				clienteInsert(st, c.getNombre(), c.getApellido(), c.getDNI(), c.getContrasenia());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+		
 		return false;
 	}
 
@@ -461,8 +467,7 @@ public class BaseDeDatos {
 	}
 
 	/**
-	 * Realiza una consulta a la tabla abierta de clientes de la BD, usando la
-	 * sentencia SELECT de SQL
+	 * Realiza una sentencia INSERT de SQL a la tabla trabajador
 	 * 
 	 * @param st     Sentencia ya abierta de Base de Datos (con la estructura de
 	 *               tabla correspondiente al usuario)
@@ -503,14 +508,18 @@ public class BaseDeDatos {
 	 * @param trabajadores lista de trabajadores que se guarda
 	 * @return
 	 */
-	public static boolean guardarTrabajadores(Statement st, ArrayList<Trabajador> trabajadores) {
+	public static boolean guardarTrabajadores(Statement st, ArrayList<Trabajador> trabajadores, GestionDiscoteca gs) {
 
 		trabajadores = gs.getlTrabajadores();
-
-		for (Trabajador t : trabajadores) {
-			trabajadorInsert(st, t.getNombre(), t.getContrasenia(), t.getPrecioHora(), t.getSueldo());
+		try {
+			for (Trabajador t : trabajadores) {
+				trabajadorInsert(st, t.getNombre(), t.getContrasenia(), t.getPrecioHora(), t.getSueldo());
+			}
+		} catch (Exception e) {
+			log(Level.SEVERE, "Error al guardar trabajadoes en base de datos", e);
 		}
-
+		System.out.println("trabajadores insertados en la bbdd");
+		
 		return false;
 	}
 

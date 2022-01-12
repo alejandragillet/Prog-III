@@ -41,6 +41,7 @@ public class GestionDiscoteca {
 
 		VentanaUsuario vU = new VentanaUsuario(gs1);
 		vU.setVisible(true);
+		
 	}
 
 	public ArrayList<Discoteca> getlDiscotecas() {
@@ -163,14 +164,18 @@ public class GestionDiscoteca {
 
 		Almacen almacenBudha = new Almacen(mapaProductoAlmacenBudha);
 		Almacen almacenMoma = new Almacen(mapaProductoAlmacenMoma);
-
-		Discoteca budha = new Discoteca("Urkixo Zumarkalea, 88, 48013 Bilbo, Bizkaia", 700, 70,"Budha", almacenMoma);
-		Discoteca moma = new Discoteca("Rodríguez Arias Kalea, 66, 48013 Bilbo, Bizkaia", 200, 30, "Moma",
-				almacenBudha);
-
+		
+		Discoteca budha = new Discoteca("Urkixo Zumarkalea, 88, 48013 Bilbo, Bizkaia", 700, 0, 70,"Budha", almacenBudha);
+		Discoteca moma = new Discoteca("Rodríguez Arias Kalea, 66, 48013 Bilbo, Bizkaia", 200, 0, 30, "Moma", almacenMoma);
+		
 		gs1.lDiscotecas.add(budha);
 		gs1.lDiscotecas.add(moma);
-
+		
+		System.out.println(gs1.lClientes);
+		System.out.println(gs1.lDiscotecas);
+		System.out.println(gs1.lProductos);
+		System.out.println(gs1.lTrabajadores);
+		//BaseDeDatos.DiscotecaInsert(BaseDeDatos.usarBD(BaseDeDatos.conexion), budha);
 	}
 
 	/**

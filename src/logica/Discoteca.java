@@ -12,6 +12,19 @@ public class Discoteca implements Cloneable {
 	protected String nombre;
 	protected ArrayList<Reserva> lReserva;
 	private Almacen almacen;
+	
+	
+	
+	public Discoteca(String direccion, int aforoMax, int aforo, int numeroTrabajadores, String nombre, Almacen almacen) {
+		super();
+		this.direccion = direccion;
+		this.aforoMax = aforoMax;
+		this.aforo = aforo;
+		this.numeroTrabajadores = numeroTrabajadores;
+		this.nombre = nombre;
+		this.lReserva = lReserva;
+		this.almacen = almacen;
+	}
 
 	public Discoteca(String direccion, int aforoMax, int numeroTrabajadores, String nombre, Almacen almacen) {
 		this.direccion = direccion;

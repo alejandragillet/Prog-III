@@ -88,7 +88,7 @@ public class VentanaUsuario extends JFrame {
 					if (gs.lDiscotecas.size() == 0)
 						gs.lDiscotecas = BaseDeDatos.DiscotecaSelectAll(BaseDeDatos.usarBD(BaseDeDatos.conexion));
 				} catch (NullPointerException e2) {
-					// NUNCA dejar los catch sin nada, porque si falla no te enteras
+					
 					e2.printStackTrace();
 				}
 
@@ -98,12 +98,12 @@ public class VentanaUsuario extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				// TODO ENVIAR DATOS/MODIFICACIONES A LA BBDD
 				try {
-					// BaseDeDatos.reiniciarBD(con); // no tiene sentido borrar la BD al cerral el
+					BaseDeDatos.reiniciarBD(BaseDeDatos.conexion); // no tiene sentido borrar la BD al cerral el
 					// programa
-					// BaseDeDatos.usarCrearTablasBD(con); // same
-					BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlClientes());
-					BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlTrabajadores());
-					BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlDiscotecas());
+					BaseDeDatos.usarCrearTablasBD(BaseDeDatos.conexion); // same
+					BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlClientes(), gs);
+					BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlTrabajadores(), gs);
+					BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlDiscotecas(), gs);
 					BaseDeDatos.cerrarBD(BaseDeDatos.conexion, BaseDeDatos.usarBD(BaseDeDatos.conexion));
 				} catch (NullPointerException e2) {
 					// NUNCA dejar los catch sin nada, porque si falla no te enteras
