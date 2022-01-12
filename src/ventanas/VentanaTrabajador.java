@@ -15,10 +15,13 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import logica.GestionDiscoteca;
+import logica.Trabajador;
+
 public class VentanaTrabajador extends JFrame {
 	private static Thread hilo;
 
-	public VentanaTrabajador(String titulo) {
+	public VentanaTrabajador(String titulo, GestionDiscoteca gs) {
 		addWindowListener(new WindowAdapter() {
 
 			@Override
@@ -39,7 +42,7 @@ public class VentanaTrabajador extends JFrame {
 
 		JLabel lTitulo = new JLabel("Inicia tu sesion");
 		JButton bCancelar = new JButton("Cancelar");
-		JLabel lNick = new JLabel("DNI");
+		JLabel lNick = new JLabel("DNI/NOMBRE");
 		JLabel lPasword = new JLabel("Contrase�a");
 		JButton bIniciosesion = new JButton("Inicio de sesion");
 		JTextField tfNick = new JTextField(8);
@@ -52,7 +55,7 @@ public class VentanaTrabajador extends JFrame {
 				while (!Thread.interrupted()) {
 					try {
 						char[] s = tfNick.getText().toCharArray();
-						if (s.length == new char[8].length) {
+						if (s.length == new char[9].length) {
 							tfNick.setEditable(false);
 						}
 					} catch (NullPointerException e) {
@@ -84,6 +87,7 @@ public class VentanaTrabajador extends JFrame {
 		pCentral.add(tfPass);
 		pCentral.add(bIniciosesion);
 		pInferior.add(bCancelar);
+		
 
 		setVisible(true);
 
@@ -98,11 +102,19 @@ public class VentanaTrabajador extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				VentanaIniciosesion vr = new VentanaIniciosesion("Inicio de sesion", null, tfNick.getText(),
+				boolean bool = false;
+				for(Trabajador t: gs.getlTrabajadores()) {
+					if(t.getNombre().toLowerCase().equals(tfNick.getText().toLowerCase())) {
+						JOptionPane.showMessageDialog(getContentPane(), "Trabajador ya existente");
+						bool = true;
+					}
+				}if (!bool) {
+				
+				VentanaIniciosesion vr = new VentanaIniciosesion("Inicio de sesion", gs, tfNick.getText(),
 						tfPass.getText());
 				vr.setVisible(true);
 				dispose();
+				}
 			}
 		});
 

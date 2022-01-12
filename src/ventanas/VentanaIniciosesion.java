@@ -21,8 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import logica.EnumPuesto;
 import logica.GestionDiscoteca;
 import logica.Puestoaleatorio;
+import logica.Trabajador;
 
 public class VentanaIniciosesion extends JFrame {
 	private String horas = JOptionPane.showInputDialog("Horas trabajadas");
@@ -46,18 +48,27 @@ public class VentanaIniciosesion extends JFrame {
 			try {
 				hora = Integer.parseInt(horas);
 			} catch (NumberFormatException e) {
+			} catch (Exception exc) {
+				
 			}
 
 			String puesto = Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1));
+			EnumPuesto epuesto = EnumPuesto.CAMARERO;
 			sueldo = 0;
 			if (puesto.equals("Segurata")) {
 				sueldo = 15;
+				epuesto = EnumPuesto.SEGURATA;
 			} else if (puesto.equals("Camarero")) {
 				sueldo = 10;
+				epuesto = EnumPuesto.CAMARERO;
 			}
 			sueldo *= hora;
+			
+			Trabajador t = new Trabajador(dni, contrasenia, hora, sueldo/hora, epuesto);
+			gs.getlTrabajadores().add(t);
+			gs.guardarFicheroBinarioTrabajador(gs.getlTrabajadores(), "trabajador.dat");
 
-			JLabel lNick = new JLabel("DNI: " + dni);
+			JLabel lNick = new JLabel("DNI/NOMBRE: " + dni);
 
 			JLabel lPasword = new JLabel("Contrase�a: " + contrasenia);
 			JLabel lSueldo = new JLabel("Sueldo por noche: " + sueldo);

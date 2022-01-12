@@ -49,7 +49,7 @@ public class VentanaUsuario extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				VentanaTrabajador vent = new VentanaTrabajador("Regis");
+				VentanaTrabajador vent = new VentanaTrabajador("Regis", gs);
 				vent.setLocation(620, 300);
 				vent.setVisible(true);
 

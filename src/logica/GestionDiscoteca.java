@@ -171,6 +171,12 @@ public class GestionDiscoteca {
 		gs1.lDiscotecas.add(budha);
 		gs1.lDiscotecas.add(moma);
 		
+		Trabajador t1 = new Trabajador("Juan", "6464", 7, 15, EnumPuesto.SEGURATA);
+		Trabajador t2 = new Trabajador("Alvaro", "7654", 8, 10, EnumPuesto.CAMARERO);
+		gs1.lTrabajadores.add(t1);
+		gs1.lTrabajadores.add(t2);
+		gs1.guardarFicheroBinarioTrabajador(gs1.lTrabajadores, "trabajador.dat");
+		
 		System.out.println(gs1.lClientes);
 		System.out.println(gs1.lDiscotecas);
 		System.out.println(gs1.lProductos);
@@ -197,6 +203,32 @@ public class GestionDiscoteca {
 
 		}
 	}
+	
+	public void guardarFicheroBinarioTrabajador(ArrayList<Trabajador> lTrabajador, String nombreFic) {
+		try {
+			File sFichero = new File(nombreFic);
+			sFichero.delete();
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombreFic));
+			oos.writeObject(lTrabajadores);
+			oos.close();
+			System.out.println("Se ha guardado correctamente");
+		} catch (IOException e) {
+			System.out.println("Error en escritura de fichero (Trabajador)" + nombreFic);
+
+		}
+	}
+	public void cargarFicheroBinarioTrabajador(ArrayList<Trabajador> lTrabajador, String nombreFic) {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
+			ArrayList<Trabajador> lCargada = (ArrayList<Trabajador>) ois.readObject();
+			ois.close();
+			lTrabajadores.clear();
+			lTrabajadores.addAll(lCargada);
+			System.out.println("Despues de cargar fichero binario de Trabajador" + lTrabajador);
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Error de lectura de fichero" + nombreFic);
+		}
+	}
 
 	/**
 	 * Carga los datos de la aplicación en un fichero
@@ -216,6 +248,7 @@ public class GestionDiscoteca {
 			System.out.println("Error de lectura de fichero" + nombreFic);
 		}
 	}
+	
 
 	/**
 	 * Guardar productos en un fichero binario
