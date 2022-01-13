@@ -8,7 +8,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,12 +16,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import basedatos.BaseDeDatos;
 import comunicacion.Comunicador;
 import logica.Cliente;
 import logica.GestionDiscoteca;
-import logica.Persona;
-import logica.Producto;
 
 public class VentanaRegistro extends JFrame {
 	public VentanaRegistro(String titulo, GestionDiscoteca gs) {
@@ -46,7 +42,6 @@ public class VentanaRegistro extends JFrame {
 		JTextField tfApellido = new JTextField(15);
 		JTextField tfDNI = new JTextField(10);
 		JTextField tfPass = new JTextField(10);
-		JLabel lRegistro = new JLabel("UNETE A NOSTROS");
 
 		pSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
 		pCentral.setLayout(new GridLayout(10, 17));
@@ -140,15 +135,4 @@ public class VentanaRegistro extends JFrame {
 		});
 
 	}
-
-	/// HILO PARA INICIAR CON UNOS SEGUNDOS////////////////////
-	private void esperarXsegundos(int segundos) {
-		try {
-			Thread.sleep(segundos * 1000);
-		} catch (InterruptedException ex) {
-			Thread.currentThread().interrupt();
-		}
-
-	}
-
 }

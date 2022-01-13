@@ -2,8 +2,6 @@ package ventanas;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.swing.*;
 
@@ -56,39 +54,23 @@ public class VentanaUsuario extends JFrame {
 			}
 
 		});
-		// Hilo para clicar y esperar unos segundos
-		crearCliente.addActionListener(new ActionListener() {
-
-			private void esperarXsegundos(int segundos) {
-				try {
-					Thread.sleep(segundos * 1000);
-				} catch (InterruptedException ex) {
-					Thread.currentThread().interrupt();
-				}
-
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-		});
-
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				// TODO LLAMADA A LA BASE DE DATOS PARA CARGAR DATOS
+				GestionDiscoteca.LOG_RAIZ.info("Cargando datos desde la BD");
+
 				try {
 					if (gs.lClientes.size() == 0)
 						gs.lClientes = BaseDeDatos.clienteSelectAll(BaseDeDatos.usarBD(BaseDeDatos.conexion));
 					if (gs.lTrabajadores.size() == 0)
 						gs.lTrabajadores = BaseDeDatos.trabajadorSelectAll(BaseDeDatos.usarBD(BaseDeDatos.conexion));
 					if (gs.lDiscotecas.size() == 0)
-						gs.lDiscotecas = BaseDeDatos.DiscotecaSelectAll(BaseDeDatos.usarBD(BaseDeDatos.conexion));
+						gs.lDiscotecas = BaseDeDatos.discotecaSelectAll(BaseDeDatos.usarBD(BaseDeDatos.conexion));
+					if (gs.lProductos.size() == 0)
+						gs.lProductos = BaseDeDatos.productosSelect(BaseDeDatos.usarBD(BaseDeDatos.conexion), null);
+
+					GestionDiscoteca.LOG_RAIZ.info("DATOS CARGADOS desde la BD!");
 				} catch (NullPointerException e2) {
-					
 					e2.printStackTrace();
 				}
 
@@ -96,13 +78,15 @@ public class VentanaUsuario extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				// TODO ENVIAR DATOS/MODIFICACIONES A LA BBDD
 				try {
-					BaseDeDatos.reiniciarBD(BaseDeDatos.conexion); // no tiene sentido borrar la BD al cerral el
-					// programa
-					BaseDeDatos.usarCrearTablasBD(BaseDeDatos.conexion); // same
+					BaseDeDatos.cerrarBD(BaseDeDatos.conexion, null);
+					BaseDeDatos.reiniciarBD(BaseDeDatos.getConexion(BaseDeDatos.nombreBD)); // prevenir errores de
+																							// conexiones pendientes
+					BaseDeDatos.initBD(BaseDeDatos.nombreBD);
+
 					BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlClientes(), gs);
-					BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlTrabajadores(), gs);
+					BaseDeDatos.guardarTrabajadores(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlTrabajadores(),
+							gs);
 					BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlDiscotecas(), gs);
 					BaseDeDatos.cerrarBD(BaseDeDatos.conexion, BaseDeDatos.usarBD(BaseDeDatos.conexion));
 				} catch (NullPointerException e2) {

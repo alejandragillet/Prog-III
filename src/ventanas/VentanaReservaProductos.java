@@ -7,14 +7,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -29,11 +27,9 @@ import logica.Bebida;
 import logica.Cliente;
 import logica.Comida;
 import logica.Discoteca;
-import logica.EnumZona;
 import logica.GestionDiscoteca;
 import logica.Producto;
 import logica.Reserva;
-import logica.Almacen;
 
 /**
  * Ventana que permite al usuario hacer una reserva/ compra con antelanción para
@@ -42,7 +38,6 @@ import logica.Almacen;
  * @author Maria Perez
  *
  */
-@SuppressWarnings("serial")
 public class VentanaReservaProductos extends JFrame {
 
 	private static final long serialVersionUID = 1L;

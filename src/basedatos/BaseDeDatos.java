@@ -4,7 +4,7 @@ package basedatos;
 import java.sql.*;
 
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.Map.Entry;
 import java.util.logging.*;
 
 import logica.*;
@@ -23,6 +23,18 @@ public class BaseDeDatos {
 	public static ArrayList<Discoteca> discotecas = gs.getlDiscotecas();
 	public static ArrayList<Cliente> clientes = gs.getlClientes();
 	public static ArrayList<Trabajador> trabajaderes = gs.getlTrabajadores();
+
+	public static Connection getConexion(String nombreBD) {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection cc = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db");
+			return cc;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 
 	/**
 	 * Inicializa una BD SQLITE y devuelve una conexi�n con ella
@@ -73,7 +85,7 @@ public class BaseDeDatos {
 	 * @return sentencia de trabajo si se crea correctamente, null si hay cualquier
 	 *         error
 	 */
-	public static Statement usarCrearTablasBD(Connection con) {
+	public static void usarCrearTablasBD(Connection con) {
 		Statement statement = usarBD(con);
 
 		try {
@@ -92,18 +104,34 @@ public class BaseDeDatos {
 		} catch (SQLException e) {
 		} // Tabla ya existe. Nada que hacer
 		try {
-			statement.executeUpdate("create table discoteca " +
-					"(nombre VARCHAR(45), aforoMax integer, aforo integer DEFAULT 0, numeroTrab integer, direccion VARCHAR(45));");
+			statement.executeUpdate(
+					"CREATE TABLE discoteca ( nombre VARCHAR(45), aforoMax integer, aforo integer, numeroTrab integer, direccion VARCHAR(45), id INTEGER, PRIMARY KEY(id AUTOINCREMENT));");
 		} catch (SQLException e) {
 		} // Tabla ya existe. Nada que hacer
 		try {
-			statement.executeUpdate("create table productoMapa " +
-					"(idReserva int PRIMARY KEY, producto varchar(20), cantidad int );");
+			statement.executeUpdate(
+					"CREATE TABLE producto ( nombre TEXT, precio REAL, id INTEGER, tipoBebida TEXT, tipoComida TEXT, tamanio TEXT, mezcla TEXT, alcohol TEXT, PRIMARY KEY(id AUTOINCREMENT));");
 		} catch (SQLException e) {
 		} // Tabla ya existe. Nada que hacer
 
+		try {
+			statement.executeUpdate(
+					"CREATE TABLE almacen ( producto INTEGER, cantidad INTEGER, discoteca INTEGER, PRIMARY KEY(producto,discoteca,cantidad), FOREIGN KEY(producto) REFERENCES producto(id), FOREIGN KEY(discoteca) REFERENCES discoteca(id));");
+		} catch (SQLException e) {
+		} // Tabla ya existe. Nada que hacer
+
+		try {
+			statement.executeUpdate(
+					"CREATE TABLE carrito ( producto INTEGER, cantidad INTEGER, reserva INTEGER, PRIMARY KEY(producto,reserva,cantidad), FOREIGN KEY(producto) REFERENCES producto(id), FOREIGN KEY(reserva) REFERENCES reserva(id));");
+		} catch (SQLException e) {
+		} // Tabla ya existe. Nada que hacer
+
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		log(Level.INFO, "Creada base de datos", null);
-		return statement;
 	}
 
 	/**
@@ -115,21 +143,22 @@ public class BaseDeDatos {
 	 * @return sentencia de trabajo si se borra correctamente, null si hay cualquier
 	 *         error
 	 */
-	public static Statement reiniciarBD(Connection con) {
+	public static void reiniciarBD(Connection con) {
+		// tabla de reservas no se debe de borrar
 		try {
 			Statement statement = con.createStatement();
 			statement.setQueryTimeout(30); // poner timeout 30 msg
-			statement.executeUpdate("drop table if exists Discoteca");
-			statement.executeUpdate("drop table if exists cliente");
-			statement.executeUpdate("drop table if exists reserva");
-			statement.executeUpdate("drop table if exists productoMapa");
+			statement.execute("drop table if exists discoteca");
+			statement.execute("drop table if exists cliente");
+			statement.execute("drop table if exists almacen");
+			statement.execute("drop table if exists producto");
+			statement.close();
 			log(Level.INFO, "Reiniciada base de datos", null);
-			return usarCrearTablasBD(con);
+			usarCrearTablasBD(con);
 		} catch (SQLException e) {
 			log(Level.SEVERE, "Error en reinicio de base de datos", e);
 			lastError = e;
 			e.printStackTrace();
-			return null;
 		}
 	}
 
@@ -171,21 +200,116 @@ public class BaseDeDatos {
 	 * @param d  Discoteca a a�adir en la base de datos
 	 * @return true si la inserci�n es correcta, false en caso contrario
 	 */
-	public static boolean DiscotecaInsert(Statement st, Discoteca d) {
+	public static boolean discotecaInsert(Statement st, Discoteca d) {
 		String sentSQL = "";
 		try {
-			sentSQL = "insert into discoteca values(" +
-					"'" + secu(d.getNombre()) + "'," +
-					"" + d.getAforoMax() + "," + d.getAforo()+", " + d.getNumeroTrabajadores() + ","+ "'" + d.getDireccion() +"'"+ ");";
+			sentSQL = String.format(
+					"insert into discoteca (nombre, aforoMax, aforo, numeroTrab, direccion) values('%s',%d,%d,%d,'%s');",
+					secu(d.getNombre()), d.getAforoMax(), d.getAforo(), d.getNumeroTrabajadores(), d.getDireccion());
 			int val = st.executeUpdate(sentSQL);
+
+			sentSQL = String.format("Select id from discoteca where nombre='%s'",
+					secu(d.getNombre()));
+			ResultSet rs = st.executeQuery(sentSQL);
+
 			log(Level.INFO, "BD tabla Discoteca a�adida " + val + " fila\t" + sentSQL, null);
-			if (val != 1) { // Se tiene que a�adir 1 - error si no
+			if (val != 1 || rs.getInt("id") == 0) { // Se tiene que a�adir 1 - error si no
 				log(Level.SEVERE, "Error en insert de BD\t" + sentSQL, null);
+				return false;
+			}
+
+			d.setId(rs.getInt("id")); // guardar el id generado para esa discoteca
+
+			for (Entry<Producto, Integer> e : d.getAlmacen().getMapaProductoAlmacen().entrySet()) {
+				Producto p = e.getKey();
+				productoInsert(st, p); // id del producto es anadido en esta funcion al insertarse
+			}
+
+			for (Entry<Producto, Integer> e : d.getAlmacen().getMapaProductoAlmacen().entrySet()) {
+				almacenInsert(st, d, e.getKey(), e.getValue());
+			}
+
+			return true;
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error en BD\t" + sentSQL, e);
+			lastError = e;
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static Producto productoInsert(Statement st, Producto p) {
+		if (p instanceof Bebida) {
+			return bebidaInsert(st, (Bebida) p);
+		} else if (p instanceof Comida) {
+			return comidaInsert(st, (Comida) p);
+		} else {
+			return null;
+		}
+	}
+
+	public static Producto comidaInsert(Statement st, Comida d) {
+		try {
+			String sql = String.format(
+					"INSERT OR IGNORE INTO producto (precio, nombre, tipoBebida, tipoComida, tamanio, mezcla, alcohol) VALUES ('%f', '%s', '%s', '%s', '%s', '%s', '%s')",
+					d.getPrecio(), secu(d.getNombre()), null, d.getTipoComida().name(), d.getTipoComida().name(), null,
+					null);
+			int val = st.executeUpdate(sql);
+			if (val != 1) { // Se tiene que a�adir 1 - error si no
+				log(Level.SEVERE, "Error en insert de BD\t" + sql, null);
+				return null;
+			}
+			ResultSet generatedKeys = st.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				d.setId(generatedKeys.getInt(1));
+			}
+			return d;
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error en BD", e);
+			lastError = e;
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Producto bebidaInsert(Statement st, Bebida d) {
+		try {
+			String sql = String.format(
+					"INSERT OR IGNORE INTO producto (precio, nombre, tipoBebida, tipoComida, tamanio, mezcla, alcohol) VALUES ('%f', '%s', '%s', '%s', '%s', '%s', '%s')",
+					d.getPrecio(), secu(d.getNombre()), secu(d.getTipoBebida().name()), null, null, secu(d.getMezcla()),
+					secu(d.getAlcohol()));
+			int val = st.executeUpdate(sql);
+			if (val != 1) { // Se tiene que a�adir 1 - error si no
+				log(Level.SEVERE, "Error en insert de BD\t" + sql, null);
+				return null;
+			}
+			ResultSet generatedKeys = st.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				d.setId(generatedKeys.getInt(1));
+			}
+
+			return d;
+		} catch (SQLException e) {
+			log(Level.SEVERE, "Error en BD", e);
+			lastError = e;
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static boolean almacenInsert(Statement st, Discoteca d, Producto p, int cantidad) {
+		try {
+			String sql = String.format(
+					"INSERT INTO almacen (producto, cantidad, discoteca) VALUES ('%d', '%d', '%d')", p.getId(),
+					cantidad, d.getId());
+			int val = st.executeUpdate(sql);
+			if (val != 1) { // Se tiene que a�adir 1 - error si no
+				log(Level.SEVERE, "Error en insert de BD\t" + sql, null);
 				return false;
 			}
 			return true;
 		} catch (SQLException e) {
-			log(Level.SEVERE, "Error en BD\t" + sentSQL, e);
+			log(Level.SEVERE, "Error en BD", e);
 			lastError = e;
 			e.printStackTrace();
 			return false;
@@ -199,20 +323,20 @@ public class BaseDeDatos {
 	 * @param st         sentencia abierta con la base de datos
 	 */
 
-		public static boolean guardarDiscotecas(Statement st, ArrayList<Discoteca> discotecas, GestionDiscoteca gs) {
-	
-			discotecas = gs.getlDiscotecas();
-			try {
-				for (Discoteca d : discotecas) {
-					DiscotecaInsert(st, d);
-				}
-				} catch (Exception e) {
-					log(Level.SEVERE, "Error al guardar discotecas en base de datos", e);
+	public static boolean guardarDiscotecas(Statement st, ArrayList<Discoteca> discotecas, GestionDiscoteca gs) {
+
+		discotecas = gs.getlDiscotecas();
+		try {
+			for (Discoteca d : discotecas) {
+				discotecaInsert(st, d);
 			}
-			System.out.println("Ventana cerrada, disoctecas subidas a la base de datos correctamente");
-			
-			return false;
+		} catch (Exception e) {
+			log(Level.SEVERE, "Error al guardar discotecas en base de datos", e);
 		}
+		System.out.println("Ventana cerrada, disoctecas subidas a la base de datos correctamente");
+
+		return false;
+	}
 
 	/**
 	 * Realiza una consulta a la tabla abierta de Discotecaes de la BD, usando la
@@ -225,7 +349,7 @@ public class BaseDeDatos {
 	 * @return lista de nombres de Discotecas cargadas desde la base de datos, null
 	 *         si hay cualquier error
 	 */
-	public static ArrayList<String> DiscotecaSelect(Statement st, String codigoSelect) {
+	public static ArrayList<String> discotecaSelect(Statement st, String codigoSelect) {
 		String sentSQL = "";
 		ArrayList<String> ret = new ArrayList<>();
 		try {
@@ -248,20 +372,21 @@ public class BaseDeDatos {
 		}
 	}
 
-	public static ArrayList<Discoteca> DiscotecaSelectAll(Statement st) {
+	public static ArrayList<Discoteca> discotecaSelectAll(Statement st) {
 		String sentSQL = "";
 		ArrayList<Discoteca> ret = new ArrayList<>();
 		try {
-			sentSQL = "select * from Discoteca;";
+			sentSQL = "select * from discoteca;";
 
-			System.out.println( sentSQL ); // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery(sentSQL);
 			while (rs.next()) {
-				ret.add(new Discoteca(rs.getString("nombre"), rs.getInt("aforomax"), rs.getInt("aforo"),
-						rs.getInt("numTrab"), rs.getString("direccion")));
-				// nombre String, aforoMax integer, aforo integer, numeroTrab integer, direccion
-				// String
+				Discoteca d = new Discoteca(rs.getString("nombre"), rs.getInt("aforoMax"), rs.getInt("aforo"),
+						rs.getInt("numeroTrab"), rs.getString("direccion"), rs.getInt("id"));
+				Almacen almacen = new Almacen(selectAlmacenDeDiscoteca(st, d)); // almacen de la discoteca
+				d.setAlmacen(almacen);
+				ret.add(d);
 			}
+
 			rs.close();
 			log(Level.INFO, "BD\t" + sentSQL, null);
 			return ret;
@@ -273,21 +398,96 @@ public class BaseDeDatos {
 		}
 	}
 
+	public static ArrayList<Producto> productosSelect(Statement st, Integer idProducto) {
+		String placement = idProducto == null ? "'.' OR 1 = 1" : idProducto.toString();
+
+		String sentSQL = "";
+		ArrayList<Producto> ret = new ArrayList<>();
+		try {
+			sentSQL = String.format("SELECT * FROM producto WHERE id = %s;", placement);
+			ResultSet rs = st.executeQuery(sentSQL);
+			while (rs.next()) {
+				String enumBebidaStr = rs.getString("tipoBebida");
+				if (!enumBebidaStr.equals("null")) { // debería utilizarse !rs.wasNull() para comprobar si
+														// verdaderamente es null y no solo "null"
+					// Bebida
+					Bebida b = new Bebida(rs.getString("nombre"), EnumBebida.valueOf(enumBebidaStr),
+							rs.getString("alcohol"), rs.getString("mezcla"), rs.getDouble("precio"));
+					ret.add(b);
+				} else {
+					// Comida
+					Comida c = new Comida(rs.getString("nombre"), EnumComida.valueOf(rs.getString("tipoComida")),
+							rs.getString("tamanio"), rs.getDouble("precio"));
+					ret.add(c);
+				}
+			}
+			rs.close();
+			return ret;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Producto getProductoIdPorNombre(Statement st, Producto p) {
+		try {
+			if (p.getId() != null) {
+				st.close();
+				return p;
+			}
+
+			String sql = String.format("SELECT * FROM producto WHERE nombre = '%s';", p.getNombre());
+
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.next()) {
+				p.setId(rs.getInt("id"));
+			}
+			rs.close();
+			st.close();
+			return p;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Map<Producto, Integer> selectAlmacenDeDiscoteca(Statement st, Discoteca d) {
+		String sentSQL = "";
+		Map<Producto, Integer> ret = new HashMap<>();
+		try {
+			sentSQL = "select * from almacen where discoteca = " + d.getId();
+			System.out.println(sentSQL); // Para ver lo que se hace en consola
+			ResultSet rs = st.executeQuery(sentSQL);
+			while (rs.next()) {
+				Statement st2 = usarBD(conexion); // necesitamos un st2 para poder hacer una consulta a la tabla
+													// producto mientras que estamos recorriendo un rs que "pertenece" a
+													// st.
+				Producto p = productosSelect(st2, rs.getInt("producto")).get(0);
+				ret.put(p, rs.getInt("cantidad"));
+			}
+			return ret;
+		} catch (Exception e) {
+			log(Level.SEVERE, "Error en BD\t" + sentSQL, e);
+			lastError = e;
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	/**
 	 * A�ade un cliente a la tabla abierta de BD, usando la sentencia INSERT de SQL
 	 * 
-	 * @param st          Sentencia ya abierta de Base de Datos (con la estructura
-	 *                    de tabla correspondiente a la habitaci�n)
-	 * @param nombre      nombre del cliente que queremos a�adir
+	 * @param st         Sentencia ya abierta de Base de Datos (con la estructura
+	 *                   de tabla correspondiente a la habitaci�n)
+	 * @param nombre     nombre del cliente que queremos a�adir
 	 * @param contrasena contrasena del nuevo cliente
 	 * @return true si la inserci�n es correcta, false en caso contrario
 	 */
 	public static boolean clienteInsert(Statement st, String nombre, String apellido, String DNI, String contrasena) {
 		String sentSQL = "";
 		try {
-			sentSQL = "insert into cliente values(" +
-					"'" + secu(nombre) + "'," + "'" + secu(apellido) + "'," +
-					"'" + secu(DNI) + "'," + "'" + secu(contrasena) + "');";
+			sentSQL = String.format("insert into cliente values('%s','%s','%s','%s');",
+					secu(nombre), secu(apellido), secu(DNI), secu(contrasena));
 			int val = st.executeUpdate(sentSQL);
 			log(Level.INFO, "BD tabla cliente anadida " + val + " fila\t" + sentSQL, null);
 			if (val != 1) { // Se tiene que anadir 1 - error si no
@@ -320,7 +520,7 @@ public class BaseDeDatos {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -376,8 +576,12 @@ public class BaseDeDatos {
 			System.out.println(sentSQL); // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery(sentSQL);
 			while (rs.next()) {
-				ret.add(new Cliente(rs.getString("nombre"), rs.getString("contrasena"), rs.getString("apellido"),
-						rs.getString("dni")));
+				String nombre = rs.getString("nombre");
+				Cliente c = new Cliente(rs.getString("nombre"), rs.getString("contrasena"), rs.getString("apellido"),
+						rs.getString("dni"));
+				ArrayList<Reserva> reservas = reservaSelectAll(usarBD(conexion), nombre);
+				c.setlReservas(reservas);
+				ret.add(c);
 			}
 			rs.close();
 			log(Level.INFO, "BD\t" + sentSQL, null);
@@ -477,13 +681,13 @@ public class BaseDeDatos {
 	 * @return lista de clientes cargados desde la base de datos, null si hay
 	 *         cualquier error
 	 */
-	private static boolean trabajadorInsert(Statement st, String nombre, String contrasenia, int precioHora,
-			int sueldo) {
+	private static boolean trabajadorInsert(Statement st, Trabajador t) {
 		String sentSQL = "";
 		try {
-			sentSQL = "insert into cliente values(" +
-					"'" + secu(nombre) + "'," +
-					"'" + "'" + secu(contrasenia) + "'," + precioHora + "'," + sueldo + "');";
+			sentSQL = String.format(
+					"insert into trabajador (nombre, contrasenaT, sueldo, puesto, precioHora) values ('%s', '%s', %d, '%s', %d);",
+					t.getNombre(),
+					t.getContrasenia(), t.getSueldo(), t.getPuesto().toString(), t.getPrecioHora());
 			int val = st.executeUpdate(sentSQL);
 			log(Level.INFO, "BD tabla trabajador a�adida " + val + " fila\t" + sentSQL, null);
 			if (val != 1) { // Se tiene que a�adir 1 - error si no
@@ -513,13 +717,13 @@ public class BaseDeDatos {
 		trabajadores = gs.getlTrabajadores();
 		try {
 			for (Trabajador t : trabajadores) {
-				trabajadorInsert(st, t.getNombre(), t.getContrasenia(), t.getPrecioHora(), t.getSueldo());
+				trabajadorInsert(st, t);
 			}
 		} catch (Exception e) {
 			log(Level.SEVERE, "Error al guardar trabajadoes en base de datos", e);
 		}
 		System.out.println("trabajadores insertados en la bbdd");
-		
+
 		return false;
 	}
 
@@ -558,56 +762,13 @@ public class BaseDeDatos {
 		}
 	}
 
-	/**
-	 * Realiza una consulta a la tabla abierta de reservas de la BD, usando la
-	 * sentencia SELECT de SQL
-	 * 
-	 * @param st           Sentencia ya abierta de Base de Datos (con la estructura
-	 *                     de tabla correspondiente al usuario)
-	 * @param h            Discoteca del que se buscan las reservas (no null)
-	 * @param cliente      Cliente del que se buscan las reservas (no null)
-	 * @param codigoSelect Sentencia correcta de WHERE (sin incluirlo) para filtrar
-	 *                     la b�squeda (vac�a si no se usa)
-	 * @return lista de reservas cargadas desde la base de datos, null si hay
-	 *         cualquier error
-	 */
-	public static ArrayList<String> reservaSelect(Statement st, Discoteca d, String cliente, String codigoSelect) {
-		if (d == null || cliente == null || cliente.isEmpty())
-			return null;
-		String sentSQL = "";
-		ArrayList<String> ret = new ArrayList<>();
-		try {
-			sentSQL = "select * from reserva";
-			if (d != null) {
-				String where = "discoteca_nombre='" + d.getNombre() + "' AND cliente_nombre='" + cliente + "'";
-				if (codigoSelect != null && !codigoSelect.equals(""))
-					sentSQL = sentSQL + " where " + where + " AND " + codigoSelect;
-				else
-					sentSQL = sentSQL + " where " + where;
-			}
-			if (codigoSelect != null && !codigoSelect.equals(""))
-				sentSQL = sentSQL + " where " + codigoSelect;
-			System.out.println(sentSQL); // Para ver lo que se hace en consola
-			ResultSet rs = st.executeQuery(sentSQL);
-			while (rs.next()) {
-				ret.add(rs.getString("fecha"));
-			}
-			rs.close();
-			log(Level.INFO, "BD\t" + sentSQL, null);
-			return ret;
-		} catch (SQLException e) {
-			log(Level.SEVERE, "Error en BD\t" + sentSQL, e);
-			lastError = e;
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static ArrayList<Reserva> reservaSelectAll(Statement st) {
+	public static ArrayList<Reserva> reservaSelectAll(Statement st, String nombreCliente) {
+		String placement = nombreCliente == null ? "'.' OR 1 = 1"
+				: String.format("'%s'", obtenerDNICliente(nombreCliente));
 		String sentSQL = "";
 		ArrayList<Reserva> ret = new ArrayList<>();
 		try {
-			sentSQL = "select * from reserva";
+			sentSQL = String.format("SELECT * FROM reserva WHERE cliente_nombre = %s", placement);
 			System.out.println(sentSQL); // Para ver lo que se hace en consola
 			ResultSet rs = st.executeQuery(sentSQL);
 			while (rs.next()) {
@@ -654,43 +815,67 @@ public class BaseDeDatos {
 			PreparedStatement s = conexion.prepareStatement(
 					"insert into reserva (cliente_nombre, discoteca_nombre, fecha, importe,  numPers, zona ) values (?, ?, ?, ?, ?, ?) ");
 			s.setInt(1, obtenerDNICliente(cliente.getNombre()));
-			 s.setString(2, reserva.getFecha());
-			 s.setString(3, disco.getNombre());
+			s.setString(2, reserva.getFecha());
+			s.setString(3, disco.getNombre());
 			s.setDouble(4, reserva.getImporte());
 			s.setInt(5, reserva.getNumeroPersonas());
 			s.setString(6, reserva.getZona().name());
-			
+
+			ResultSet gk = s.getGeneratedKeys();
+			if (gk.next()) {
+				reserva.setId(gk.getInt(1));
+			}
+			s.executeUpdate();
+			s.close();
+
+			for (Entry<Producto, Integer> d : reserva.getMapaProducto().entrySet()) {
+				PreparedStatement s1 = conexion.prepareStatement(
+						"insert into carrito values (?, ?, ?)");
+				// producto, cantidad, reserva
+				Producto productoConId = getProductoIdPorNombre(usarBD(conexion), d.getKey());
+				if (productoConId.getId() == null) {
+					// no existe en la bd
+					productoConId = productoInsert(usarBD(conexion), d.getKey());
+				}
+				s1.setInt(1, productoConId.getId());
+				s1.setInt(2, d.getValue());
+				s1.setInt(3, reserva.getId());
+
+				s1.executeUpdate();
+				s1.close();
+			}
 
 			log(Level.INFO, "Se ha registrado la reserva del cliente: " + cliente, null);
 		} catch (SQLException e) {
 			log(Level.SEVERE, "Error al registrar la reserva del cliente: " + cliente, e);
 		}
 	}
-	
+
 	public static void actualizarAforoDisco(Discoteca disco, VentanaReservaEntradas vre) {
 		Integer aforoDiscoteca = disco.getAforo();
 		aforoDiscoteca = aforoDiscoteca + vre.numeroPersonas;
 	}
-	
+
 	public static void actualizarDiscoteca(Discoteca disco) {
 		try {
 			PreparedStatement s = conexion.prepareStatement(
-					"UPDATE discoteca SET aforo = " + disco.getAforo() + "where nombre = "+ disco.getNombre() +";" );
+					"UPDATE discoteca SET aforo = " + disco.getAforo() + "where nombre = " + disco.getNombre() + ";");
+			s.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public static void registrarMapaProducto(Producto producto,  Reserva reserva, Integer cantidad) {
+
+	public static void registrarMapaProducto(Producto producto, Reserva reserva, Integer cantidad) {
 		try {
 			PreparedStatement s = conexion.prepareStatement(
 					"insert into productoMapa (idReserva, producto, cantidad) values (?, ?, ?) ");
-				s.setInt(1, reserva.getId());
-				s.setString(2, producto.getNombre());
-				s.setInt(3, cantidad);
+			s.setInt(1, reserva.getId());
+			s.setString(2, producto.getNombre());
+			s.setInt(3, cantidad);
+			s.executeUpdate();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
@@ -702,28 +887,6 @@ public class BaseDeDatos {
 				sb.append(c);
 		}
 		return sb.toString();
-	}
-
-	public static ArrayList<Producto> getProductos() {
-		try (Statement statement = conexion.createStatement()) {
-			ArrayList<Producto> ret = new ArrayList<>();
-			String sent = "select * from producto;";
-			logger.log(Level.INFO, "Statement: " + sent);
-			ResultSet rs = statement.executeQuery(sent);
-			while (rs.next()) { // Leer el resultset
-				String nombre = rs.getString("nombre");
-				double precio = rs.getDouble("precio");
-				// ret.add
-			}
-			return ret;
-		} catch (Exception e) {
-			procesarError((ex) -> {
-				logger.log(Level.SEVERE, "Excepci�n en getProductos()");
-				System.out.println("Excepcion: " + ex.getMessage());
-			}, e);
-			//
-			return null;
-		}
 	}
 
 	/////////////////////////////////// LOGGER DE LA BASE DE DATOS
@@ -743,7 +906,7 @@ public class BaseDeDatos {
 
 	private static void log(Level level, String msg, Throwable exception) {
 		if (logger == null) {
-			logger = logger.getLogger(BaseDeDatos.class.getName());
+			logger = Logger.getLogger(BaseDeDatos.class.getName());
 			logger.setLevel(Level.ALL);
 			try {
 				logger.addHandler(new FileHandler("bd.log.xml", true));
@@ -756,10 +919,5 @@ public class BaseDeDatos {
 		} else {
 			logger.log(level, msg, exception);
 		}
-	}
-
-	///////////////// PROCESAR LOS ERRORES//////////////////////
-	private static void procesarError(Consumer<Exception> proceso, Exception msg) {
-		proceso.accept(msg);
 	}
 }

@@ -2,7 +2,7 @@ package logica;
 
 public class Puestoaleatorio {
 
-	public static String[] Puestoaleatorio(int cantidad) {
+	public static String[] PuestoAleatorio(int cantidad) {
 		String[] Puestoaleatorio = new String[cantidad];
 
 		String[] Puesto = { "Camarero", "Segurata" };
@@ -22,6 +22,6 @@ public class Puestoaleatorio {
 	}
 
 	public static void main(String[] args) {
-		imprimir(Puestoaleatorio(1));
+		imprimir(PuestoAleatorio(1));
 	}
 }

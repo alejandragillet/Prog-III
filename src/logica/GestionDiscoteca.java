@@ -10,20 +10,13 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import basedatos.BaseDeDatos;
 
 import comunicacion.Comunicador;
 import comunicacion.Servidor;
-import ventanas.VentanaCliente;
-
-import ventanas.VentanaReservaEntradas;
 import ventanas.VentanaUsuario;
 
 public class GestionDiscoteca {
@@ -32,16 +25,18 @@ public class GestionDiscoteca {
 	public ArrayList<Cliente> lClientes = new ArrayList<>();
 	public ArrayList<Trabajador> lTrabajadores = new ArrayList<>();
 
-	private final static Logger LOG_RAIZ = Logger.getLogger("inicio");
+	public final static Logger LOG_RAIZ = Logger.getLogger("inicio");
 
 	public static void main(String[] args) throws CloneNotSupportedException {
 		GestionDiscoteca gs1 = new GestionDiscoteca();
 		gs1.initConexiones();
-		GestionDiscoteca.init(gs1);
+		if (!Boolean.valueOf(StaticVars.get("ejecutadoPrimeraVez"))) {
+			GestionDiscoteca.init(gs1); // <<-- solo la primera vez
+			StaticVars.set("ejecutadoPrimeraVez", "true");
+		}
 
 		VentanaUsuario vU = new VentanaUsuario(gs1);
 		vU.setVisible(true);
-		
 	}
 
 	public ArrayList<Discoteca> getlDiscotecas() {
@@ -108,6 +103,12 @@ public class GestionDiscoteca {
 	 */
 	public static void init(GestionDiscoteca gs1) {
 		// Crear productos
+		gs1.cargarFicheroBinarioProductos(gs1.getlProductos(), "productos.dat");
+		if (gs1.lProductos.size() != 0)
+			return; // cargados datos de ejemplo desde un fichero serializado
+
+		// no existian productos, cargar en esta gestionDiscoteca y estará disponible en
+		// el fichero para las siguientes que se inicialicen por medio de esta funcion
 		Bebida bebida1 = new Bebida("cerveza", EnumBebida.CERVEZA, "cerveza", " ", 2.5);
 		Bebida bebida2 = new Bebida("Chupito tequila", EnumBebida.CHUPITO, "tequila", " ", 3);
 		Bebida bebida3 = new Bebida("Alexander", EnumBebida.COCTEL, "tequila", "crema de cacao y nata líquida", 9);
@@ -164,24 +165,20 @@ public class GestionDiscoteca {
 
 		Almacen almacenBudha = new Almacen(mapaProductoAlmacenBudha);
 		Almacen almacenMoma = new Almacen(mapaProductoAlmacenMoma);
-		
-		Discoteca budha = new Discoteca("Urkixo Zumarkalea, 88, 48013 Bilbo, Bizkaia", 700, 0, 70,"Budha", almacenBudha);
-		Discoteca moma = new Discoteca("Rodríguez Arias Kalea, 66, 48013 Bilbo, Bizkaia", 200, 0, 30, "Moma", almacenMoma);
-		
+
+		Discoteca budha = new Discoteca("Urkixo Zumarkalea, 88, 48013 Bilbo, Bizkaia", 700, 0, 70, "Budha",
+				almacenBudha);
+		Discoteca moma = new Discoteca("Rodríguez Arias Kalea, 66, 48013 Bilbo, Bizkaia", 200, 0, 30, "Moma",
+				almacenMoma);
+
 		gs1.lDiscotecas.add(budha);
 		gs1.lDiscotecas.add(moma);
-		
+
 		Trabajador t1 = new Trabajador("Juan", "6464", 7, 15, EnumPuesto.SEGURATA);
 		Trabajador t2 = new Trabajador("Alvaro", "7654", 8, 10, EnumPuesto.CAMARERO);
 		gs1.lTrabajadores.add(t1);
 		gs1.lTrabajadores.add(t2);
 		gs1.guardarFicheroBinarioTrabajador(gs1.lTrabajadores, "trabajador.dat");
-		
-		System.out.println(gs1.lClientes);
-		System.out.println(gs1.lDiscotecas);
-		System.out.println(gs1.lProductos);
-		System.out.println(gs1.lTrabajadores);
-		//BaseDeDatos.DiscotecaInsert(BaseDeDatos.usarBD(BaseDeDatos.conexion), budha);
 	}
 
 	/**
@@ -203,7 +200,7 @@ public class GestionDiscoteca {
 
 		}
 	}
-	
+
 	public void guardarFicheroBinarioTrabajador(ArrayList<Trabajador> lTrabajador, String nombreFic) {
 		try {
 			File sFichero = new File(nombreFic);
@@ -217,6 +214,7 @@ public class GestionDiscoteca {
 
 		}
 	}
+
 	public void cargarFicheroBinarioTrabajador(ArrayList<Trabajador> lTrabajador, String nombreFic) {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFic));
@@ -248,7 +246,6 @@ public class GestionDiscoteca {
 			System.out.println("Error de lectura de fichero" + nombreFic);
 		}
 	}
-	
 
 	/**
 	 * Guardar productos en un fichero binario

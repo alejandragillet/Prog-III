@@ -100,6 +100,7 @@ public class VentanaCliente extends JFrame {
 					}
 
 					Reserva reserva = new Reserva();
+					reserva.setNombreC(cliente.getNombre());
 					VentanaReservaEntradas vre = new VentanaReservaEntradas(gs, cliente, reserva);
 					vre.setVisible(true);
 				} catch (IOException | CloneNotSupportedException e1) {

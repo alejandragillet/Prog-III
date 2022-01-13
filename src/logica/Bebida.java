@@ -1,24 +1,23 @@
 package logica;
 
 public class Bebida extends Producto {
-	protected EnumBebida TipoBebida;
+	protected EnumBebida tipoBebida;
 	private String alcohol;
 	private String mezcla;
 
 	public Bebida(String nombre, EnumBebida tipoBebida, String alcohol, String mezcla, double precio) {
 		super(nombre, precio);
-		this.TipoBebida = tipoBebida;
+		this.tipoBebida = tipoBebida;
 		this.alcohol = alcohol;
 		this.mezcla = mezcla;
-		this.nombre = nombre;
 	}
 
 	public EnumBebida getTipoBebida() {
-		return TipoBebida;
+		return tipoBebida;
 	}
 
 	public void setTipoBebida(EnumBebida tipoBebida) {
-		TipoBebida = tipoBebida;
+		this.tipoBebida = tipoBebida;
 	}
 
 	public String getAlcohol() {
@@ -36,10 +35,4 @@ public class Bebida extends Producto {
 	public void setMezcla(String mezcla) {
 		this.mezcla = mezcla;
 	}
-
-	@Override
-	public String toString() {
-		return " " + nombre;
-	}
-
 }

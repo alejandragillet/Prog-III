@@ -9,17 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import logica.EnumPuesto;
 import logica.GestionDiscoteca;
@@ -52,7 +49,7 @@ public class VentanaIniciosesion extends JFrame {
 				
 			}
 
-			String puesto = Puestoaleatorio.imprimir(Puestoaleatorio.Puestoaleatorio(1));
+			String puesto = Puestoaleatorio.imprimir(Puestoaleatorio.PuestoAleatorio(1));
 			EnumPuesto epuesto = EnumPuesto.CAMARERO;
 			sueldo = 0;
 			if (puesto.equals("Segurata")) {

@@ -46,7 +46,7 @@ public class Servidor {
                     String usuarioC = split[1].split("-")[0];
                     String passC = split[1].split("-")[1];
                     Cliente clienteC = new Cliente(usuarioC, passC, null);
-                    Statement st = BaseDeDatos.conexion.createStatement();
+                    Statement st = BaseDeDatos.usarBD(BaseDeDatos.conexion);
                     // select * from cliente where Cliente_nombre = 'aasdasd' and
                     ArrayList<Cliente> resultadoR = BaseDeDatos.clienteSelect(st, clienteC,
                             "contrasena = '" + passC + "'");
@@ -58,17 +58,19 @@ public class Servidor {
                     } else {
                         outputACliente.println("respuesta-" + false);
                     }
+                    st.close();
 
                 } else if (split[0].equals("register")) {
                     String usuarioC = split[1].split("-")[0];
                     String passC = split[1].split("-")[1];
                     String DNI = split[1].split("-")[2];
                     String apellido = split[1].split("-")[3];
-                    Statement st = BaseDeDatos.conexion.createStatement();
+                    Statement st = BaseDeDatos.usarBD(BaseDeDatos.conexion);;
 
                     boolean todoBien = BaseDeDatos.clienteInsert(st, usuarioC, apellido, DNI, passC);
 
                     outputACliente.println("respuesta-" + todoBien);
+                    st.close();
                 }
 
                 System.out.println("Recibido de cliente: [" + textoRecibido + "]");

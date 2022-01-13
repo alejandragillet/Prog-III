@@ -23,7 +23,6 @@ import basedatos.BaseDeDatos;
 
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
@@ -68,9 +67,7 @@ public class VentanaCompra extends JFrame {
 
 		for (Map.Entry<Producto, Integer> entry : mapaStock.entrySet()) {
 			tbModel.addRow(new String[] { entry.getKey().getNombre(), entry.getValue().toString(),
-					new Double(entry.getKey().getPrecio()).toString() });
-			// tbModel.addRow(new Object[] {entry.getKey().getNombre(), entry.getValue(),
-			// entry.getKey().getPrecio()});
+					Double.valueOf(entry.getKey().getPrecio()).toString() });
 		}
 
 		int numeroPersonas = vre.numeroPersonas();
@@ -114,8 +111,6 @@ public class VentanaCompra extends JFrame {
 		bFinalizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// cliente.getlReservas().add(reserva);
-
 				Thread hilo = new Thread() {
 					@Override
 					public void run() {
@@ -148,20 +143,10 @@ public class VentanaCompra extends JFrame {
 
 				hilo.start();
 				System.out.println("Reserva Enum" + reserva.getZona());
+
+				cliente.getlReservas().add(reserva);
 				BaseDeDatos.registraReserva(cliente, reserva, disco);
-				for (Map.Entry<Producto, Integer> entry : mapaStock.entrySet()) {
-					Producto key = entry.getKey();
-					Integer value = entry.getValue();
-					//BaseDeDatos.registrarMapaProducto(key, reserva, value);
-				}
-				//BaseDeDatos.actualizarAforoDisco(disco, vre);
-				//BaseDeDatos.actualizarDiscoteca(disco);
-				
-				
 			}
 		});
-		cliente.setNombre(reserva.getNombreC());
 	}
-
-
 }

@@ -1,20 +1,18 @@
 package logica;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Discoteca implements Cloneable {
 	protected String direccion;
 	protected int aforoMax;
-	protected int aforo;
+	protected int aforo = 0;
 	protected int numeroTrabajadores;
 	protected String nombre;
-	protected ArrayList<Reserva> lReserva;
+	protected ArrayList<Reserva> lReserva = new ArrayList<>();
 	private Almacen almacen;
-	
-	
-	
+	private int id;
+
 	public Discoteca(String direccion, int aforoMax, int aforo, int numeroTrabajadores, String nombre, Almacen almacen) {
 		super();
 		this.direccion = direccion;
@@ -22,7 +20,6 @@ public class Discoteca implements Cloneable {
 		this.aforo = aforo;
 		this.numeroTrabajadores = numeroTrabajadores;
 		this.nombre = nombre;
-		this.lReserva = lReserva;
 		this.almacen = almacen;
 	}
 
@@ -31,7 +28,6 @@ public class Discoteca implements Cloneable {
 		this.aforoMax = aforoMax;
 		this.numeroTrabajadores = numeroTrabajadores;
 		this.nombre = nombre;
-		this.aforo = 0;
 		this.almacen = almacen;
 	}
 
@@ -43,12 +39,13 @@ public class Discoteca implements Cloneable {
 
 	}
 
-	public Discoteca(String nombre, int aforoMax, int aforo, int numeroTrabajadores, String direccion) {
+	public Discoteca(String nombre, int aforoMax, int aforo, int numeroTrabajadores, String direccion, int id) {
 		this.direccion = direccion;
 		this.aforoMax = aforoMax;
 		this.numeroTrabajadores = numeroTrabajadores;
 		this.nombre = nombre;
 		this.aforo = aforo;
+		this.id = id;
 	}
 
 	public String getDireccion() {
@@ -107,6 +104,14 @@ public class Discoteca implements Cloneable {
 		this.almacen = almacen;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return nombre;
@@ -123,14 +128,6 @@ public class Discoteca implements Cloneable {
 		if (stock != null) {
 			almacen.getMapaProductoAlmacen().put(producto, stock - 1);
 		}
-		// for (Map.Entry<Producto, Integer> entry :
-		// almacen.getMapaProductoAlmacen().entrySet()) {
-		// Producto key = entry.getKey();
-		// Integer value = entry.getValue();
-		// if (producto.equals(key)) {
-		// almacen.getMapaProductoAlmacen().replace(key, value - 1);
-		// }
-		// }
 	}
 
 	public void actualizarAlmacenDiscoBorrar(Producto producto) {
@@ -143,5 +140,4 @@ public class Discoteca implements Cloneable {
 
 		}
 	}
-
 }

@@ -1,19 +1,20 @@
 package logica;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Almacen {
-	private HashMap<Producto, Integer> mapaProductoAlmacen;
+	private Map<Producto, Integer> mapaProductoAlmacen;
 
-	public Almacen(HashMap<Producto, Integer> mapa) {
+	public Almacen(Map<Producto, Integer> mapa) {
 		this.mapaProductoAlmacen = mapa;
 	}
 
-	public HashMap<Producto, Integer> getMapaProductoAlmacen() {
+	public Map<Producto, Integer> getMapaProductoAlmacen() {
 		return mapaProductoAlmacen;
 	}
 
-	public void setMapaProductoAlmacen(HashMap<Producto, Integer> mapaProductoAlmacen) {
+	public void setMapaProductoAlmacen(Map<Producto, Integer> mapaProductoAlmacen) {
 		this.mapaProductoAlmacen = mapaProductoAlmacen;
 	}
 
@@ -22,4 +23,7 @@ public class Almacen {
 		return "Almacen [mapaProductoAlmacen=" + mapaProductoAlmacen + "]";
 	}
 
+	public ArrayList<Producto> getProductos() {
+		return new ArrayList<>(mapaProductoAlmacen.keySet());
+	}
 }

@@ -5,12 +5,11 @@ import javax.swing.JFrame;
 import logica.Producto;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 
 class VentanaGraficaStock extends JFrame {
 
-    public VentanaGraficaStock(HashMap<Producto, Integer> mapaStock) {
+    public VentanaGraficaStock(Map<Producto, Integer> mapaStock) {
         super("Stock");
         setSize(800, 600);
 

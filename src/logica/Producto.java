@@ -7,6 +7,7 @@ public abstract class Producto implements Serializable {
 
 	protected String nombre;
 	protected double precio;
+	protected Integer id;
 
 	/**
 	 * Crea un producto con nombre y precio
@@ -57,4 +58,16 @@ public abstract class Producto implements Serializable {
 
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
 }

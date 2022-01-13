@@ -1,8 +1,6 @@
 
 package logica;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +17,7 @@ public class Reserva implements Cloneable{
 
 	public Reserva() {
 		this.importe = 0;
-		this.mapaProducto = mapaProducto;
-		this.numeroPersonas = numeroPersonas;
-		this.zona = zona;
-		this.discoteca = discoteca;
-
+		this.numeroPersonas = 0;
 	}
 
 	public Reserva(String nombre, String fecha, Discoteca discoteca, EnumZona zona, int numeroPersonas, double importe) {

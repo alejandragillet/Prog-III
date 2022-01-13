@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
 
 import logica.Cliente;
-import logica.Reserva;
+import logica.GestionDiscoteca;
 
 // en realidad debería llamarse Cliente, sin embargo, ya existe una clase Cliente.
-// TODO en proceso de creacion
 public class Comunicador {
     private static final String HOST = "localhost";
     private static final int PORT = 4000;
@@ -30,7 +30,8 @@ public class Comunicador {
                     finComunicacion = true;
             } while (!finComunicacion);
         } catch (IOException e) {
-            System.err.println("Error en cliente: " + e.getMessage() + "\n");
+            GestionDiscoteca.LOG_RAIZ.log(Level.SEVERE, "Programa cerrandose debido a un error en la conexión con el servidor", e);
+            System.exit(-1);
         }
         System.out.println("Fin del proceso del cliente");
     }
@@ -50,7 +51,7 @@ public class Comunicador {
     }
 
     public static Cliente login(String nombre, String pass) throws IOException {
-        String r = emitirMensaje("login: " + nombre + " - " + pass);
+        String r = emitirMensaje("login:" + nombre + "-" + pass);
         String[] splitted = r.split("-");
         String respuestaLogin = splitted[1];
 
@@ -63,7 +64,7 @@ public class Comunicador {
     }
 
     public static Cliente registrarse(String nombre, String pass, String DNI, String apellido) throws IOException {
-        String r = emitirMensaje("register: " + nombre + " - " + pass + " - " + DNI + " - " + apellido);
+        String r = emitirMensaje("register:" + nombre + "-" + pass + "-" + DNI + "-" + apellido);
         String[] splitted = r.split("-");
         String respuestaRegistro = splitted[1];
         System.out.println(respuestaRegistro);

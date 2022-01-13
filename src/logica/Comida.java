@@ -1,22 +1,21 @@
 package logica;
 
 public class Comida extends Producto {
-	protected EnumComida TipoComida;
+	protected EnumComida tipoComida;
 	private String tamanio;
 
 	public Comida(String nombre, EnumComida tipoComida, String tamanio, double precio) {
 		super(nombre, precio);
-		this.TipoComida = tipoComida;
-		this.nombre = nombre;
+		this.tipoComida = tipoComida;
 		this.tamanio = tamanio;
 	}
 
 	public EnumComida getTipoComida() {
-		return TipoComida;
+		return tipoComida;
 	}
 
 	public void setTipoComida(EnumComida tipoComida) {
-		TipoComida = tipoComida;
+		this.tipoComida = tipoComida;
 	}
 
 	public String getTamanio() {
@@ -26,10 +25,4 @@ public class Comida extends Producto {
 	public void setTamanio(String tamanio) {
 		this.tamanio = tamanio;
 	}
-
-	@Override
-	public String toString() {
-		return " " + nombre;
-	}
-
 }

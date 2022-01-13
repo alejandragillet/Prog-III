@@ -17,5 +17,6 @@ public class SueldoTrabajador {
 
 		sueldo = horas * precio;
 		System.out.println("El sueldo es de" + "\t" + sueldo + "euros");
+		entrada.close();
 	}
 }

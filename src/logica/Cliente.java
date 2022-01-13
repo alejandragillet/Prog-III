@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 public class Cliente {
 	protected String nombre;
 	protected String contrasenia;
-	protected ArrayList<Reserva> lReservas;
+	protected ArrayList<Reserva> lReservas = new ArrayList<>();
 	protected String apellido;
 	protected String DNI;
 	private final static Logger LOGGER = Logger.getLogger("inicio.procesos.AltaCliente");

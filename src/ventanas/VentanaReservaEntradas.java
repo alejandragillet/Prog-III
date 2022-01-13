@@ -3,7 +3,6 @@ package ventanas;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -14,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,7 +24,6 @@ import logica.EnumZona;
 import logica.GestionDiscoteca;
 import logica.Reserva;
 
-@SuppressWarnings("serial")
 // Ventana en la cual el cliente puede elegir la discotecaque quiere y reservar
 // su entrada
 // Idea futura : crear nueva clase Sesión para añadir la fecha de la reserva y
@@ -39,9 +36,6 @@ public class VentanaReservaEntradas extends JFrame {
 	public static Discoteca disco2;
 	public static EnumZona zona;
 	public Integer numeroPersonas;
-	private JPanel panelSuperior;
-	private JPanel panelCentral;
-	private JPanel panelInferior;
 
 	// Discoteca discoteca
 	public VentanaReservaEntradas(GestionDiscoteca gDisco, Cliente cliente, Reserva reserva)
@@ -60,7 +54,6 @@ public class VentanaReservaEntradas extends JFrame {
 		numeroPersonas1 = new JComboBox<Integer>();
 		comboDiscoteca = new JComboBox<Discoteca>();
 		comboZona = new JComboBox<EnumZona>();
-		disco2 = new Discoteca();
 
 		// Creación paneles
 		JPanel panelSuperior = new JPanel();
