@@ -100,7 +100,7 @@ public class VentanaReservaProductos extends JFrame {
 		// Panel botones
 		JPanel panelCentral = new JPanel(new BorderLayout());
 		JPanel panelInferior = new JPanel();
-		JButton bFinalizar = new JButton("Finalizar");
+		JButton bFinalizar = new JButton("Continuar");
 		panelInferior.add(bFinalizar);
 		JLabel importeTotal = new JLabel("Importe a pagar:");
 		importeTotalInfo = new JLabel();

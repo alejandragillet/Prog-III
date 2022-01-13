@@ -52,7 +52,7 @@ public class VentanaCompra extends JFrame {
 		panelInferior = new JPanel();
 		add(panelInferior, BorderLayout.SOUTH);
 		JButton bVolver = new JButton("Volver a la reserva");
-		JButton bFinalizar = new JButton("Comprar");
+		JButton bFinalizar = new JButton("Finalizar");
 		panelInferior.add(bVolver);
 		panelInferior.add(bFinalizar);
 		panelImporte = new JPanel();
