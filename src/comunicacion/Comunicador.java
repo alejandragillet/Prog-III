@@ -20,18 +20,18 @@ public class Comunicador {
     static boolean finComunicacion = false;
 
     public static void lanzaCliente() {
-        try (Socket s = new Socket(HOST, PORT)) {
-            socket = s;
-            inputDesdeServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            outputAServer = new PrintWriter(socket.getOutputStream(), true);
+        try (Socket s = new Socket(HOST, PORT)) { // se crea un socket y se intenta conecctar al HOST:PORT
+            socket = s; // lo guardo como atributo
+            inputDesdeServer = new BufferedReader(new InputStreamReader(socket.getInputStream())); // se crea un objeto que nos permite recibir mensajes del servidor 
+            outputAServer = new PrintWriter(socket.getOutputStream(), true); // se crea un objeto que nos permite enviar mensajes al servidor
             System.out.println("Despues de outputAServer");
             do {
-                if (socket.isClosed())
-                    finComunicacion = true;
+                if (socket.isClosed()) // comprobar si la conexión se ha cerrado
+                    finComunicacion = true; // hago terminar el bucle
             } while (!finComunicacion);
         } catch (IOException e) {
             GestionDiscoteca.LOG_RAIZ.log(Level.SEVERE, "Programa cerrandose debido a un error en la conexión con el servidor", e);
-            System.exit(-1);
+            System.exit(-1); // cierro el programa para evitar problemas mayores (login, registro)
         }
         System.out.println("Fin del proceso del cliente");
     }
@@ -45,8 +45,8 @@ public class Comunicador {
      */
     private static String emitirMensaje(String mensaje) throws IOException { // te devuelve el mensaje del servidor
         System.out.println("Emitiendo mensaje: " + mensaje);
-        outputAServer.println(mensaje);
-        String respuesta = inputDesdeServer.readLine();
+        outputAServer.println(mensaje); // emite mensaje a servidor
+        String respuesta = inputDesdeServer.readLine(); // espera una respuesta del servidor
         return respuesta;
     }
 
@@ -73,48 +73,5 @@ public class Comunicador {
             return new Cliente(nombre, pass, apellido, DNI);
         }
         return null;
-    }
-    
-
-    public static void esperarConexion() {
-        while (true) {
-            try {
-                Thread.sleep(1); // necesario
-                if (socket != null && socket.isConnected()) {
-                    System.out.println("Conexion establecida");
-                    break;
-                }
-            } catch (Exception e) {
-                System.out.println("Error en esperarConexion: " + e.getMessage());
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        (new Thread() {
-            @Override
-            public void run() {
-                Servidor.lanzaServidor();
-            }
-        }).start();
-
-        (new Thread() {
-            @Override
-            public void run() {
-                Comunicador.lanzaCliente();
-                System.out.println("");
-            }
-        }).start();
-
-        Comunicador.esperarConexion();
-
-        try {
-            // para poder llamar a emitirMensaje, el outputAServer debe de esta definido (es
-            // decir, conexión establecida)
-            String respueta = Comunicador.emitirMensaje("holaaaaa");
-            System.out.println("Respuesta: " + respueta);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
     }
 }

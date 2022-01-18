@@ -31,6 +31,7 @@ public class GestionDiscoteca {
 		GestionDiscoteca gs1 = new GestionDiscoteca();
 		gs1.initConexiones();
 		if (!Boolean.valueOf(StaticVars.get("ejecutadoPrimeraVez"))) {
+			// ejecutado por primera vez
 			GestionDiscoteca.init(gs1); // <<-- solo la primera vez
 			StaticVars.set("ejecutadoPrimeraVez", "true");
 		}

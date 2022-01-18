@@ -155,6 +155,7 @@ public class VentanaReservaProductos extends JFrame {
 		JButton bEliminar = new JButton("Eliminar");
 		JButton bGraficaStock = new JButton("Ver el stock");
 		JButton bComprasPosibles = new JButton("Compras posibles");
+
 		panelInformacionProductos.add(bAnadir);
 		panelInformacionProductos.add(bEliminar);
 		panelInformacionProductos.add(bGraficaStock);

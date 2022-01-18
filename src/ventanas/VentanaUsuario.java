@@ -80,8 +80,8 @@ public class VentanaUsuario extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				try {
 					BaseDeDatos.cerrarBD(BaseDeDatos.conexion, null);
-					BaseDeDatos.reiniciarBD(BaseDeDatos.getConexion(BaseDeDatos.nombreBD)); // prevenir errores de
-																							// conexiones pendientes
+					BaseDeDatos.reiniciarBD(BaseDeDatos.getConexion(BaseDeDatos.nombreBD)); 
+
 					BaseDeDatos.initBD(BaseDeDatos.nombreBD);
 
 					BaseDeDatos.guardarClientes(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlClientes(), gs);
@@ -90,7 +90,6 @@ public class VentanaUsuario extends JFrame {
 					BaseDeDatos.guardarDiscotecas(BaseDeDatos.usarBD(BaseDeDatos.conexion), gs.getlDiscotecas(), gs);
 					BaseDeDatos.cerrarBD(BaseDeDatos.conexion, BaseDeDatos.usarBD(BaseDeDatos.conexion));
 				} catch (NullPointerException e2) {
-					// NUNCA dejar los catch sin nada, porque si falla no te enteras
 					e2.printStackTrace();
 				}
 			}

@@ -20,25 +20,26 @@ public class Servidor {
     static Socket socket;
 
     public static void lanzaServidor() {
-        try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
-            socket = serverSocket.accept(); // Bloqueante
+        try (ServerSocket serverSocket = new ServerSocket(PUERTO)) { // se crea el socket
+            socket = serverSocket.accept(); // Espera a que se conecte un cliente
             System.out.println("Cliente conectado");
-            BufferedReader inputDesdeCliente = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter outputACliente = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader inputDesdeCliente = new BufferedReader(new InputStreamReader(socket.getInputStream())); // objeto que permmite recibir mensajes desde el comunicador
+            PrintWriter outputACliente = new PrintWriter(socket.getOutputStream(), true); // objeto que permite enviar mensajes al comunicador
 
             while (!finComunicacion) { // ciclo de lectura desde el cliente hasta que acabe la comunicación
-                String textoRecibido = inputDesdeCliente.readLine(); // Ojo: bloqueante (este hilo se queda esperando)
+                String textoRecibido = inputDesdeCliente.readLine(); // espera a que el cliente envie un mensaje (bloqueante)
 
                 if (textoRecibido == null) {
                     finComunicacion = true;
                 }
 
-                // login:usuario-pass
+                // <accion>:<datos>
                 String[] split = textoRecibido.split(":");
                 System.out.println(split[0]);
 
                 if (split[0].equals("login")) {
-                    if (split.length != 2 || split[1].split("-").length != 2) {
+                    // login:usuario-
+                    if (split.length != 2 || split[1].split("-").length != 2) { // comprobar que llega tanto la <accion> como los <datos> (2) y dentro de los datos que exista tanto el usuario como la contraseña (2)
                         outputACliente.println("respuesta-" +  false);
                         continue;
                     }
@@ -47,7 +48,7 @@ public class Servidor {
                     String passC = split[1].split("-")[1];
                     Cliente clienteC = new Cliente(usuarioC, passC, null);
                     Statement st = BaseDeDatos.usarBD(BaseDeDatos.conexion);
-                    // select * from cliente where Cliente_nombre = 'aasdasd' and
+
                     ArrayList<Cliente> resultadoR = BaseDeDatos.clienteSelect(st, clienteC,
                             "contrasena = '" + passC + "'");
 

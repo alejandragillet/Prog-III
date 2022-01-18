@@ -250,6 +250,7 @@ public class BaseDeDatos {
 
 	public static Producto comidaInsert(Statement st, Comida d) {
 		try {
+			// IGNORE: si ya existe ignora el error de duplicado
 			String sql = String.format(
 					"INSERT OR IGNORE INTO producto (precio, nombre, tipoBebida, tipoComida, tamanio, mezcla, alcohol) VALUES ('%f', '%s', '%s', '%s', '%s', '%s', '%s')",
 					d.getPrecio(), secu(d.getNombre()), null, d.getTipoComida().name(), d.getTipoComida().name(), null,
@@ -821,24 +822,25 @@ public class BaseDeDatos {
 			s.setInt(5, reserva.getNumeroPersonas());
 			s.setString(6, reserva.getZona().name());
 
-			ResultSet gk = s.getGeneratedKeys();
+			s.executeUpdate();
+
+			ResultSet gk = s.getGeneratedKeys(); // saca la id de la reserva que se acaba de insertar
 			if (gk.next()) {
 				reserva.setId(gk.getInt(1));
 			}
-			s.executeUpdate();
 			s.close();
 
 			for (Entry<Producto, Integer> d : reserva.getMapaProducto().entrySet()) {
 				PreparedStatement s1 = conexion.prepareStatement(
 						"insert into carrito values (?, ?, ?)");
 				// producto, cantidad, reserva
-				Producto productoConId = getProductoIdPorNombre(usarBD(conexion), d.getKey());
+				Producto productoConId = getProductoIdPorNombre(usarBD(conexion), d.getKey()); // saco el id de la bd si existiera
 				if (productoConId.getId() == null) {
 					// no existe en la bd
-					productoConId = productoInsert(usarBD(conexion), d.getKey());
+					productoConId = productoInsert(usarBD(conexion), d.getKey()); // mete en la bd
 				}
 				s1.setInt(1, productoConId.getId());
-				s1.setInt(2, d.getValue());
+				s1.setInt(2, d.getValue()); // cantidad
 				s1.setInt(3, reserva.getId());
 
 				s1.executeUpdate();
